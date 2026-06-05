@@ -1,13 +1,666 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-   <meta charset="UTF-8">
-<title>anderrz.com</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="light"/>
+  <title>Anderrz — Cinematography</title>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;1,100;1,200;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Josefin Sans', sans-serif !important;
+    }
 
+    html, body {
+      background: #ffffff !important;
+      color: #1a1a1a !important;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    :root {
+      --white:  #ffffff;
+      --off:    #f7f7f7;
+      --light:  #efefef;
+      --mid:    #aaaaaa;
+      --sub:    #666666;
+      --ink:    #1a1a1a;
+      --border: rgba(0,0,0,0.09);
+    }
+
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 300;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 3rem;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links a {
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sub);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+
+    .nav-book {
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.5rem;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-book:hover { background: var(--ink); color: #fff; }
+
+    .page { display: none; background: #ffffff !important; }
+    .page.active { display: block; animation: up 0.5s forwards; padding-top: 58px; }
+
+    .home-hero { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .home-left {
+      flex: 1;
+      padding: 5rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .home-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: up 0.7s 0.1s forwards;
+      width: 100%;
+      max-width: 560px;
+      text-align: center;
+    }
+
+    .home-h1 {
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 200;
+      line-height: 1.06;
+      letter-spacing: 0.02em;
+      margin-bottom: 2.2rem;
+      opacity: 0;
+      animation: up 0.8s 0.2s forwards;
+      width: 100%;
+      max-width: 560px;
+      text-align: center;
+    }
+
+    .home-h1 i { font-style: italic; color: var(--sub); }
+
+    .home-bio {
+      font-size: 0.82rem;
+      line-height: 1.95;
+      color: var(--sub);
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      animation: up 0.8s 0.35s forwards;
+      text-align: left;
+    }
+
+    .home-bio + .home-bio { animation-delay: 0.45s; }
+
+    .home-right {
+      min-height: 50vh;
+      background: var(--light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      animation: up 1s 0.3s forwards;
+    }
+
+    .home-photo {
+      width: 100%;
+      min-height: 50vh;
+      background: var(--light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: var(--mid);
+      letter-spacing: 0.06em;
+    }
+
+    .folder-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .folder-card {
+      background: #ffffff;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: background 0.25s, opacity 0.6s, transform 0.6s;
+    }
+
+    .folder-card.vis { opacity: 1; transform: translateY(0); }
+    .folder-card:hover { background: var(--off); }
+
+    .folder-thumb {
+      width: 100%;
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .folder-thumb::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.2);
+      transition: background 0.3s;
+      z-index: 1;
+    }
+
+    .folder-card:hover .folder-thumb::before { background: rgba(0,0,0,0.35); }
+
+    .folder-thumb-label {
+      position: relative;
+      z-index: 2;
+      border: 1.5px solid rgba(255,255,255,0.9);
+      padding: 0.7rem 1.8rem;
+      font-size: 1rem;
+      font-weight: 200;
+      letter-spacing: 0.14em;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .por-bg { background: #c8c8c8; }
+    .evt-bg { background: #b8b8b8; }
+    .arc-bg { background: #d0d0d0; }
+
+    .folder-view { padding: 2rem 3rem 3rem; animation: up 0.45s forwards; }
+
+    .folder-view-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .back-btn {
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sub);
+      background: none;
+      border: 1px solid var(--border);
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .back-btn:hover { color: var(--ink); border-color: var(--ink); }
+
+    .folder-view-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 200; letter-spacing: 0.06em; }
+
+    .cat-intro {
+      font-size: 0.78rem;
+      line-height: 1.9;
+      color: var(--sub);
+      max-width: 60ch;
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .photo-grid { display: grid; gap: 6px; }
+    .photo-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .photo-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .empty-note {
+      font-size: 0.72rem;
+      color: var(--mid);
+      font-style: italic;
+      text-align: center;
+      padding: 3rem 0;
+      letter-spacing: 0.04em;
+    }
+
+    .services-full { border-top: 1px solid var(--border); }
+
+    .svc-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: center;
+      padding: 3rem;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: background 0.25s, opacity 0.6s, transform 0.6s;
+    }
+
+    .svc-row.vis { opacity: 1; transform: translateY(0); }
+    .svc-row:hover { background: var(--off); }
+    .svc-row-left { display: flex; gap: 2rem; align-items: flex-start; }
+    .svc-row-num { font-size: 0.75rem; color: var(--mid); letter-spacing: 0.1em; padding-top: 0.3rem; flex-shrink: 0; }
+    .svc-row-title { font-size: 1.4rem; font-weight: 200; margin-bottom: 0.6rem; letter-spacing: 0.04em; }
+    .svc-row-desc { font-size: 0.74rem; line-height: 1.85; color: var(--sub); max-width: 48ch; }
+    .svc-row-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem; flex-shrink: 0; }
+    .svc-row-detail { font-size: 0.65rem; color: var(--sub); letter-spacing: 0.04em; text-align: right; }
+    .svc-row-detail strong { color: var(--ink); font-weight: 300; margin-right: 0.4rem; }
+
+    .booking-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 58px); }
+
+    .booking-info {
+      padding: 4rem 3.5rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .booking-h2 { font-size: clamp(1.8rem, 3vw, 3rem); font-weight: 200; line-height: 1.1; margin-bottom: 1.4rem; letter-spacing: 0.04em; }
+    .booking-h2 i { font-style: italic; }
+    .booking-desc { font-size: 0.78rem; line-height: 1.9; color: var(--sub); max-width: 42ch; margin-bottom: 3rem; }
+    .booking-details { display: flex; flex-direction: column; border-top: 1px solid var(--border); }
+    .bd-row { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--border); font-size: 0.72rem; color: var(--sub); }
+    .bd-row strong { color: var(--ink); font-weight: 300; }
+
+    .booking-form-wrap { padding: 4rem 3.5rem; display: flex; flex-direction: column; justify-content: center; }
+    .form { display: flex; flex-direction: column; gap: 1.6rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .ff { display: flex; flex-direction: column; gap: 0.45rem; }
+    .ff label { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); }
+
+    .ff input, .ff select, .ff textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 0.65rem 0;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--ink);
+      outline: none;
+      resize: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .ff input:focus, .ff select:focus, .ff textarea:focus { border-color: var(--ink); }
+    .ff select option { background: #fff; color: #1a1a1a; }
+
+    .btn-solid {
+      padding: 0.75rem 2rem;
+      background: #1a1a1a;
+      color: #ffffff;
+      font-size: 0.63rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: inline-block;
+    }
+
+    .btn-solid:hover { background: #333; }
+
+    footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 2.8rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo { font-size: 1.1rem; font-weight: 200; letter-spacing: 0.08em; color: var(--ink); text-decoration: none; }
+    .footer-copy { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mid); }
+    .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--ink); }
+
+    @keyframes up {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 860px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1rem; }
+      .nav-links a { font-size: 0.58rem; }
+      .home-left { padding: 3rem 1.5rem; }
+      .home-right { min-height: 40vh; }
+      .folder-grid { grid-template-columns: 1fr; }
+      .folder-view { padding: 2rem 1.5rem; }
+      .photo-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+      .photo-grid.cols-2 { grid-template-columns: 1fr; }
+      .svc-row { grid-template-columns: 1fr; gap: 1.5rem; padding: 2rem 1.5rem; }
+      .svc-row-right { align-items: flex-start; }
+      .booking-inner { grid-template-columns: 1fr; }
+      .booking-info { border-right: none; border-bottom: 1px solid var(--border); padding: 3rem 1.5rem; }
+      .booking-form-wrap { padding: 3rem 1.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1.2rem; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
 <body>
-<h1>Hey, I'm Anderrz</h1>
-<p>This is my portfolio page where you'll be able to see all my work and book me for shoots.</p>
+
+  <nav>
+    <ul class="nav-links">
+      <li><a href="#" onclick="return showPage('home')" data-page="home">Home</a></li>
+      <li><a href="#" onclick="return showPage('gallery')" data-page="gallery">Gallery</a></li>
+      <li><a href="#" onclick="return showPage('services')" data-page="services">Services</a></li>
+    </ul>
+    <a href="#" class="nav-book" onclick="return openBookingForm('')">Book a Shoot</a>
+  </nav>
+
+  <!-- HOME -->
+  <div id="home" class="page active">
+    <div class="home-hero">
+      <div class="home-left">
+        <p class="home-eyebrow">Cinematographer — Available for Bookings</p>
+        <h1 class="home-h1">Hi, I'm<br><i>Anderrz</i></h1>
+        <p class="home-bio">I'm a cinematographer based wherever the work takes me, specializing in weddings, portraits, live events, and architecture. My approach is simple: show up, pay attention, and make photographs that last.</p>
+        <p class="home-bio">With over three years of experience and 200+ sessions, I work with couples, artists, brands, and individuals who care about how they're remembered.</p>
+      </div>
+      <div class="home-right">
+        <div class="home-photo">Your photo here</div>
+      </div>
+    </div>
+    <footer>
+      <a class="footer-logo" href="#" onclick="return showPage('home')">Anderrz</a>
+      <p class="footer-copy">© 2026 Anderrz All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Instagram</a><a href="#">Facebook</a><a href="#">YouTube</a><a href="#">TikTok</a><a href="#">Email</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- GALLERY -->
+  <div id="gallery" class="page">
+    <div id="gallery-folders">
+      <div class="folder-grid">
+        <div class="folder-card" onclick="openFolder('portraits')">
+          <div class="folder-thumb por-bg"><span class="folder-thumb-label">Portraits</span></div>
+        </div>
+        <div class="folder-card" onclick="openFolder('events')">
+          <div class="folder-thumb evt-bg"><span class="folder-thumb-label">Events</span></div>
+        </div>
+        <div class="folder-card" onclick="openFolder('architecture')">
+          <div class="folder-thumb arc-bg"><span class="folder-thumb-label">Architecture</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="folder-portraits" class="folder-view" style="display:none">
+      <div class="folder-view-header">
+        <button class="back-btn" onclick="closeFolder()">← Back</button>
+        <h2 class="folder-view-title">Portraits</h2>
+      </div>
+      <p class="cat-intro">Portraits and headshots for creatives, executives, and individuals. Studio or on-location — the goal is always the same: a photo that genuinely looks like you.</p>
+      <div class="photo-grid cols-3"></div>
+      <p class="empty-note">Your portraits will appear here once added.</p>
+    </div>
+
+    <div id="folder-events" class="folder-view" style="display:none">
+      <div class="folder-view-header">
+        <button class="back-btn" onclick="closeFolder()">← Back</button>
+        <h2 class="folder-view-title">Events</h2>
+      </div>
+      <p class="cat-intro">Live event cinematography capturing raw energy, the crowd, and the moments between performances. Available for venues of any size.</p>
+      <div class="photo-grid cols-3"></div>
+      <p class="empty-note">Your event photos will appear here once added.</p>
+    </div>
+
+    <div id="folder-architecture" class="folder-view" style="display:none">
+      <div class="folder-view-header">
+        <button class="back-btn" onclick="closeFolder()">← Back</button>
+        <h2 class="folder-view-title">Architecture</h2>
+      </div>
+      <p class="cat-intro">Architectural cinematography capturing structure, light, and space — for architects, developers, real estate, and editorial use.</p>
+      <div class="photo-grid cols-2"></div>
+      <p class="empty-note">Your architecture photos will appear here once added.</p>
+    </div>
+
+    <footer>
+      <a class="footer-logo" href="#" onclick="return showPage('home')">Anderrz</a>
+      <p class="footer-copy">© 2026 Anderrz All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Instagram</a><a href="#">Facebook</a><a href="#">YouTube</a><a href="#">TikTok</a><a href="#">Email</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- SERVICES -->
+  <div id="services" class="page">
+    <div id="services-list">
+      <div class="services-full">
+        <div class="svc-row">
+          <div class="svc-row-left">
+            <span class="svc-row-num">01</span>
+            <div>
+              <h3 class="svc-row-title">Portraits &amp; Headshots</h3>
+              <p class="svc-row-desc">Professional portraits for creatives, executives, and individuals. Studio or on-location — the goal is always a photo that genuinely looks like you.</p>
+            </div>
+          </div>
+          <div class="svc-row-right">
+            <span class="svc-row-detail"><strong>Response time</strong> Within 48 hours</span>
+            <span class="svc-row-detail"><strong>Delivery</strong> 1–2 weeks</span>
+            <span class="svc-row-detail"><strong>Retouching</strong> Included</span>
+          </div>
+        </div>
+        <div class="svc-row">
+          <div class="svc-row-left">
+            <span class="svc-row-num">02</span>
+            <div>
+              <h3 class="svc-row-title">Events</h3>
+              <p class="svc-row-desc">Live event cinematography that captures energy, the crowd, and the moments between performances. Available for venues of any size.</p>
+            </div>
+          </div>
+          <div class="svc-row-right">
+            <span class="svc-row-detail"><strong>Response time</strong> Within 48 hours</span>
+            <span class="svc-row-detail"><strong>Delivery</strong> 1–2 weeks</span>
+            <span class="svc-row-detail"><strong>Retouching</strong> Included</span>
+          </div>
+        </div>
+        <div class="svc-row">
+          <div class="svc-row-left">
+            <span class="svc-row-num">03</span>
+            <div>
+              <h3 class="svc-row-title">Architecture</h3>
+              <p class="svc-row-desc">Architectural cinematography capturing structure, light, and space — for architects, developers, real estate, and editorial use.</p>
+            </div>
+          </div>
+          <div class="svc-row-right">
+            <span class="svc-row-detail"><strong>Response time</strong> Within 48 hours</span>
+            <span class="svc-row-detail"><strong>Delivery</strong> 1–2 weeks</span>
+            <span class="svc-row-detail"><strong>Retouching</strong> Included</span>
+          </div>
+        </div>
+        <div class="svc-row">
+          <div class="svc-row-left">
+            <span class="svc-row-num">04</span>
+            <div>
+              <h3 class="svc-row-title">Weddings</h3>
+              <p class="svc-row-desc">Full-day wedding coverage from preparation to the last dance. Documentary in approach, cinematic in result.</p>
+            </div>
+          </div>
+          <div class="svc-row-right">
+            <span class="svc-row-detail"><strong>Response time</strong> Within 48 hours</span>
+            <span class="svc-row-detail"><strong>Delivery</strong> 1–2 weeks</span>
+            <span class="svc-row-detail"><strong>Retouching</strong> Included</span>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <a class="footer-logo" href="#" onclick="return showPage('home')">Anderrz</a>
+        <p class="footer-copy">© 2026 Anderrz All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Instagram</a><a href="#">Facebook</a><a href="#">YouTube</a><a href="#">TikTok</a><a href="#">Email</a>
+        </div>
+      </footer>
+    </div>
+
+    <div id="booking-form-page" style="display:none">
+      <div class="booking-inner">
+        <div class="booking-info">
+          <h2 class="booking-h2">Tell me about<br>your <i>vision</i></h2>
+          <p class="booking-desc">Fill out the form and I'll get back to you within 48 hours to discuss your vision, availability, and pricing.</p>
+          <div class="booking-details">
+            <div class="bd-row"><span>Response time</span><strong>Within 48 hours</strong></div>
+            <div class="bd-row"><span>Gallery delivery</span><strong>1–2 weeks</strong></div>
+            <div class="bd-row"><span>File formats</span><strong>Digital + Print-ready</strong></div>
+            <div class="bd-row"><span>Locations</span><strong>Flexible</strong></div>
+            <div class="bd-row"><span>Retouching</span><strong>Included</strong></div>
+          </div>
+
+        </div>
+        <div class="booking-form-wrap">
+          <div class="form">
+            <div class="form-row">
+              <div class="ff"><label>First Name</label><input type="text" placeholder="Jane"/></div>
+              <div class="ff"><label>Last Name</label><input type="text" placeholder="Smith"/></div>
+            </div>
+            <div class="ff"><label>Email Address</label><input type="email" placeholder="jane@example.com"/></div>
+            <div class="ff"><label>Phone Number</label><input type="tel" placeholder="+1 000 000 0000"/></div>
+            <div class="ff"><label>Instagram (optional)</label><input type="text" placeholder="@yourhandle"/></div>
+            <div class="form-row">
+              <div class="ff">
+                <label>Service</label>
+                <select id="booking-service-select">
+                  <option value="" disabled selected>Select a service</option>
+                  <option>Portrait / Headshot</option>
+                  <option>Event</option>
+                  <option>Architecture</option>
+                  <option>Wedding</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="ff"><label>Preferred Date</label><input type="text" placeholder="e.g. September 2026"/></div>
+            </div>
+            <div class="ff"><label>Your Vision</label><textarea rows="4" placeholder="Tell me about the shoot — location, vibe, any specific ideas..."></textarea></div>
+            <div class="ff">
+              <label>How did you hear about me?</label>
+              <select>
+                <option value="" disabled selected>Select one</option>
+                <option>Instagram</option>
+                <option>TikTok</option>
+                <option>Facebook</option>
+                <option>YouTube</option>
+                <option>Word of mouth</option>
+                <option>Google</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <button class="btn-solid" style="align-self:flex-start;border:none;cursor:pointer;margin-top:0.5rem" onclick="handleBook(this)">Send Inquiry</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('[data-page]').forEach(a => {
+        a.classList.toggle('active', a.dataset.page === id);
+      });
+      if (id === 'gallery') { closeFolder(); setTimeout(animateFolders, 100); }
+      if (id === 'services') { closeBookingForm(); setTimeout(animateSvcRows, 100); }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return false;
+    }
+
+    function openFolder(name) {
+      document.getElementById('gallery-folders').style.display = 'none';
+      document.querySelectorAll('.folder-view').forEach(f => f.style.display = 'none');
+      document.getElementById('folder-' + name).style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeFolder() {
+      document.querySelectorAll('.folder-view').forEach(f => f.style.display = 'none');
+      document.getElementById('gallery-folders').style.display = 'block';
+      animateFolders();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function animateFolders() {
+      document.querySelectorAll('.folder-card').forEach((el, i) => {
+        el.classList.remove('vis');
+        setTimeout(() => el.classList.add('vis'), i * 120);
+      });
+    }
+
+    function openBookingForm(service) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('services').classList.add('active');
+      document.querySelectorAll('[data-page]').forEach(a => {
+        a.classList.toggle('active', a.dataset.page === 'services');
+      });
+      document.getElementById('services-list').style.display = 'none';
+      const fp = document.getElementById('booking-form-page');
+      fp.style.display = 'block';
+      fp.style.animation = 'none';
+      fp.offsetHeight;
+      fp.style.animation = 'up 0.5s forwards';
+      if (service) {
+        const sel = document.getElementById('booking-service-select');
+        for (let o of sel.options) { if (o.value === service) { o.selected = true; break; } }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return false;
+    }
+
+    function closeBookingForm() {
+      document.getElementById('booking-form-page').style.display = 'none';
+      document.getElementById('services-list').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function animateSvcRows() {
+      document.querySelectorAll('.svc-row').forEach((el, i) => {
+        el.classList.remove('vis');
+        setTimeout(() => el.classList.add('vis'), i * 100);
+      });
+    }
+
+    function handleBook(btn) {
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+      setTimeout(() => { btn.textContent = 'Inquiry Sent ✓'; btn.style.background = '#3a6b47'; }, 1200);
+    }
+  </script>
 </body>
 </html>
