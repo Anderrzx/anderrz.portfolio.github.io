@@ -589,7 +589,9 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script>
+    emailjs.init('IS39rhcWL4s-oChRx');
     function showPage(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(id).classList.add('active');
@@ -657,9 +659,39 @@
     }
 
     function handleBook(btn) {
+      const form = btn.closest('.form');
+      const inputs = form.querySelectorAll('input, select, textarea');
+
+      const params = {
+        from_name:  form.querySelector('input[placeholder="Jane"]').value + ' ' + form.querySelector('input[placeholder="Smith"]').value,
+        from_email: form.querySelector('input[type="email"]').value,
+        phone:      form.querySelector('input[type="tel"]').value,
+        instagram:  form.querySelector('input[placeholder="@yourhandle"]').value,
+        service:    form.querySelector('#booking-service-select').value,
+        date:       form.querySelector('input[placeholder="e.g. September 2026"]').value,
+        vision:     form.querySelector('textarea').value,
+        referral:   form.querySelectorAll('select')[1].value,
+      };
+
+      if (!params.from_email || !params.from_name.trim()) {
+        alert('Please fill in at least your name and email.');
+        return;
+      }
+
       btn.textContent = 'Sending…';
       btn.disabled = true;
-      setTimeout(() => { btn.textContent = 'Inquiry Sent ✓'; btn.style.background = '#3a6b47'; }, 1200);
+
+      emailjs.send('service_b4xh5hr', 'template_vrcu3ed', params)
+        .then(() => {
+          btn.textContent = 'Inquiry Sent ✓';
+          btn.style.background = '#3a6b47';
+        })
+        .catch((err) => {
+          console.error(err);
+          btn.textContent = 'Failed — Try Again';
+          btn.style.background = '#c0392b';
+          btn.disabled = false;
+        });
     }
   </script>
 </body>
