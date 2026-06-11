@@ -1,4 +1,4 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -343,7 +343,7 @@ DOCTYPE html>
 
     .footer-logo { font-size: 1.1rem; font-weight: 200; letter-spacing: 0.08em; color: var(--ink); text-decoration: none; }
     .footer-copy { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mid); }
-    .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 2rem; flex-wrap: nowrap; }
     .footer-links a { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color 0.2s; }
     .footer-links a:hover { color: var(--ink); }
 
@@ -369,7 +369,7 @@ DOCTYPE html>
       .booking-form-wrap { padding: 3rem 1.5rem; }
       .form-row { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 1.2rem; text-align: center; }
-      .footer-links { justify-content: center; }
+      .footer-links { justify-content: center; flex-wrap: nowrap; gap: 1.2rem; }
     }
   </style>
 </head>
