@@ -36,6 +36,8 @@
     --accent: #D9A35B;        /* golden-hour amber, used sparingly */
     --button-bg: #F1EBDD;
     --button-text: #121110;
+    --header-bg: rgba(18, 17, 16, 0.78);
+    --error: #E8957F;          /* readable soft red for form errors */
 
     /* Light palette, used by .theme-light (business-focused sections) */
     --paper: #F1EBDD;
@@ -66,6 +68,8 @@
     --accent: var(--amber-ink);
     --button-bg: var(--ink);
     --button-text: var(--paper);
+    --header-bg: rgba(241, 235, 221, 0.88);
+    --error: #A63D2A;
     background: var(--bg);
     color: var(--text);
 }
@@ -252,7 +256,7 @@ a {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(18, 17, 16, 0.78);
+    background: var(--header-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid transparent;
@@ -992,12 +996,12 @@ a.project-link:hover .project-placeholder {
 }
 
 .field [aria-invalid="true"] {
-    border-bottom-color: #E07A5F;
+    border-bottom-color: var(--error);
 }
 
 .field-error {
     margin: 0;
-    color: #E8957F;
+    color: var(--error);
     font-size: 0.8125rem;
 }
 
@@ -1024,7 +1028,79 @@ a.project-link:hover .project-placeholder {
 }
 
 .form-status[data-kind="error"] {
-    color: #E8957F;
+    color: var(--error);
+}
+
+/* ===== Web Design page ===== */
+.page-intro .button-row {
+    align-items: center;
+    gap: 16px 28px;
+    margin-top: 40px;
+}
+
+.sign-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(24px, 3vw, 40px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sign-title {
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+.sign-title::before {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+.sign p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+}
+
+.process-list {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.examples-note {
+    margin: 40px 0 0;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.examples-note strong {
+    color: var(--text);
+    font-weight: 500;
+}
+
+.review-intro .section-title {
+    margin-bottom: 24px;
+}
+
+.review-intro p:last-child {
+    max-width: 26rem;
+    color: var(--text-muted);
+}
+
+.field-optional {
+    letter-spacing: 0.04em;
+    text-transform: none;
+}
+
+.field input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
 }
 
 /* ===== Small-business review (light section) ===== */
@@ -1176,6 +1252,11 @@ a.project-link:hover .project-placeholder {
     .contact-layout {
         grid-template-columns: 1fr;
     }
+
+    .sign-list,
+    .process-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* ===== Phone ===== */
@@ -1227,7 +1308,9 @@ a.project-link:hover .project-placeholder {
         grid-template-columns: 1fr;
     }
 
-    .field-row {
+    .field-row,
+    .sign-list,
+    .process-list {
         grid-template-columns: 1fr;
     }
 

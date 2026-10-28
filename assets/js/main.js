@@ -84,18 +84,18 @@ if (filterBar) {
     filterBar.hidden = false;
 }
 
-// ===== Contact page: check fields and send the form =====
-const contactForm = document.getElementById('contact-form');
-
-if (contactForm) {
-    const formStatus = document.getElementById('form-status');
-    const submitButton = contactForm.querySelector('button[type="submit"]');
-    const requiredFields = contactForm.querySelectorAll('[required]');
+// ===== Forms (Contact, Web Design review): check fields and send =====
+// Any <form class="site-form"> gets this. Each required field needs an error
+// message with the id "<field id>-error", and the form needs a .form-status.
+function setupForm(form) {
+    const formStatus = form.querySelector('.form-status');
+    const submitButton = form.querySelector('button[type="submit"]');
+    const requiredFields = form.querySelectorAll('[required]');
 
     // Pre-select the topic from a link like /contact/?topic=Free%20website%20review
     const topic = new URLSearchParams(window.location.search).get('topic');
-    if (topic) {
-        const option = [...contactForm.topic.options].find((o) => o.value === topic);
+    if (topic && form.topic && form.topic.options) {
+        const option = [...form.topic.options].find((o) => o.value === topic);
         if (option) option.selected = true;
     }
 
@@ -124,7 +124,7 @@ if (contactForm) {
         });
     });
 
-    contactForm.addEventListener('submit', async (event) => {
+    form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const firstInvalid = [...requiredFields].filter((field) => !checkField(field))[0];
@@ -134,7 +134,7 @@ if (contactForm) {
             return;
         }
 
-        if (contactForm.dataset.connected !== 'true') {
+        if (form.dataset.connected !== 'true') {
             showStatus('This form isn’t connected yet, so nothing was sent.', 'error');
             return;
         }
@@ -143,16 +143,16 @@ if (contactForm) {
         showStatus('Sending…', 'info');
 
         try {
-            const response = await fetch(contactForm.action, {
+            const response = await fetch(form.action, {
                 method: 'POST',
-                body: new FormData(contactForm),
+                body: new FormData(form),
                 headers: { Accept: 'application/json' },
             });
 
             if (!response.ok) throw new Error(`Form service replied ${response.status}`);
 
-            contactForm.reset();
-            showStatus('Thanks! Your message has been sent. I’ll get back to you soon.', 'success');
+            form.reset();
+            showStatus(form.dataset.success || 'Thanks! Your message has been sent. I’ll get back to you soon.', 'success');
         } catch (error) {
             showStatus('Your message wasn’t sent. Please try again in a moment.', 'error');
         } finally {
@@ -160,3 +160,5 @@ if (contactForm) {
         }
     });
 }
+
+document.querySelectorAll('form.site-form').forEach(setupForm);

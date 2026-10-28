@@ -43,7 +43,7 @@ permalink: /contact/
             <h2 id="form-title" class="visually-hidden">Send a message</h2>
 
             {% assign form_action = site.contact_form_action | strip %}
-            <form class="contact-form" id="contact-form" method="POST" novalidate
+            <form class="contact-form site-form" id="contact-form" method="POST" novalidate
                   {% if form_action != "" %}action="{{ form_action }}"{% endif %}
                   data-connected="{% if form_action != "" %}true{% else %}false{% endif %}">
 
