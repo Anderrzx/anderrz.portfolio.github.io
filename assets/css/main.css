@@ -83,6 +83,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 72px; /* section links land below the sticky header */
     -webkit-text-size-adjust: 100%;
 }
 
@@ -1112,6 +1113,23 @@ a.project-link:hover .project-placeholder {
 
 .process-list {
     grid-template-columns: repeat(4, 1fr);
+}
+
+/* Tighter sections so "Signs" and "How a redesign works" read as one view */
+.section-compact {
+    padding: clamp(40px, 4.5vw, 64px) 0;
+}
+
+.section-compact .section-head {
+    margin-bottom: clamp(24px, 3vw, 36px);
+}
+
+.section-compact .sign-title::before {
+    margin-bottom: 14px;
+}
+
+.section-compact .section-title {
+    font-size: clamp(2rem, 4vw, 3.25rem);
 }
 
 .examples-note {

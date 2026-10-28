@@ -24,8 +24,10 @@ body_class: theme-light
     </div>
 </section>
 
-<!-- ===== Signs it's time ===== -->
-<section class="section section-raised" aria-labelledby="signs-title">
+<!-- ===== Signs it's time =====
+     "Small business? Get a free website review" links land here (#is-it-time),
+     so visitors see the signs and the process right away. -->
+<section class="section section-raised section-compact" id="is-it-time" aria-labelledby="signs-title">
     <div class="container">
         <div class="section-head">
             <div>
@@ -79,7 +81,7 @@ body_class: theme-light
 {% endif %}
 
 <!-- ===== Process (alternates background with the section above it) ===== -->
-<section class="section{% if web_projects.size > 0 %} section-raised{% endif %}" aria-labelledby="process-title">
+<section class="section section-compact{% if web_projects.size > 0 %} section-raised{% endif %}" aria-labelledby="process-title">
     <div class="container">
         <div class="section-head">
             <div>
@@ -124,7 +126,7 @@ body_class: theme-light
                   data-connected="{% if form_action != "" %}true{% else %}false{% endif %}"
                   data-success="Thanks! Your review request has been sent. I&rsquo;ll be in touch soon.">
 
-                <input type="hidden" name="topic" value="Free website review">
+                <input type="hidden" name="topic" value="Free Website Review">
 
                 <div class="field-row">
                     <div class="field">

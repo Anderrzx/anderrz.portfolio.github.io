@@ -1,3 +1,21 @@
+// ===== Start every page at the top =====
+// Browsers sometimes restore an old scroll position when a page opens.
+// Links that point to a section (e.g. /web-design/#is-it-time) still go there.
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+const linkedSection = window.location.hash
+    ? document.getElementById(decodeURIComponent(window.location.hash.slice(1)))
+    : null;
+
+if (linkedSection) {
+    // Jump straight to the linked section once the page has laid out
+    window.addEventListener('load', () => {
+        linkedSection.scrollIntoView({ behavior: 'instant', block: 'start' });
+    });
+} else {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+}
+
 // ===== Mobile menu =====
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.site-nav');
@@ -92,7 +110,7 @@ function setupForm(form) {
     const submitButton = form.querySelector('button[type="submit"]');
     const requiredFields = form.querySelectorAll('[required]');
 
-    // Pre-select the topic from a link like /contact/?topic=Free%20website%20review
+    // Pre-select the topic from a link like /contact/?topic=Free%20Website%20Review
     const topic = new URLSearchParams(window.location.search).get('topic');
     if (topic && form.topic && form.topic.options) {
         const option = [...form.topic.options].find((o) => o.value === topic);
