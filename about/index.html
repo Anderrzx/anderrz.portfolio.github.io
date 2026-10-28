@@ -86,15 +86,24 @@ permalink: /about/
         </div>
 
         <div class="skills-grid">
+            {% comment %} Lines starting with "Add " in _data/skills.yml are placeholders and stay hidden;
+               a group with no real skills is hidden too. {% endcomment %}
             {% for group in site.data.skills %}
+            {% assign real_skills = "" | split: "" %}
+            {% for item in group.items %}
+                {% assign first_four = item | slice: 0, 4 %}
+                {% unless first_four == "Add " %}{% assign real_skills = real_skills | push: item %}{% endunless %}
+            {% endfor %}
+            {% if real_skills.size > 0 %}
             <div class="skill-group reveal">
                 <h3 class="skill-group-title">{{ group.group }}</h3>
                 <ul class="skill-list">
-                    {% for item in group.items %}
-                    <li{% if item contains "Add " %} class="placeholder"{% endif %}>{{ item }}</li>
+                    {% for item in real_skills %}
+                    <li>{{ item }}</li>
                     {% endfor %}
                 </ul>
             </div>
+            {% endif %}
             {% endfor %}
         </div>
     </div>
