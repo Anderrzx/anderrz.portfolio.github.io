@@ -755,6 +755,126 @@ a.project-link:hover .project-placeholder {
     max-width: 32rem;
 }
 
+/* A section heading already draws a line, so lists right below it skip their own */
+.section-head + .service-list {
+    border-top: 0;
+}
+
+.section-head + .service-list .service:first-child {
+    padding-top: 0;
+}
+
+.section-head + .approach-list .approach {
+    padding-top: 0;
+    border-top: 0;
+}
+
+/* ===== About page ===== */
+.about-intro {
+    padding-top: 0;
+}
+
+.about-intro .about-teaser {
+    align-items: start;
+}
+
+.about-intro .about-text p {
+    font-size: 1.0625rem;
+}
+
+/* Quick facts: label / value rows */
+.facts {
+    margin: 40px 0 0;
+    border-top: 1px solid var(--line);
+}
+
+.facts > div {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.facts dt {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding-top: 2px;
+}
+
+.facts dd {
+    margin: 0;
+    font-size: 0.9375rem;
+}
+
+/* How I work */
+.approach-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(32px, 4vw, 56px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: approach;
+}
+
+.approach {
+    counter-increment: approach;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+}
+
+.approach::before {
+    content: counter(approach, decimal-leading-zero);
+    display: block;
+    margin-bottom: 20px;
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+}
+
+.approach-title {
+    margin-bottom: 12px;
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    letter-spacing: -0.03em;
+}
+
+.approach p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+}
+
+/* Skills grouped by discipline */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(32px, 4vw, 56px);
+}
+
+.skill-group-title {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+.skill-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+}
+
 /* ===== Small-business review (light section) ===== */
 .review {
     display: grid;
@@ -896,6 +1016,11 @@ a.project-link:hover .project-placeholder {
     }
 
     .review {
+        grid-template-columns: 1fr;
+    }
+
+    .approach-list,
+    .skills-grid {
         grid-template-columns: 1fr;
     }
 }

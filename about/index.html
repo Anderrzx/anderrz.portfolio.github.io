@@ -1,0 +1,129 @@
+---
+layout: default
+title: About
+description: About Anderrz, a multidisciplinary creative working across web design, digital marketing and cinematography.
+permalink: /about/
+---
+
+<!-- ===== Page intro ===== -->
+<section class="page-intro">
+    <div class="container">
+        <p class="eyebrow reveal">About</p>
+        <h1 class="page-title reveal">Hi, I&rsquo;m Anderrz. I create with <em class="serif">feeling.</em></h1>
+        <p class="page-lead reveal">A multidisciplinary creative working across web design, digital marketing, and cinematography.</p>
+    </div>
+</section>
+
+<!-- ===== Photo + bio ===== -->
+<section class="section about-intro" aria-labelledby="story-title">
+    <div class="container about-teaser">
+        <div class="about-photo reveal">
+            <!-- TODO: replace with <img src="/assets/images/me.jpg" alt="Photo of Anderrz" width="1200" height="1500"> -->
+            <div class="photo-placeholder" aria-hidden="true">Your photo here</div>
+        </div>
+
+        <div class="about-text">
+            <h2 id="story-title" class="section-title reveal">My story</h2>
+
+            <!-- TODO: replace these placeholders with your own words -->
+            <p class="reveal placeholder">Placeholder. Where you&rsquo;re from, how you got into design, marketing and filmmaking, and what you&rsquo;re working on now.</p>
+            <p class="reveal placeholder">Placeholder. Your digital marketing studies: where you study, what you&rsquo;re learning, and how it shapes your creative work.</p>
+            <p class="reveal placeholder">Placeholder. Your creative interests outside of work: the films, places, music or photography that inspire you.</p>
+
+            <!-- Quick facts. Edit the values; delete a row you don't want. -->
+            <dl class="facts reveal">
+                <div>
+                    <dt>Based in</dt>
+                    <dd class="placeholder">Your city</dd>
+                </div>
+                <div>
+                    <dt>Studying</dt>
+                    <dd>Digital Marketing <span class="placeholder">&middot; your school</span></dd>
+                </div>
+                <div>
+                    <dt>Focus</dt>
+                    <dd>Web design, marketing &amp; cinematography</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Approach ===== -->
+<section class="section section-raised" aria-labelledby="approach-title">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <p class="eyebrow reveal">Approach</p>
+                <h2 id="approach-title" class="section-title reveal">How I work</h2>
+            </div>
+        </div>
+
+        <!-- Suggested wording. Change it so it sounds like you. -->
+        <ol class="approach-list">
+            <li class="approach reveal">
+                <h3 class="approach-title">Listen first</h3>
+                <p>Every project starts with understanding who it&rsquo;s for and what it needs to do.</p>
+            </li>
+            <li class="approach reveal">
+                <h3 class="approach-title">Tell a story</h3>
+                <p>Whether it&rsquo;s a website, a campaign or a film, I look for the story that makes people care.</p>
+            </li>
+            <li class="approach reveal">
+                <h3 class="approach-title">Keep it simple</h3>
+                <p>Clean design and clear communication, so the important things stand out.</p>
+            </li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== Skills ===== -->
+<section class="section" aria-labelledby="skills-title">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <p class="eyebrow reveal">Skills</p>
+                <h2 id="skills-title" class="section-title reveal">What I work with</h2>
+            </div>
+        </div>
+
+        <div class="skills-grid">
+            {% for group in site.data.skills %}
+            <div class="skill-group reveal">
+                <h3 class="skill-group-title">{{ group.group }}</h3>
+                <ul class="skill-list">
+                    {% for item in group.items %}
+                    <li{% if item contains "Add " %} class="placeholder"{% endif %}>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ===== Services (lighter, business-focused) ===== -->
+<section class="section theme-light" aria-labelledby="services-title">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <p class="eyebrow reveal">Services</p>
+                <h2 id="services-title" class="section-title reveal">What I can help with</h2>
+            </div>
+            <a class="text-link reveal" href="{{ '/web-design/' | relative_url }}">Website redesigns for small businesses <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <ol class="service-list">
+            {% for service in site.data.services %}
+            <li class="service reveal">
+                <span class="service-number">{{ service.number }}</span>
+                <h3 class="service-title">{{ service.title }}</h3>
+                <p class="service-summary">{{ service.summary }}</p>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>
+
+<!-- ===== Closing call to action ===== -->
+{% include closing-cta.html title="Want to work together? Let&rsquo;s bring your idea to" %}

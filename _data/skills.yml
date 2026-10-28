@@ -1,0 +1,19 @@
+# Skills shown on the About page, grouped by discipline.
+# Add or remove lines under "items". Lines starting with "Add" are placeholders.
+
+- group: Web Design
+  items:
+    - HTML
+    - CSS
+    - JavaScript
+    - Git & GitHub
+
+- group: Digital Marketing
+  items:
+    - Add a marketing skill
+    - Add a tool you use
+
+- group: Cinematography
+  items:
+    - Add a filming skill
+    - Add your camera or editing software
