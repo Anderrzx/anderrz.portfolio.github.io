@@ -83,3 +83,80 @@ if (filterBar) {
 
     filterBar.hidden = false;
 }
+
+// ===== Contact page: check fields and send the form =====
+const contactForm = document.getElementById('contact-form');
+
+if (contactForm) {
+    const formStatus = document.getElementById('form-status');
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const requiredFields = contactForm.querySelectorAll('[required]');
+
+    // Pre-select the topic from a link like /contact/?topic=Free%20website%20review
+    const topic = new URLSearchParams(window.location.search).get('topic');
+    if (topic) {
+        const option = [...contactForm.topic.options].find((o) => o.value === topic);
+        if (option) option.selected = true;
+    }
+
+    function showStatus(message, kind) {
+        formStatus.textContent = message;
+        formStatus.dataset.kind = kind;
+    }
+
+    function checkField(field) {
+        const error = document.getElementById(`${field.id}-error`);
+        const valid = field.value.trim() !== '' && field.checkValidity();
+        field.setAttribute('aria-invalid', String(!valid));
+        if (valid) {
+            field.removeAttribute('aria-describedby');
+        } else {
+            field.setAttribute('aria-describedby', error.id);
+        }
+        error.hidden = valid;
+        return valid;
+    }
+
+    // Re-check a field as the visitor fixes it
+    requiredFields.forEach((field) => {
+        field.addEventListener('input', () => {
+            if (field.getAttribute('aria-invalid') === 'true') checkField(field);
+        });
+    });
+
+    contactForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const firstInvalid = [...requiredFields].filter((field) => !checkField(field))[0];
+        if (firstInvalid) {
+            firstInvalid.focus();
+            showStatus('Please check the highlighted fields.', 'error');
+            return;
+        }
+
+        if (contactForm.dataset.connected !== 'true') {
+            showStatus('This form isn’t connected yet, so nothing was sent.', 'error');
+            return;
+        }
+
+        submitButton.disabled = true;
+        showStatus('Sending…', 'info');
+
+        try {
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: new FormData(contactForm),
+                headers: { Accept: 'application/json' },
+            });
+
+            if (!response.ok) throw new Error(`Form service replied ${response.status}`);
+
+            contactForm.reset();
+            showStatus('Thanks! Your message has been sent. I’ll get back to you soon.', 'success');
+        } catch (error) {
+            showStatus('Your message wasn’t sent. Please try again in a moment.', 'error');
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+}

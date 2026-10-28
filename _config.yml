@@ -6,6 +6,12 @@ description: >-
 url: "https://anderrz.com"
 lang: en
 
+# Contact form (free Formspree account: https://formspree.io)
+# Create a form there, then paste its endpoint here, e.g.
+#   contact_form_action: "https://formspree.io/f/abcdwxyz"
+# While this is empty, the form shows a "not connected yet" note instead of sending.
+contact_form_action: ""
+
 # No GitHub Pages default theme (the site has its own design)
 theme: null
 

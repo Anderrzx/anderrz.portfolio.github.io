@@ -875,6 +875,158 @@ a.project-link:hover .project-placeholder {
     font-size: 0.9375rem;
 }
 
+/* ===== Contact page ===== */
+.contact-section {
+    padding-top: 0;
+}
+
+.contact-layout {
+    display: grid;
+    grid-template-columns: 4fr 8fr;
+    gap: clamp(40px, 7vw, 112px);
+    align-items: start;
+}
+
+.contact-details .facts {
+    margin-top: 0;
+}
+
+.contact-details a {
+    color: var(--text);
+    text-decoration-color: var(--line);
+    transition: color 0.4s var(--ease);
+}
+
+.contact-details a:hover {
+    color: var(--accent);
+}
+
+.contact-aside {
+    margin: 28px 0 0;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+}
+
+/* Form: underline-only fields */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+}
+
+.field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 32px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.field label {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 8px 0 12px;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    transition: border-color 0.4s var(--ease);
+}
+
+.field select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 28px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+                      linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+    background-position: calc(100% - 12px) 55%, calc(100% - 7px) 55%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.field select option {
+    background: var(--bg-raised);
+    color: var(--text);
+}
+
+.field textarea {
+    min-height: 140px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.field input:hover,
+.field select:hover,
+.field textarea:hover {
+    border-bottom-color: var(--text-muted);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: none;
+    border-bottom-color: var(--accent);
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+    box-shadow: 0 1px 0 0 var(--accent);
+}
+
+.field [aria-invalid="true"] {
+    border-bottom-color: #E07A5F;
+}
+
+.field-error {
+    margin: 0;
+    color: #E8957F;
+    font-size: 0.8125rem;
+}
+
+.form-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 28px;
+}
+
+.form-footer .button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.form-status {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+}
+
+.form-status[data-kind="success"] {
+    color: var(--accent);
+}
+
+.form-status[data-kind="error"] {
+    color: #E8957F;
+}
+
 /* ===== Small-business review (light section) ===== */
 .review {
     display: grid;
@@ -1020,7 +1172,8 @@ a.project-link:hover .project-placeholder {
     }
 
     .approach-list,
-    .skills-grid {
+    .skills-grid,
+    .contact-layout {
         grid-template-columns: 1fr;
     }
 }
@@ -1071,6 +1224,10 @@ a.project-link:hover .project-placeholder {
 
     .project-grid,
     .about-teaser {
+        grid-template-columns: 1fr;
+    }
+
+    .field-row {
         grid-template-columns: 1fr;
     }
 
