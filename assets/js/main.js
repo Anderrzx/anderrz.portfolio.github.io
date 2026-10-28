@@ -3,14 +3,48 @@
 // Links that point to a section (e.g. /web-design/#is-it-time) still go there.
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-const linkedSection = window.location.hash
-    ? document.getElementById(decodeURIComponent(window.location.hash.slice(1)))
-    : null;
+// Some viewers drop the #section part of a link, so a clicked link also
+// remembers its section for the next page (sessionStorage, if available).
+const STORED_SECTION = 'anderrz-scroll-to';
+
+document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[href*="#"]');
+    if (!link) return;
+    const url = new URL(link.href, window.location.href);
+    if (url.pathname === window.location.pathname || !url.hash) return;
+    try { sessionStorage.setItem(STORED_SECTION, url.hash.slice(1)); } catch (error) { /* storage blocked */ }
+});
+
+function takeStoredSection() {
+    try {
+        const id = sessionStorage.getItem(STORED_SECTION);
+        sessionStorage.removeItem(STORED_SECTION);
+        return id;
+    } catch (error) {
+        return null;
+    }
+}
+
+const storedSection = takeStoredSection();
+const sectionId = window.location.hash
+    ? decodeURIComponent(window.location.hash.slice(1))
+    : storedSection;
+const linkedSection = sectionId ? document.getElementById(sectionId) : null;
 
 if (linkedSection) {
-    // Jump straight to the linked section once the page has laid out
+    // Jump straight to the linked section once the page has laid out.
+    // data-align="center" puts it in the middle of the screen instead of at the top;
+    // data-keep-visible="<id>" then makes sure that element isn't hidden under the header.
     window.addEventListener('load', () => {
-        linkedSection.scrollIntoView({ behavior: 'instant', block: 'start' });
+        const block = linkedSection.dataset.align === 'center' ? 'center' : 'start';
+        linkedSection.scrollIntoView({ behavior: 'instant', block });
+
+        const keep = document.getElementById(linkedSection.dataset.keepVisible || '');
+        if (keep) {
+            const headerHeight = document.querySelector('.site-header').offsetHeight;
+            const gap = keep.getBoundingClientRect().top - headerHeight - 56;
+            if (gap < 0) window.scrollBy({ top: gap, behavior: 'instant' });
+        }
     });
 } else {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });

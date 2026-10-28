@@ -24,10 +24,8 @@ body_class: theme-light
     </div>
 </section>
 
-<!-- ===== Signs it's time =====
-     "Small business? Get a free website review" links land here (#is-it-time),
-     so visitors see the signs and the process right away. -->
-<section class="section section-raised section-compact" id="is-it-time" aria-labelledby="signs-title">
+<!-- ===== Signs it's time ===== -->
+<section class="section section-raised" aria-labelledby="signs-title">
     <div class="container">
         <div class="section-head">
             <div>
@@ -57,31 +55,13 @@ body_class: theme-light
     </div>
 </section>
 
-<!-- ===== Examples (hidden until there are Web Design projects in _data/projects.yml) ===== -->
-{% if web_projects.size > 0 %}
-<section class="section" id="examples" aria-labelledby="examples-title">
-    <div class="container">
-        <div class="section-head">
-            <div>
-                <p class="eyebrow reveal">Examples</p>
-                <h2 id="examples-title" class="section-title reveal">Web design projects</h2>
-            </div>
-            <a class="text-link reveal" href="{{ '/work/' | relative_url }}">All work <span aria-hidden="true">&rarr;</span></a>
-        </div>
+<!-- "Small business? Get a free website review" links land here (#is-it-time).
+     This marker sits between the two sections and is placed in the middle of
+     the screen, so visitors see the signs above and the process below. -->
+<div id="is-it-time" class="scroll-marker" data-align="center" data-keep-visible="signs-title" aria-hidden="true"></div>
 
-        <!-- Shows every project in _data/projects.yml with category "Web Design" -->
-        <div class="project-grid">
-            {% for project in web_projects %}
-                {% include project-card.html project=project index=forloop.index %}
-            {% endfor %}
-        </div>
-        <p class="examples-note reveal">Projects marked <strong>Concept</strong> are independent designs; <strong>Client</strong> projects were made for real businesses.</p>
-    </div>
-</section>
-{% endif %}
-
-<!-- ===== Process (alternates background with the section above it) ===== -->
-<section class="section section-compact{% if web_projects.size > 0 %} section-raised{% endif %}" aria-labelledby="process-title">
+<!-- ===== Process ===== -->
+<section class="section" aria-labelledby="process-title">
     <div class="container">
         <div class="section-head">
             <div>
@@ -110,6 +90,29 @@ body_class: theme-light
         </ol>
     </div>
 </section>
+
+<!-- ===== Examples (hidden until there are Web Design projects in _data/projects.yml) ===== -->
+{% if web_projects.size > 0 %}
+<section class="section section-raised" id="examples" aria-labelledby="examples-title">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <p class="eyebrow reveal">Examples</p>
+                <h2 id="examples-title" class="section-title reveal">Web design projects</h2>
+            </div>
+            <a class="text-link reveal" href="{{ '/work/' | relative_url }}">All work <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <!-- Shows every project in _data/projects.yml with category "Web Design" -->
+        <div class="project-grid">
+            {% for project in web_projects %}
+                {% include project-card.html project=project index=forloop.index %}
+            {% endfor %}
+        </div>
+        <p class="examples-note reveal">Projects marked <strong>Concept</strong> are independent designs; <strong>Client</strong> projects were made for real businesses.</p>
+    </div>
+</section>
+{% endif %}
 
 <!-- ===== Free review + inquiry form ===== -->
 <section class="section review-section" id="review" aria-labelledby="review-form-title">
