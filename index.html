@@ -3,8 +3,6 @@ layout: default
 title: Web Design, Digital Marketing & Cinematography
 ---
 
-{% assign hero_image = site.static_files | where: "path", "/assets/images/hero.jpg" | first %}
-
 <!-- ===== Hero ===== -->
 <section class="hero">
     <div class="container">
@@ -16,15 +14,12 @@ title: Web Design, Digital Marketing & Cinematography
         <p class="hero-lead reveal">Design, marketing, and cinematography &mdash; bringing ideas to life through creativity and storytelling.</p>
     </div>
 
-    <!-- Full-width cinematic photo. Save the image as assets/images/hero.jpg and it appears here. -->
-    <figure class="hero-media reveal">
-        {% if hero_image %}
-        <img src="{{ '/assets/images/hero.jpg' | relative_url }}" alt="A person walking toward the horizon at golden hour, silhouetted against an amber sky above layered hills" width="2000" height="1125" fetchpriority="high">
-        {% else %}
+    <!-- Full-width cinematic image area. Golden-hour placeholder for now;
+         later swap the div for your own photo or video still, e.g.
+         <img src="/assets/images/hero.jpg" alt="Describe the photo" width="2000" height="857"> -->
+    <div class="hero-media reveal">
         <div class="hero-placeholder" aria-hidden="true"></div>
-        {% endif %}
-        <figcaption class="container hero-credit">Photo via Unsplash</figcaption>
-    </figure>
+    </div>
 </section>
 
 <!-- ===== Selected work ===== -->
