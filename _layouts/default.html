@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#121110">
+
+    <!-- Lets the CSS know JavaScript is on, so scroll animations only hide content when they can reveal it -->
+    <script>document.documentElement.classList.add('js');</script>
+
+    <link rel="preload" href="{{ '/assets/fonts/satoshi.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+    <link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml">
+
+    <!-- Title, description and social share tags (jekyll-seo-tag) -->
+    {% seo %}
+</head>
+<body class="{{ page.body_class }}">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    {% include header.html %}
+
+    <main id="main">
+        {{ content }}
+    </main>
+
+    {% include footer.html %}
+
+    <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
+</body>
+</html>

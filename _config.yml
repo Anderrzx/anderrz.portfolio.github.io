@@ -1,0 +1,27 @@
+# Site settings used across every page
+title: ANDERRZ
+description: >-
+  Anderrz is a multidisciplinary creative bringing ideas to life through
+  web design, digital marketing, and visual storytelling.
+url: "https://anderrz.com"
+lang: en
+
+# No GitHub Pages default theme (the site has its own design)
+theme: null
+
+# Clean URLs like /about/ instead of /about.html
+permalink: pretty
+
+# Plugins supported by GitHub Pages
+plugins:
+  - jekyll-seo-tag   # page titles, descriptions and social share tags
+  - jekyll-sitemap   # sitemap.xml for search engines
+
+# Files that should not be published
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - assets/fonts/README.md
+  - vendor
+  - .claude

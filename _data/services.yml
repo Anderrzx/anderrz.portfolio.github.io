@@ -1,0 +1,15 @@
+# The three services, shown on the homepage and the Services page
+- number: "01"
+  title: Website Design & Development
+  summary: Clean, responsive websites designed and built to help small businesses and personal brands look their best online.
+  url: /web-design/
+
+- number: "02"
+  title: Digital Marketing & Creative Strategy
+  summary: Ideas, content and campaigns that help your brand tell its story and reach the right people.
+  url: /services/
+
+- number: "03"
+  title: Cinematography & Video Production
+  summary: Visual storytelling through video, from planning and filming to the final edit.
+  url: /services/

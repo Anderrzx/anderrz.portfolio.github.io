@@ -1,0 +1,7 @@
+# Main menu links, shown in the header and footer
+- title: Work
+  url: /work/
+- title: About
+  url: /about/
+- title: Contact
+  url: /contact/

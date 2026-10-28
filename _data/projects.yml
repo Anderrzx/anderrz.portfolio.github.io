@@ -1,0 +1,40 @@
+# ===== Your projects =====
+# Each project starts with "- title:". To add one, copy a block and change the values.
+#
+#   title:     Project name
+#   category:  Web Design, Digital Marketing, or Cinematography
+#   type:      Concept (independent/self-initiated) or Client (real client work)
+#   summary:   One or two sentences about the project
+#   image:     Path to an image, e.g. /assets/images/projects/my-project.jpg (leave empty for a placeholder)
+#   url:       Link to the live site, video or case study (leave empty if none)
+#   tone:      warm (golden-hour) or dark (cinematic) placeholder colour while there is no image
+#   featured:  true to show it on the homepage (up to 3)
+#
+# The three entries below are placeholders. Replace them with real projects.
+
+- title: Project title
+  category: Web Design
+  type: Concept
+  summary: Placeholder. Describe the project in a sentence or two.
+  image:
+  tone: dark
+  url:
+  featured: true
+
+- title: Project title
+  category: Digital Marketing
+  type: Concept
+  summary: Placeholder. Describe the project in a sentence or two.
+  image:
+  tone: warm
+  url:
+  featured: true
+
+- title: Project title
+  category: Cinematography
+  type: Concept
+  summary: Placeholder. Describe the project in a sentence or two.
+  image:
+  tone: dark
+  url:
+  featured: true

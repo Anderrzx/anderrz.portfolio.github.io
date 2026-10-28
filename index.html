@@ -1,12 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anderrz</title>
-</head>
-<body>
-    <h1>Welcome to my website!</h1>
-    <p>My name is Anderrz.</p>
-</body>
-</html>
+---
+layout: default
+title: Web Design, Digital Marketing & Cinematography
+---
+
+{% assign hero_image = site.static_files | where: "path", "/assets/images/hero.jpg" | first %}
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+    <div class="container">
+        <p class="eyebrow reveal">Multidisciplinary Creative</p>
+        <h1 class="hero-title reveal">
+            <span class="line">Creating with purpose.</span>
+            <span class="line">Telling stories with <em class="serif">feeling.</em></span>
+        </h1>
+        <p class="hero-lead reveal">Design, marketing, and cinematography &mdash; bringing ideas to life through creativity and storytelling.</p>
+    </div>
+
+    <!-- Full-width cinematic photo. Save the image as assets/images/hero.jpg and it appears here. -->
+    <figure class="hero-media reveal">
+        {% if hero_image %}
+        <img src="{{ '/assets/images/hero.jpg' | relative_url }}" alt="A person walking toward the horizon at golden hour, silhouetted against an amber sky above layered hills" width="2000" height="1125" fetchpriority="high">
+        {% else %}
+        <div class="hero-placeholder" aria-hidden="true"></div>
+        {% endif %}
+        <figcaption class="container hero-credit">Photo via Unsplash</figcaption>
+    </figure>
+</section>
+
+<!-- ===== Selected work ===== -->
+<section class="section" aria-labelledby="work-title">
+    <div class="container">
+        <div class="section-head">
+            <h2 id="work-title" class="eyebrow eyebrow-heading reveal">Selected Work</h2>
+            <a class="text-link reveal" href="{{ '/work/' | relative_url }}">Explore projects <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <div class="project-grid">
+            {% assign featured = site.data.projects | where: "featured", true %}
+            {% for project in featured limit: 3 %}
+                {% include project-card.html project=project index=forloop.index %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ===== Services ===== -->
+<section class="section section-raised" aria-labelledby="services-title">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <p class="eyebrow reveal">Services</p>
+                <h2 id="services-title" class="section-title reveal">What I can help with</h2>
+            </div>
+        </div>
+
+        <ol class="service-list">
+            {% for service in site.data.services %}
+            <li class="service reveal">
+                <span class="service-number">{{ service.number }}</span>
+                <h3 class="service-title"><a href="{{ service.url | relative_url }}">{{ service.title }}</a></h3>
+                <p class="service-summary">{{ service.summary }}</p>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>
+
+<!-- ===== About teaser ===== -->
+<section class="section" aria-labelledby="about-title">
+    <div class="container about-teaser">
+        <div class="about-photo reveal">
+            <!-- TODO: replace with <img src="/assets/images/me.jpg" alt="Photo of Anderrz"> -->
+            <div class="photo-placeholder" aria-hidden="true">Your photo here</div>
+        </div>
+        <div class="about-text">
+            <p class="eyebrow reveal">About</p>
+            <h2 id="about-title" class="section-title reveal">Hi, I&rsquo;m Anderrz.</h2>
+            <!-- TODO: replace with 2-3 sentences about you -->
+            <p class="reveal placeholder">Placeholder. Write two or three sentences about your background, your digital marketing studies, and what you love to create.</p>
+            <a class="text-link reveal" href="{{ '/about/' | relative_url }}">More about me <span aria-hidden="true">&rarr;</span></a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Small-business website review (lighter, business-focused) ===== -->
+<section class="section theme-light" aria-labelledby="review-title">
+    <div class="container review">
+        <div>
+            <p class="eyebrow reveal">For small businesses</p>
+            <h2 id="review-title" class="section-title reveal">Thinking about redesigning your&nbsp;website?</h2>
+        </div>
+        <div class="review-body reveal">
+            <p>I&rsquo;ll take a look at your current site and share honest, practical ideas to improve it, free.</p>
+            <a class="button button-primary" href="{{ '/web-design/' | relative_url }}">Get a free website review</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Closing call to action ===== -->
+<section class="section closing-cta" aria-labelledby="cta-title">
+    <div class="container">
+        <p class="eyebrow reveal">Contact</p>
+        <h2 id="cta-title" class="cta-title reveal">Have an idea? Let&rsquo;s bring it to <em class="serif">life.</em></h2>
+        <a class="button button-primary button-large reveal" href="{{ '/contact/' | relative_url }}">Let&rsquo;s Connect</a>
+    </div>
+</section>

@@ -1,0 +1,25 @@
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div>
+            <a class="wordmark" href="{{ '/' | relative_url }}">ANDERRZ</a>
+            <p class="footer-tagline">Web design, digital marketing &amp; visual storytelling.</p>
+        </div>
+
+        <nav aria-label="Footer">
+            <ul class="footer-links">
+                {% for item in site.data.navigation %}
+                <li><a href="{{ item.url | relative_url }}">{{ item.title }}</a></li>
+                {% endfor %}
+                <li><a href="{{ '/web-design/' | relative_url }}">Website Redesigns</a></li>
+            </ul>
+        </nav>
+
+        <ul class="footer-links">
+            <li><a href="https://github.com/Anderrzx" rel="noopener">GitHub</a></li>
+            <!-- TODO: add other profiles, e.g. <li><a href="https://instagram.com/yourname" rel="noopener">Instagram</a></li> -->
+        </ul>
+    </div>
+    <div class="container footer-bottom">
+        <p>&copy; {{ 'now' | date: '%Y' }} Anderrz</p>
+    </div>
+</footer>
