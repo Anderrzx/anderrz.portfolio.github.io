@@ -661,6 +661,27 @@ a {
     color: var(--accent);
 }
 
+.closing-cta .container {
+    padding-top: var(--section-space);
+    border-top: 1px solid var(--line);
+}
+
+.closing-cta {
+    padding-top: 0;
+}
+
+.cta-aside {
+    margin: 40px 0 0;
+}
+
+.cta-aside .text-link {
+    color: var(--text-muted);
+}
+
+.cta-aside .text-link:hover {
+    color: var(--accent);
+}
+
 .cta-title {
     max-width: 16ch;
     margin: 0 auto 48px;
