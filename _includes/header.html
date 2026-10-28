@@ -1,7 +1,20 @@
 <header class="site-header">
     <div class="container header-inner">
+        <!-- Social icons (left). Links come from _data/social.yml -->
+        <ul class="header-social">
+            {% for profile in site.data.social %}
+            <li>
+                <a href="{{ profile.url }}" rel="noopener" aria-label="{{ profile.name }}" title="{{ profile.name }}">
+                    {% include social-icon.html icon=profile.icon %}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Wordmark (center) -->
         <a class="wordmark" href="{{ '/' | relative_url }}" aria-label="ANDERRZ home">ANDERRZ<span class="wordmark-dot">.</span></a>
 
+        <!-- Menu (right) -->
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
             <span class="visually-hidden">Menu</span>
             <span class="nav-toggle-bar" aria-hidden="true"></span>

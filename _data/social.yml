@@ -1,8 +1,11 @@
-# Social profiles, shown on the Contact page, the footer and the Work page.
-# Add, remove or reorder lines here and every page updates.
+# Social profiles, shown as icons in the header and as links on the Contact page.
+# "icon" must match one in _includes/social-icon.html (instagram, tiktok, youtube).
 - name: Instagram
+  icon: instagram
   url: https://www.instagram.com/anderrzx/
 - name: TikTok
+  icon: tiktok
   url: https://www.tiktok.com/@notanderrz
 - name: YouTube
+  icon: youtube
   url: https://www.youtube.com/@ItsAnderrz

@@ -1,9 +1,10 @@
 <footer class="site-footer">
     <div class="container footer-inner">
-        <div>
-            <a class="wordmark" href="{{ '/' | relative_url }}">ANDERRZ</a>
-            <p class="footer-tagline">Marketer, Designer, Cinematographer</p>
-        </div>
+        <p class="footer-roles">
+            <span>Marketer</span>
+            <span>Designer</span>
+            <span>Cinematographer</span>
+        </p>
 
         <nav aria-label="Footer">
             <ul class="footer-links">
@@ -13,15 +14,5 @@
                 <li><a href="{{ '/web-design/' | relative_url }}">Website Redesigns</a></li>
             </ul>
         </nav>
-
-        <!-- Social links come from _data/social.yml -->
-        <ul class="footer-links" aria-label="Social">
-            {% for profile in site.data.social %}
-            <li><a href="{{ profile.url }}" rel="noopener">{{ profile.name }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="container footer-bottom">
-        <p>&copy; {{ 'now' | date: '%Y' }} Anderrz</p>
     </div>
 </footer>

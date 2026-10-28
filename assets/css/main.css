@@ -268,19 +268,54 @@ a {
     border-bottom-color: var(--line);
 }
 
+/* Three columns: social icons | wordmark (centered) | menu */
 .header-inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     height: 72px;
 }
 
 .wordmark {
+    grid-column: 2;
     color: var(--text);
     font-size: 1rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-decoration: none;
+}
+
+.header-social {
+    grid-column: 1;
+    justify-self: start;
+    display: flex;
+    gap: 4px;
+    margin: 0 0 0 -10px; /* line the first icon up with the page edge */
+    padding: 0;
+    list-style: none;
+}
+
+.header-social a {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    color: var(--text-muted);
+    transition: color 0.4s var(--ease);
+}
+
+.header-social a:hover {
+    color: var(--accent);
+}
+
+.social-icon {
+    display: block;
+}
+
+.site-nav,
+.nav-toggle {
+    grid-column: 3;
+    justify-self: end;
 }
 
 .wordmark-dot {
@@ -1208,27 +1243,42 @@ a.project-link:hover .project-placeholder {
 
 /* ===== Footer ===== */
 .site-footer {
-    padding: 64px 0 32px;
+    padding: clamp(72px, 9vw, 120px) 0 40px;
     border-top: 1px solid var(--line);
 }
 
 .footer-inner {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 32px;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(40px, 6vw, 64px);
+    text-align: center;
 }
 
-.footer-tagline {
-    margin: 12px 0 0;
-    color: var(--text-muted);
-    font-size: 0.875rem;
+/* MARKETER   DESIGNER   CINEMATOGRAPHER, widely spaced */
+.footer-roles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px clamp(28px, 6vw, 88px);
+    margin: 0;
+    color: var(--text);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+}
+
+/* Letter-spacing adds space after the last letter too; pull it back so words stay centered */
+.footer-roles span {
+    margin-right: -0.5em;
 }
 
 .footer-links {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 28px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -1236,25 +1286,15 @@ a.project-link:hover .project-placeholder {
 
 .footer-links a {
     color: var(--text-muted);
-    font-size: 0.875rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     text-decoration: none;
     transition: color 0.4s var(--ease);
 }
 
 .footer-links a:hover {
     color: var(--text);
-}
-
-.footer-bottom {
-    margin-top: 48px;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
-.footer-bottom p {
-    margin: 0;
 }
 
 /* ===== 404 ===== */
@@ -1312,8 +1352,29 @@ a.project-link:hover .project-placeholder {
         display: block;
     }
 
+    .header-social {
+        gap: 0;
+    }
+
+    .header-social a {
+        width: 36px;
+        height: 44px;
+    }
+
+    .footer-roles {
+        gap: 10px 16px;
+        font-size: 0.625rem;
+        letter-spacing: 0.24em;
+    }
+
+    .footer-roles span {
+        margin-right: -0.24em;
+    }
+
     .site-nav {
         display: none;
+        grid-column: 1 / -1; /* full width, not just the right-hand header column */
+        justify-self: stretch;
         position: absolute;
         top: 72px;
         left: 0;
