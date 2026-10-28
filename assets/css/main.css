@@ -949,6 +949,18 @@ a.project-link:hover .project-placeholder {
         grid-template-columns: 1fr;
     }
 
+    /* Smaller filter buttons so two fit per row on phones */
+    .filter-bar {
+        gap: 6px;
+    }
+
+    .filter-button {
+        gap: 6px;
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
     .project-grid.is-featured > .project-card:first-child .project-media,
     .project-media {
         aspect-ratio: 4 / 3;
