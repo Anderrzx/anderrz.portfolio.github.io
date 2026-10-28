@@ -30,7 +30,7 @@ title: Web Design, Digital Marketing & Cinematography
             <a class="text-link reveal" href="{{ '/work/' | relative_url }}">Explore projects <span aria-hidden="true">&rarr;</span></a>
         </div>
 
-        <div class="project-grid">
+        <div class="project-grid is-featured">
             {% assign featured = site.data.projects | where: "featured", true %}
             {% for project in featured limit: 3 %}
                 {% include project-card.html project=project index=forloop.index %}

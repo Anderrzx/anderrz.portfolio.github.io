@@ -1,10 +1,12 @@
 {% comment %}
   One project card. Use it like:
   {% include project-card.html project=project index=forloop.index %}
+  Cards without a url are shown but not clickable.
 {% endcomment %}
 {% assign p = include.project %}
-<article class="project-card reveal">
-    <a class="project-link" href="{% if p.url %}{{ p.url }}{% else %}{{ '/work/' | relative_url }}{% endif %}">
+{% if p.url %}{% assign tag = 'a' %}{% else %}{% assign tag = 'div' %}{% endif %}
+<article class="project-card reveal" data-category="{{ p.category | slugify }}" data-type="{{ p.type | slugify }}">
+    <{{ tag }} class="project-link"{% if p.url %} href="{{ p.url }}"{% endif %}>
         <div class="project-meta">
             <span class="project-index">{{ include.index | prepend: '0' | slice: -2, 2 }}</span>
             <h3 class="project-title">{{ p.title }}</h3>
@@ -19,5 +21,5 @@
             <span class="badge{% if p.type == 'Client' %} badge-client{% endif %}">{{ p.type }}</span>
         </div>
         <p class="project-summary">{{ p.summary }}</p>
-    </a>
+    </{{ tag }}>
 </article>

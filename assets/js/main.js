@@ -46,3 +46,40 @@ if ('IntersectionObserver' in window) {
 } else {
     revealItems.forEach((item) => item.classList.add('is-visible'));
 }
+
+// ===== Work page: filter projects by discipline =====
+const filterBar = document.querySelector('.filter-bar');
+
+if (filterBar) {
+    const buttons = filterBar.querySelectorAll('.filter-button');
+    const cards = document.querySelectorAll('#project-grid .project-card');
+    const emptyMessage = document.getElementById('filter-empty');
+    const status = document.getElementById('filter-status');
+
+    function applyFilter(filter) {
+        let shown = 0;
+
+        cards.forEach((card) => {
+            const match = filter === 'all' || card.dataset.category === filter;
+            card.hidden = !match;
+            if (match) {
+                card.classList.add('is-visible');
+                shown++;
+            }
+        });
+
+        buttons.forEach((button) => {
+            button.setAttribute('aria-pressed', String(button.dataset.filter === filter));
+        });
+
+        emptyMessage.hidden = shown > 0;
+        status.textContent = `Showing ${shown} ${shown === 1 ? 'project' : 'projects'}`;
+    }
+
+    filterBar.addEventListener('click', (event) => {
+        const button = event.target.closest('.filter-button');
+        if (button) applyFilter(button.dataset.filter);
+    });
+
+    filterBar.hidden = false;
+}

@@ -136,6 +136,11 @@ a {
     outline-offset: 4px;
 }
 
+/* Anything with the hidden attribute stays hidden, even if a class sets display */
+[hidden] {
+    display: none !important;
+}
+
 .container {
     width: 100%;
     max-width: var(--max-width);
@@ -413,6 +418,116 @@ a {
         linear-gradient(180deg, #C9812F 0%, #8A4E1A 52%, #2A1A0E 72%, #120D09 100%);
 }
 
+/* ===== Inner page intro (Work, About, …) ===== */
+.page-intro {
+    padding: clamp(64px, 10vw, 144px) 0 clamp(40px, 6vw, 72px);
+}
+
+.page-intro .eyebrow {
+    color: var(--accent);
+}
+
+.page-title {
+    max-width: 14ch;
+    margin-bottom: clamp(24px, 3vw, 36px);
+    font-size: clamp(2.75rem, 7vw, 6.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+}
+
+.page-title .serif {
+    letter-spacing: -0.02em;
+}
+
+.page-lead {
+    max-width: 32rem;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+    line-height: 1.55;
+}
+
+/* Concept / Client explanation */
+.type-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 40px;
+    margin: 40px 0 0;
+}
+
+.type-legend > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.type-legend dt,
+.type-legend dd {
+    margin: 0;
+}
+
+.type-legend dd {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+/* ===== Work page filters ===== */
+.work-section {
+    padding-top: 0;
+}
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: clamp(40px, 6vw, 72px);
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.filter-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.4s var(--ease), border-color 0.4s var(--ease), background-color 0.4s var(--ease);
+}
+
+.filter-button:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+}
+
+.filter-button[aria-pressed="true"] {
+    border-color: var(--text);
+    background: var(--text);
+    color: var(--bg);
+}
+
+.filter-count {
+    color: inherit;
+    font-size: 0.6875rem;
+    opacity: 0.6;
+}
+
+.filter-empty {
+    padding: 48px 0;
+    color: var(--text-muted);
+    text-align: center;
+}
+
 /* ===== Sections ===== */
 .section {
     padding: var(--section-space) 0;
@@ -444,8 +559,8 @@ a {
     gap: clamp(56px, 7vw, 96px) clamp(16px, 2vw, 28px);
 }
 
-/* The first project spans the full width */
-.project-grid > .project-card:first-child {
+/* On the homepage, the first project spans the full width */
+.project-grid.is-featured > .project-card:first-child {
     grid-column: 1 / -1;
 }
 
@@ -485,7 +600,7 @@ a {
     text-transform: uppercase;
 }
 
-.project-link:hover .project-title {
+a.project-link:hover .project-title {
     color: var(--accent);
 }
 
@@ -496,7 +611,7 @@ a {
     background: var(--bg-raised);
 }
 
-.project-grid > .project-card:first-child .project-media {
+.project-grid.is-featured > .project-card:first-child .project-media {
     aspect-ratio: 16 / 9;
 }
 
@@ -508,8 +623,8 @@ a {
     transition: transform 1.2s var(--ease);
 }
 
-.project-link:hover .project-media img,
-.project-link:hover .project-placeholder {
+a.project-link:hover .project-media img,
+a.project-link:hover .project-placeholder {
     transform: scale(1.025);
 }
 
@@ -546,6 +661,12 @@ a {
     border-color: transparent;
     background: #F1EBDD;
     color: #121110;
+}
+
+/* Badge shown in running content (e.g. the Work page legend) */
+.badge-inline {
+    position: static;
+    display: inline-block;
 }
 
 .project-summary {
@@ -828,7 +949,7 @@ a {
         grid-template-columns: 1fr;
     }
 
-    .project-grid > .project-card:first-child .project-media,
+    .project-grid.is-featured > .project-card:first-child .project-media,
     .project-media {
         aspect-ratio: 4 / 3;
     }
