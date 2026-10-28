@@ -1,0 +1,9 @@
+{% comment %}
+  Shown wherever projects would appear while _data/projects.yml is empty.
+{% endcomment %}
+<div class="projects-empty reveal">
+    <p class="projects-empty-title">New projects are on the <em class="serif">way.</em></p>
+    <p>In the meantime, follow along on
+        {% for profile in site.data.social %}{% if forloop.last and forloop.length > 1 %} and {% elsif forloop.index > 1 %}, {% endif %}<a href="{{ profile.url }}" rel="noopener">{{ profile.name }}</a>{% endfor %}.
+    </p>
+</div>

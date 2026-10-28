@@ -17,7 +17,9 @@ body_class: theme-light
         <p class="page-lead reveal">I design and build clean, modern websites for small businesses. If your current site feels outdated, is hard to use, or no longer fits your business, I can help.</p>
         <div class="button-row reveal">
             <a class="button button-primary" href="#review">Get a free website review</a>
+            {% if web_projects.size > 0 %}
             <a class="text-link" href="#examples">See examples <span aria-hidden="true">&darr;</span></a>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -53,7 +55,8 @@ body_class: theme-light
     </div>
 </section>
 
-<!-- ===== Examples ===== -->
+<!-- ===== Examples (hidden until there are Web Design projects in _data/projects.yml) ===== -->
+{% if web_projects.size > 0 %}
 <section class="section" id="examples" aria-labelledby="examples-title">
     <div class="container">
         <div class="section-head">
@@ -73,9 +76,10 @@ body_class: theme-light
         <p class="examples-note reveal">Projects marked <strong>Concept</strong> are independent designs; <strong>Client</strong> projects were made for real businesses.</p>
     </div>
 </section>
+{% endif %}
 
-<!-- ===== Process ===== -->
-<section class="section section-raised" aria-labelledby="process-title">
+<!-- ===== Process (alternates background with the section above it) ===== -->
+<section class="section{% if web_projects.size > 0 %} section-raised{% endif %}" aria-labelledby="process-title">
     <div class="container">
         <div class="section-head">
             <div>

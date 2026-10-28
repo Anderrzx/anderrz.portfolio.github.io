@@ -905,6 +905,47 @@ a.project-link:hover .project-placeholder {
     color: var(--accent);
 }
 
+/* "New projects are on the way" message while the project list is empty */
+.projects-empty {
+    padding: clamp(48px, 8vw, 96px) 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+}
+
+.section-head + .projects-empty {
+    border-top: 0;
+}
+
+.projects-empty-title {
+    margin: 0 0 16px;
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+}
+
+.projects-empty p:last-child {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.projects-empty a {
+    color: var(--text);
+    text-decoration-color: var(--accent);
+    transition: color 0.4s var(--ease);
+}
+
+.projects-empty a:hover {
+    color: var(--accent);
+}
+
+.social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+}
+
 .contact-aside {
     margin: 28px 0 0;
     color: var(--text-muted);

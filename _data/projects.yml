@@ -1,40 +1,15 @@
 # ===== Your projects =====
-# Each project starts with "- title:". To add one, copy a block and change the values.
+# The list is empty for now, so the site shows "projects coming soon" messages.
+# To add a project, remove the "[]" below and add a block like this example
+# (delete the "# " at the start of each line):
 #
-#   title:     Project name
-#   category:  Web Design, Digital Marketing, or Cinematography
-#   type:      Concept (independent/self-initiated) or Client (real client work)
-#   summary:   One or two sentences about the project
-#   image:     Path to an image, e.g. /assets/images/projects/my-project.jpg (leave empty for a placeholder)
-#   url:       Link to the live site, video or case study (leave empty if none)
-#   tone:      warm (golden-hour) or dark (cinematic) placeholder colour while there is no image
-#   featured:  true to show it on the homepage (up to 3)
-#
-# The three entries below are placeholders. Replace them with real projects.
+# - title: Project name
+#   category: Web Design            # Web Design, Digital Marketing, or Cinematography
+#   type: Concept                   # Concept (your own idea) or Client (real client work)
+#   summary: One or two sentences about the project.
+#   image: /assets/images/projects/my-project.jpg   # leave empty for a placeholder
+#   tone: warm                      # warm (golden-hour) or dark placeholder colour when there's no image
+#   url: https://example.com        # link to the live site or video; leave empty if none
+#   featured: true                  # true = also show it on the homepage (up to 3)
 
-- title: Project title
-  category: Web Design
-  type: Concept
-  summary: Placeholder. Describe the project in a sentence or two.
-  image:
-  tone: dark
-  url:
-  featured: true
-
-- title: Project title
-  category: Digital Marketing
-  type: Concept
-  summary: Placeholder. Describe the project in a sentence or two.
-  image:
-  tone: warm
-  url:
-  featured: true
-
-- title: Project title
-  category: Cinematography
-  type: Concept
-  summary: Placeholder. Describe the project in a sentence or two.
-  image:
-  tone: dark
-  url:
-  featured: true
+[]

@@ -33,6 +33,10 @@ permalink: /work/
     <div class="container">
         <h2 id="projects-title" class="visually-hidden">All projects</h2>
 
+        {% if projects.size == 0 %}
+            {% include projects-empty.html %}
+        {% else %}
+
         <!-- Filter buttons: shown only when JavaScript is on (every project shows without it) -->
         <div class="filter-bar" role="group" aria-label="Filter projects by discipline" hidden>
             <button class="filter-button" type="button" data-filter="all" aria-pressed="true">
@@ -54,6 +58,7 @@ permalink: /work/
 
         <p class="filter-empty" id="filter-empty" hidden>No projects in this category yet.</p>
         <p class="visually-hidden" id="filter-status" aria-live="polite"></p>
+        {% endif %}
     </div>
 </section>
 

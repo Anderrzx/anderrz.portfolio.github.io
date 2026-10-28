@@ -1,0 +1,8 @@
+# Social profiles, shown on the Contact page, the footer and the Work page.
+# Add, remove or reorder lines here and every page updates.
+- name: Instagram
+  url: https://www.instagram.com/anderrzx/
+- name: TikTok
+  url: https://www.tiktok.com/@notanderrz
+- name: YouTube
+  url: https://www.youtube.com/@ItsAnderrz

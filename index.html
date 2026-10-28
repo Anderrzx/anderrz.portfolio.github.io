@@ -25,17 +25,23 @@ title: Web Design, Digital Marketing & Cinematography
 <!-- ===== Selected work ===== -->
 <section class="section" aria-labelledby="work-title">
     <div class="container">
+        {% assign featured = site.data.projects | where: "featured", true %}
         <div class="section-head">
             <h2 id="work-title" class="eyebrow eyebrow-heading reveal">Selected Work</h2>
+            {% if featured.size > 0 %}
             <a class="text-link reveal" href="{{ '/work/' | relative_url }}">Explore projects <span aria-hidden="true">&rarr;</span></a>
+            {% endif %}
         </div>
 
+        {% if featured.size > 0 %}
         <div class="project-grid is-featured">
-            {% assign featured = site.data.projects | where: "featured", true %}
             {% for project in featured limit: 3 %}
                 {% include project-card.html project=project index=forloop.index %}
             {% endfor %}
         </div>
+        {% else %}
+            {% include projects-empty.html %}
+        {% endif %}
     </div>
 </section>
 

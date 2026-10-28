@@ -22,18 +22,20 @@ permalink: /contact/
             <dl class="facts">
                 <div>
                     <dt>Email</dt>
-                    <!-- TODO: add the email you want public, e.g. <dd><a href="mailto:hello@anderrz.com">hello@anderrz.com</a></dd> -->
-                    <dd class="placeholder">Your public email</dd>
+                    <dd><a href="mailto:AnderrzYaj@gmail.com">AnderrzYaj@gmail.com</a></dd>
                 </div>
                 <div>
                     <dt>Social</dt>
-                    <!-- TODO: replace with your profiles, e.g.
-                         <dd><a href="https://instagram.com/yourname" rel="noopener">Instagram</a> &middot; <a href="https://vimeo.com/yourname" rel="noopener">Vimeo</a></dd> -->
-                    <dd class="placeholder">Your Instagram, LinkedIn, Vimeo&hellip;</dd>
+                    <!-- Links come from _data/social.yml -->
+                    <dd class="social-links">
+                        {% for profile in site.data.social %}
+                        <a href="{{ profile.url }}" rel="noopener">{{ profile.name }}</a>
+                        {% endfor %}
+                    </dd>
                 </div>
                 <div>
                     <dt>Based in</dt>
-                    <dd class="placeholder">Your city</dd>
+                    <dd>Minnesota</dd>
                 </div>
             </dl>
             <p class="contact-aside">Running a small business? Ask for a <a href="{{ '/web-design/' | relative_url }}">free website review</a>.</p>

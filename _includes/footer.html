@@ -14,11 +14,12 @@
             </ul>
         </nav>
 
-        <!-- Social links. Add yours here, e.g.
-             <ul class="footer-links">
-                 <li><a href="https://instagram.com/yourname" rel="noopener">Instagram</a></li>
-                 <li><a href="https://vimeo.com/yourname" rel="noopener">Vimeo</a></li>
-             </ul> -->
+        <!-- Social links come from _data/social.yml -->
+        <ul class="footer-links" aria-label="Social">
+            {% for profile in site.data.social %}
+            <li><a href="{{ profile.url }}" rel="noopener">{{ profile.name }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
     <div class="container footer-bottom">
         <p>&copy; {{ 'now' | date: '%Y' }} Anderrz</p>
