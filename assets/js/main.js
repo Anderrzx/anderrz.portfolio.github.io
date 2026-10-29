@@ -148,7 +148,7 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 // Any <form class="site-form"> gets this. Each required field needs an error
 // message with the id "<field id>-error", and the form needs a .form-status.
 // ===== Contact: the "dap" after a message is sent =====
-// 1. The page scrolls up so both characters are in view
+// 1. The page scrolls so the spot where the hands will meet is in the middle of the screen
 // 2. They dap; when their hands meet, the form fades away
 // 3. Right where the hands meet, a circle draws itself and "Sent!" slides in
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -159,13 +159,22 @@ async function playSentAnimation(form, message) {
     const wrap = form.parentElement;
     const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // Where "Sent!" will appear, so the page can center on it
+    seal.style.visibility = 'hidden';
+    seal.hidden = false;
+    const sealBox = seal.getBoundingClientRect();
+    seal.hidden = true;
+    seal.style.visibility = '';
+    const centerOnSeal = Math.max(0, window.scrollY + sealBox.top + sealBox.height / 2 - window.innerHeight / 2);
+
+    if (!calm && Math.abs(window.scrollY - centerOnSeal) > 40) {
+        window.scrollTo({ top: centerOnSeal, behavior: 'smooth' });
+        await wait(700);
+    }
+    // Some browsers skip smooth scrolling; make sure we got there
+    window.scrollTo({ top: centerOnSeal, behavior: 'instant' });
+
     if (!calm) {
-        if (window.scrollY > 40) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            await wait(700);
-            // Some browsers skip smooth scrolling; make sure we're at the top
-            if (window.scrollY > 40) window.scrollTo({ top: 0, behavior: 'instant' });
-        }
         backdrop.classList.add('is-dapping');
         await wait(870); // the moment the hands meet
     }
