@@ -511,7 +511,9 @@ a {
    page (under the wordmark), with the words on either side of it */
 .work-lead {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    /* The middle column is as wide as "ANDERRZ." in the header, so the words
+       line up with the wordmark's left and right edges */
+    grid-template-columns: 1fr 6.125rem 1fr;
     align-items: center;
     max-width: none;
 }
@@ -526,7 +528,7 @@ a {
 
 /* The X: small and stretched wide */
 .lead-x {
-    margin: 0 1.1em;
+    justify-self: center;
     font-size: 0.6em;
     font-weight: 300;
     transform: scaleX(2.4);
@@ -1664,6 +1666,16 @@ a.project-link:hover .project-placeholder {
 @media (max-width: 760px) {
     .nav-toggle {
         display: block;
+    }
+
+    /* Phones: each side of the X stacks its two words, so both match */
+    .work-lead > span:first-child,
+    .work-lead > span:last-child {
+        width: min-content;
+    }
+
+    .work-lead > span:first-child {
+        justify-self: end;
     }
 
     /* Phones: a taller crop of the middle, keeping both hands in view */
