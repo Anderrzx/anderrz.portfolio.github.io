@@ -400,11 +400,11 @@ a {
     overflow: hidden;
     pointer-events: none;
     -webkit-mask-image:
-        linear-gradient(180deg, transparent 0%, #000 12%, #000 80%, transparent 100%),
+        linear-gradient(180deg, transparent 0%, #000 12%, #000 90%, transparent 100%),
         linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
     -webkit-mask-composite: source-in;
     mask-image:
-        linear-gradient(180deg, transparent 0%, #000 12%, #000 80%, transparent 100%),
+        linear-gradient(180deg, transparent 0%, #000 12%, #000 90%, transparent 100%),
         linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
     mask-composite: intersect;
 }
@@ -421,6 +421,10 @@ a {
     height: 100%;
     object-fit: cover;
     filter: brightness(1.12) saturate(1.1);
+    /* Zoom toward the bottom middle, where you and the camera appear in the
+       window reflection, so you sit larger and higher in the frame */
+    transform: scale(1.35);
+    transform-origin: 45% 100%;
 }
 
 .hero-title {
