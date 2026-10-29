@@ -65,12 +65,7 @@ permalink: /work/
     </div>
 </section>
 
-<!-- ===== Video (plays on its own, muted, on a loop) ===== -->
-<section class="section work-video" aria-label="Video">
-    <div class="container">
-        <div class="work-video-frame reveal">
-            <video class="work-video-player" src="{{ '/assets/videos/work-reel.mp4' | relative_url }}" poster="{{ '/assets/videos/work-reel-poster.jpg' | relative_url }}" autoplay muted loop playsinline preload="metadata" aria-label="Short film by Anderrz"></video>
-            <button class="video-sound" type="button" aria-pressed="false">Sound on</button>
-        </div>
-    </div>
+<!-- ===== Background video (silent, loops like the banner) ===== -->
+<section class="work-video" aria-hidden="true">
+    <video class="work-video-bg" src="{{ '/assets/videos/work-reel.mp4' | relative_url }}" poster="{{ '/assets/videos/work-reel-poster.jpg' | relative_url }}" autoplay muted loop playsinline preload="metadata" tabindex="-1"></video>
 </section>
