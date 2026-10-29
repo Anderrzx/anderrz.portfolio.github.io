@@ -1306,11 +1306,12 @@ a.project-link:hover .project-placeholder {
     transform: scale(0.98);
 }
 
-/* Sits exactly where the two hands meet in the photo */
+/* Centered on the gap enclosed by the two hands after the dap
+   (measured on the photo, so it scales with it) */
 .dap-seal {
     position: absolute;
-    left: 50%;
-    top: calc(var(--backdrop-h) * 0.446);
+    left: calc(50% - var(--backdrop-h) * 1508 / 1043 * 0.0185);
+    top: calc(var(--backdrop-h) * 0.432);
     z-index: 1;
     transform: translate(-50%, -50%);
     pointer-events: none;
