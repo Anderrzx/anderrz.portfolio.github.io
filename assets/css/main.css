@@ -382,7 +382,44 @@ a {
 
 /* ===== Hero ===== */
 .hero {
-    padding-top: clamp(64px, 10vw, 144px);
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: clamp(560px, 88vh, 960px);
+    padding: clamp(64px, 10vw, 144px) 0;
+}
+
+/* Background video: fills the hero, darkened on the left where the text
+   sits, and fades into the page at every edge */
+.hero-video {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask-image:
+        linear-gradient(180deg, transparent 0%, #000 12%, #000 80%, transparent 100%),
+        linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+        linear-gradient(180deg, transparent 0%, #000 12%, #000 80%, transparent 100%),
+        linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    mask-composite: intersect;
+}
+
+.hero-video::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(18, 17, 16, 0.82) 0%, rgba(18, 17, 16, 0.6) 55%, rgba(18, 17, 16, 0.35) 100%);
+}
+
+.hero-video-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .hero .eyebrow {
@@ -407,26 +444,6 @@ a {
     color: var(--text-muted);
     font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
     line-height: 1.55;
-}
-
-/* Large cinematic photo, full width */
-.hero-media {
-    margin: clamp(56px, 8vw, 112px) 0 0;
-}
-
-.hero-media img,
-.hero-placeholder {
-    width: 100%;
-    aspect-ratio: 21 / 9;
-    object-fit: cover;
-    object-position: 50% 60%;
-}
-
-.hero-placeholder {
-    background:
-        radial-gradient(ellipse 40% 55% at 62% 18%, rgba(255, 236, 190, 0.95), transparent 70%),
-        radial-gradient(ellipse 90% 70% at 55% 30%, rgba(232, 160, 60, 0.9), transparent 75%),
-        linear-gradient(180deg, #C9812F 0%, #8A4E1A 52%, #2A1A0E 72%, #120D09 100%);
 }
 
 /* ===== Inner page intro (Work, About, …) ===== */
@@ -1753,11 +1770,6 @@ a.project-link:hover .project-placeholder {
 
     .site-nav ul a[aria-current="page"]::after {
         display: none;
-    }
-
-    .hero-media img,
-    .hero-placeholder {
-        aspect-ratio: 4 / 3;
     }
 
     .project-grid,

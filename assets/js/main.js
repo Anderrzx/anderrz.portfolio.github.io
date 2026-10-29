@@ -142,10 +142,10 @@ if (filterBar) {
     filterBar.hidden = false;
 }
 
-// ===== Work page background video =====
+// ===== Background videos (Home and Work) =====
 // People who prefer less motion see a still frame instead of the loop
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll('.work-video-bg').forEach((video) => {
+    document.querySelectorAll('.work-video-bg, .hero-video-bg').forEach((video) => {
         video.removeAttribute('autoplay');
         video.pause();
     });

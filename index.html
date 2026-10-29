@@ -5,6 +5,11 @@ title: Web Design, Digital Marketing & Cinematography
 
 <!-- ===== Hero ===== -->
 <section class="hero">
+    <!-- Background video (silent, loops), fading into the page at the edges -->
+    <div class="hero-video" aria-hidden="true">
+        <video class="hero-video-bg" src="{{ '/assets/videos/home-reel.mp4' | relative_url }}" poster="{{ '/assets/videos/home-reel-poster.jpg' | relative_url }}" autoplay muted loop playsinline preload="metadata" tabindex="-1"></video>
+    </div>
+
     <div class="container">
         <p class="eyebrow reveal">Multidisciplinary Creative</p>
         <h1 class="hero-title reveal">
@@ -12,13 +17,6 @@ title: Web Design, Digital Marketing & Cinematography
             <span class="line">Telling stories with feeling.</span>
         </h1>
         <p class="hero-lead reveal">Design, marketing, and cinematography &mdash; bringing ideas to life through creativity and storytelling.</p>
-    </div>
-
-    <!-- Full-width cinematic image area. Golden-hour placeholder for now;
-         later swap the div for your own photo or video still, e.g.
-         <img src="/assets/images/hero.jpg" alt="Describe the photo" width="2000" height="857"> -->
-    <div class="hero-media reveal">
-        <div class="hero-placeholder" aria-hidden="true"></div>
     </div>
 </section>
 
