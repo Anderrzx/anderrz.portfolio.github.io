@@ -142,6 +142,54 @@ if (filterBar) {
     filterBar.hidden = false;
 }
 
+// ===== About page video: music on =====
+// Browsers don't allow sound before the visitor has interacted with the page,
+// so the video starts silent; the music comes on at the first tap, click or
+// key press (or right away if the browser allows it). The button switches it.
+const aboutVideo = document.querySelector('.about-video-bg');
+const soundButton = document.querySelector('.about-sound');
+
+if (aboutVideo && soundButton) {
+    let userMuted = false;
+
+    const showSound = () => {
+        soundButton.setAttribute('aria-pressed', String(!aboutVideo.muted));
+        soundButton.textContent = aboutVideo.muted ? 'Sound on' : 'Sound off';
+    };
+
+    const turnSoundOn = () => {
+        aboutVideo.muted = false;
+        aboutVideo.play().catch(() => {
+            // Not allowed yet: stay silent until the visitor interacts
+            aboutVideo.muted = true;
+            aboutVideo.play().catch(() => {});
+        }).finally(showSound);
+    };
+
+    soundButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        userMuted = !aboutVideo.muted;
+        if (userMuted) {
+            aboutVideo.muted = true;
+            showSound();
+        } else {
+            turnSoundOn();
+        }
+    });
+
+    // First interaction anywhere on the page turns the music on
+    // (the Sound button handles its own clicks)
+    const interactions = ['pointerdown', 'keydown'];
+    const onFirstInteraction = (event) => {
+        if (event.target.closest && event.target.closest('.about-sound')) return;
+        interactions.forEach((type) => document.removeEventListener(type, onFirstInteraction));
+        if (!userMuted && aboutVideo.muted) turnSoundOn();
+    };
+    interactions.forEach((type) => document.addEventListener(type, onFirstInteraction));
+
+    turnSoundOn();
+}
+
 // ===== Background videos (Home and Work) =====
 // People who prefer less motion see a still frame instead of the loop
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

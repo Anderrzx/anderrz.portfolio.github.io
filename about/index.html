@@ -11,6 +11,14 @@ permalink: /about/
 
 <!-- ===== Photo + bio (opens the page) ===== -->
 <section class="section about-intro" aria-label="My story">
+    <!-- Background video with music, darkened so the text stays readable.
+         Browsers start it silent; the music comes on at the first tap or click
+         on the page, and the Sound button turns it on or off. -->
+    <div class="about-video" aria-hidden="true">
+        <video class="about-video-bg" src="{{ '/assets/videos/about-reel.mp4' | relative_url }}" poster="{{ '/assets/videos/about-reel-poster.jpg' | relative_url }}" autoplay muted loop playsinline preload="auto" tabindex="-1"></video>
+    </div>
+    <button class="video-sound about-sound" type="button" aria-pressed="false">Sound on</button>
+
     <div class="container about-teaser">
         <div class="about-photo reveal">
             <!-- The edges fade into the page (styles: .about-photo img in main.css) -->
