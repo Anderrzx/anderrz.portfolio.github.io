@@ -1,8 +1,24 @@
-# Equipment shown on the About page. The section stays hidden while this list is empty.
-# To add gear, remove the "[]" below and list one item per line, for example:
-#
-# - Sony A7 IV
-# - DJI Mini 4 Pro
-# - DaVinci Resolve
+# Equipment shown on the About page, grouped by type.
+# Add an item under "items", or copy a whole group block to add a new type.
+# The section is hidden if this list is empty.
 
-[]
+- group: Camera
+  items:
+    - Canon R50 V
+    - Sony ZV-E10
+    - Canon EOS Rebel T7
+    - Samsung Galaxy S21 Ultra
+
+- group: Lens
+  items:
+    - 18–55mm
+    - 75–300mm
+    - 25mm wide-angle
+
+- group: Audio
+  items:
+    - Hollyland Lark Max 2
+
+- group: Gimbal
+  items:
+    - DJI RS 4

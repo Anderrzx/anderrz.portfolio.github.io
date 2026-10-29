@@ -64,11 +64,18 @@ permalink: /about/
             <h2 id="equipment-title" class="eyebrow eyebrow-heading reveal">Equipment</h2>
         </div>
 
-        <ul class="equipment-list">
-            {% for item in equipment %}
-            <li class="reveal">{{ item }}</li>
+        <div class="equipment-grid">
+            {% for group in equipment %}
+            <div class="equipment-group reveal">
+                <h3 class="equipment-group-title">{{ group.group }}</h3>
+                <ul class="equipment-list">
+                    {% for item in group.items %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
 </section>
 {% endif %}
