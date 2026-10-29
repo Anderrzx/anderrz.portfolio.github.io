@@ -1,13 +1,33 @@
 {% comment %}
-  Closing "Let's Connect" section shared by every page. Use it like:
-  {% include closing-cta.html title="Have an idea? Let&rsquo;s bring it to" %}
-  "life." is added after the title.
+  Closing "Let's Connect" section. Use it like:
+  {% include closing-cta.html %}
+  or with your own heading: {% include closing-cta.html title="…" %}
 {% endcomment %}
 <section class="section closing-cta" aria-labelledby="cta-title">
     <div class="container">
         <p class="eyebrow reveal">Contact</p>
-        <h2 id="cta-title" class="cta-title reveal">{{ include.title | default: "Have an idea? Let&rsquo;s bring it to" }} life.</h2>
-        <a class="button button-primary button-large reveal" href="{{ '/contact/' | relative_url }}">Let&rsquo;s Connect</a>
+        <h2 id="cta-title" class="cta-title reveal">{{ include.title | default: "Got a Lens? Does it Bear Fruit? Let&rsquo;s Walk!" }}</h2>
+
+        <!-- Footprints walk across the button, each step washing away like
+             prints in the sand (walking in life with Christ). Styles: .button-walk -->
+        <a class="button button-primary button-large button-walk reveal" href="{{ '/contact/' | relative_url }}" aria-label="Let&rsquo;s Connect">
+            <svg width="0" height="0" class="visually-hidden" aria-hidden="true" focusable="false">
+                <symbol id="footprint" viewBox="0 0 20 34">
+                    <path d="M10 33c-4.2 0-6.6-3.4-6.6-7.8 0-3.9 1.4-6.4 1.9-9.6.5-3 .9-6.2 4.7-6.2 3.6 0 5.2 2.9 5.2 6.4 0 3.6-1.4 6-1.4 9.6 0 4.4-.6 7.6-3.8 7.6z"/>
+                    <circle cx="5.4" cy="6.2" r="2.3"/>
+                    <circle cx="9.4" cy="3.6" r="1.9"/>
+                    <circle cx="12.8" cy="3.4" r="1.6"/>
+                    <circle cx="15.6" cy="4.8" r="1.4"/>
+                    <circle cx="17.6" cy="7.4" r="1.2"/>
+                </symbol>
+            </svg>
+            <span class="footsteps" aria-hidden="true">
+                {% for i in (1..6) %}
+                <svg class="footstep {% cycle 'is-left', 'is-right' %}" style="--i: {{ forloop.index0 }}" viewBox="0 0 20 34" focusable="false"><use href="#footprint"/></svg>
+                {% endfor %}
+            </span>
+        </a>
+
         <p class="cta-aside reveal">
             <a class="text-link" href="{{ '/web-design/#is-it-time' | relative_url }}">Small business? Get a free website review <span aria-hidden="true">&rarr;</span></a>
         </p>

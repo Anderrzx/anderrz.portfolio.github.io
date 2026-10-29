@@ -210,6 +210,54 @@ a {
     font-size: 1rem;
 }
 
+/* ===== "Let's Connect" button with walking footprints =====
+   Six prints, left and right, walk across the button from left to right.
+   Each one presses in, then fades and smudges away like a print in the sand
+   being washed out, one after another. */
+.button-walk {
+    position: relative;
+    width: 260px;
+    height: 64px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.footsteps {
+    position: absolute;
+    inset: 0;
+}
+
+.footstep {
+    position: absolute;
+    left: calc(29px + var(--i) * 36px);
+    width: 17px;
+    height: 29px;
+    fill: #121110;
+    opacity: 0;
+    animation: footstep 4.2s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.42s);
+}
+
+/* Toes point the way they walk (to the right); left and right feet sit
+   on either side of the path */
+.footstep.is-left {
+    top: 4px;
+    transform: rotate(90deg) scaleX(-1);
+}
+
+.footstep.is-right {
+    top: 30px;
+    transform: rotate(90deg);
+}
+
+@keyframes footstep {
+    0%   { opacity: 0; filter: blur(0); }
+    4%   { opacity: 0.95; }
+    30%  { opacity: 0.8; filter: blur(0); }
+    55%  { opacity: 0; filter: blur(2.5px); }
+    100% { opacity: 0; filter: blur(2.5px); }
+}
+
 /* Underlined link; turns amber on hover */
 .text-link {
     display: inline-block;
@@ -1342,7 +1390,10 @@ a.project-link:hover .project-placeholder {
     text-align: center;
 }
 
+/* Right under a section heading: cancel the heading's bottom margin so the
+   message sits in the middle, between the heading's line and the line below */
 .section-head + .projects-empty {
+    margin-top: calc(-1 * clamp(40px, 6vw, 72px));
     border-top: 0;
 }
 
@@ -2000,6 +2051,12 @@ a.project-link:hover .project-placeholder {
     /* The word banner stands still */
     .marquee-track {
         animation: none;
+    }
+
+    /* The footprints on the button show still, without walking */
+    .footstep {
+        animation: none;
+        opacity: 0.8;
     }
 
     /* Hero words stay still, without glitching */
