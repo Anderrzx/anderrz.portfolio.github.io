@@ -190,14 +190,6 @@ if (aboutVideo && soundButton) {
     turnSoundOn();
 }
 
-// ===== Homepage video: half speed, so the short shot feels calmer =====
-const heroVideo = document.querySelector('.hero-video-bg');
-if (heroVideo) {
-    const slowDown = () => { heroVideo.playbackRate = 0.5; };
-    slowDown();
-    heroVideo.addEventListener('loadedmetadata', slowDown);
-}
-
 // ===== Background videos (Home and Work) =====
 // People who prefer less motion see a still frame instead of the loop
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
