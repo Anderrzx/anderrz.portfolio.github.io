@@ -171,6 +171,7 @@ async function playSentAnimation(form, message) {
     }
 
     seal.hidden = false;
+    backdrop.parentElement.classList.add('is-sealed'); // phones fade the text under the circle
     document.getElementById('sent-status').textContent = message;
 
     // The form fades away, then its space closes up

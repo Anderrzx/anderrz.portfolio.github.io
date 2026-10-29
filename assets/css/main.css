@@ -1645,6 +1645,12 @@ a.project-link:hover .project-placeholder {
         --backdrop-h: 125vw;
     }
 
+    /* Once the message is sent, the text under the circle fades back */
+    .page-contact main.is-sealed .page-intro .reveal,
+    .page-contact main.is-sealed .contact-details.reveal {
+        opacity: 0.12;
+    }
+
     .header-social {
         gap: 0;
     }
