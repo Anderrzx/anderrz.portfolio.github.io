@@ -834,8 +834,9 @@ a.project-link:hover .project-placeholder {
 }
 
 /* ===== About page ===== */
+/* Photo + bio open the About page, so they get the same top space as other page intros */
 .about-intro {
-    padding-top: 0;
+    padding-top: clamp(64px, 10vw, 144px);
 }
 
 .about-intro .about-teaser {

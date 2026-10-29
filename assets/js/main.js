@@ -85,12 +85,11 @@ window.addEventListener('scroll', onScroll, { passive: true });
 const revealItems = document.querySelectorAll('.reveal');
 
 if ('IntersectionObserver' in window) {
+    // Fade in when an element scrolls into view, and back out when it leaves,
+    // so the effect also plays when scrolling back up
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
+            entry.target.classList.toggle('is-visible', entry.isIntersecting);
         });
     }, { rootMargin: '0px 0px -8% 0px' });
 
