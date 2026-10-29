@@ -905,7 +905,14 @@ a.project-link:hover .project-placeholder {
 }
 
 .about-intro .about-teaser {
-    align-items: start;
+    align-items: stretch;
+}
+
+/* The text column runs the full height of the photo, so the quick facts
+   can sit at the bottom, level with the end of the photo */
+.about-intro .about-text {
+    display: flex;
+    flex-direction: column;
 }
 
 .about-intro .about-text p {
@@ -917,19 +924,17 @@ a.project-link:hover .project-placeholder {
     white-space: nowrap;
 }
 
-/* Quick facts under the bio: three across, thin lines between rows */
+/* Quick facts under the bio: three across, two rows, pushed to the bottom */
 .about-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin: clamp(32px, 4vw, 48px) 0 0;
-    padding: 0;
+    gap: clamp(28px, 4vw, 48px) 16px;
+    margin: auto 0 0;
+    padding: clamp(40px, 5vw, 64px) 0 0;
     list-style: none;
-    border-top: 1px solid var(--line);
 }
 
 .about-grid li {
-    padding: 18px 12px 18px 0;
-    border-bottom: 1px solid var(--line);
     color: var(--text);
     font-size: 0.75rem;
     letter-spacing: 0.16em;
