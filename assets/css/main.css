@@ -507,13 +507,28 @@ a {
     text-align: center;
 }
 
-/* The "X" in "Independent Project X Client Work": small and stretched wide */
+/* "Independent Project X Client Work": the X stays in the exact center of the
+   page (under the wordmark), with the words on either side of it */
+.work-lead {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    max-width: none;
+}
+
+.work-lead > span:first-child {
+    text-align: right;
+}
+
+.work-lead > span:last-child {
+    text-align: left;
+}
+
+/* The X: small and stretched wide */
 .lead-x {
-    display: inline-block;
-    margin: 0 0.9em;
+    margin: 0 1.1em;
     font-size: 0.6em;
     font-weight: 300;
-    vertical-align: 0.25em;
     transform: scaleX(2.4);
 }
 
