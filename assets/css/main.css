@@ -10,22 +10,6 @@
     font-display: swap;
 }
 
-@font-face {
-    font-family: "Instrument Serif";
-    src: url("../fonts/instrument-serif.woff2") format("woff2");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "Instrument Serif";
-    src: url("../fonts/instrument-serif-italic.woff2") format("woff2");
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
-}
-
 :root {
     /* Dark (default): deep charcoal, ivory type, golden-hour amber */
     --bg: #121110;
@@ -47,7 +31,6 @@
 
     /* Type */
     --font-sans: "Satoshi", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-    --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
 
     /* Layout */
     --max-width: 1360px;
@@ -106,14 +89,6 @@ h1, h2, h3 {
     line-height: 1.02;
     letter-spacing: -0.035em;
     margin: 0;
-}
-
-/* Instrument Serif, used sparingly for expressive words */
-.serif {
-    font-family: var(--font-serif);
-    font-weight: 400;
-    font-style: italic;
-    letter-spacing: -0.01em;
 }
 
 p {
@@ -426,10 +401,6 @@ a {
     display: block;
 }
 
-.hero-title .serif {
-    letter-spacing: -0.02em;
-}
-
 .hero-lead {
     max-width: 30rem;
     margin: 0;
@@ -473,10 +444,6 @@ a {
     font-size: clamp(2.75rem, 7vw, 6.25rem);
     line-height: 0.98;
     letter-spacing: -0.045em;
-}
-
-.page-title .serif {
-    letter-spacing: -0.02em;
 }
 
 .page-lead {
@@ -532,10 +499,6 @@ a {
 @keyframes marquee-scroll {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
-}
-
-.work-intro .eyebrow {
-    margin-bottom: 0;
 }
 
 /* Text and Concept/Client legend under the banner sit in the middle */
@@ -1304,24 +1267,16 @@ a.project-link:hover .project-placeholder {
 
 /* ===== Footer ===== */
 .site-footer {
-    padding: clamp(72px, 9vw, 120px) 0 40px;
+    padding: clamp(72px, 9vw, 120px) 0 clamp(48px, 6vw, 72px);
     border-top: 1px solid var(--line);
 }
 
-.footer-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(40px, 6vw, 64px);
-    text-align: center;
-}
-
-/* MARKETER   DESIGNER   CINEMATOGRAPHER, widely spaced */
+/* MARKETER (left)   CINEMATOGRAPHER (middle)   DESIGNER (right) */
 .footer-roles {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px clamp(28px, 6vw, 88px);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
     margin: 0;
     color: var(--text);
     font-size: 0.8125rem;
@@ -1330,11 +1285,14 @@ a.project-link:hover .project-placeholder {
     text-transform: uppercase;
 }
 
-/* Letter-spacing adds space after the last letter too; pull it back so words stay centered */
+.footer-roles span:nth-child(1) { justify-self: start; }
+.footer-roles span:nth-child(2) { justify-self: center; }
+.footer-roles span:nth-child(3) { justify-self: end; }
+
+/* Letter-spacing adds space after the last letter too; pull it back so edges line up */
 .footer-roles span {
     margin-right: -0.5em;
 }
-
 
 /* ===== 404 ===== */
 .not-found {
@@ -1404,7 +1362,7 @@ a.project-link:hover .project-placeholder {
     }
 
     .footer-roles {
-        gap: 10px 16px;
+        gap: 8px;
         font-size: 0.625rem;
         letter-spacing: 0.24em;
     }
