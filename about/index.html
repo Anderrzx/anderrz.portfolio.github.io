@@ -5,6 +5,8 @@ description: About Anderrz, a multidisciplinary creative working across web desi
 permalink: /about/
 ---
 
+{% assign equipment = site.data.equipment %}
+
 <!-- ===== Page intro ===== -->
 <section class="page-intro">
     <div class="container">
@@ -15,7 +17,7 @@ permalink: /about/
 </section>
 
 <!-- ===== Photo + bio ===== -->
-<section class="section about-intro" aria-labelledby="story-title">
+<section class="section about-intro" aria-label="My story">
     <div class="container about-teaser">
         <div class="about-photo reveal">
             <!-- TODO: replace with <img src="/assets/images/me.jpg" alt="Photo of Anderrz" width="1200" height="1500"> -->
@@ -23,27 +25,9 @@ permalink: /about/
         </div>
 
         <div class="about-text">
-            <h2 id="story-title" class="section-title reveal">My story</h2>
-
             <p class="reveal">I&rsquo;m a multidisciplinary creative from Minnesota. I got into design because I wanted creative control over how my ideas look and feel.</p>
             <p class="reveal">I got into marketing because I wanted to learn how to market myself, so I studied Digital Marketing at Crown College.</p>
             <p class="reveal">Filmmaking came from loving to capture every moment and share it with the world. You only live once.</p>
-
-            <!-- Quick facts. Edit the values; delete a row you don't want. -->
-            <dl class="facts reveal">
-                <div>
-                    <dt>Based in</dt>
-                    <dd>Minnesota</dd>
-                </div>
-                <div>
-                    <dt>Studied</dt>
-                    <dd>Digital Marketing &middot; Crown College</dd>
-                </div>
-                <div>
-                    <dt>Focus</dt>
-                    <dd>Web design, marketing &amp; cinematography</dd>
-                </div>
-            </dl>
         </div>
     </div>
 </section>
@@ -52,10 +36,7 @@ permalink: /about/
 <section class="section section-raised" aria-labelledby="approach-title">
     <div class="container">
         <div class="section-head">
-            <div>
-                <p class="eyebrow reveal">Approach</p>
-                <h2 id="approach-title" class="section-title reveal">How I work</h2>
-            </div>
+            <h2 id="approach-title" class="eyebrow eyebrow-heading reveal">Approach</h2>
         </div>
 
         <ol class="approach-list">
@@ -75,49 +56,28 @@ permalink: /about/
     </div>
 </section>
 
-<!-- ===== Skills ===== -->
-<section class="section" aria-labelledby="skills-title">
+<!-- ===== Equipment (shown once _data/equipment.yml has items) ===== -->
+{% if equipment.size > 0 %}
+<section class="section" aria-labelledby="equipment-title">
     <div class="container">
         <div class="section-head">
-            <div>
-                <p class="eyebrow reveal">Skills</p>
-                <h2 id="skills-title" class="section-title reveal">What I work with</h2>
-            </div>
+            <h2 id="equipment-title" class="eyebrow eyebrow-heading reveal">Equipment</h2>
         </div>
 
-        <div class="skills-grid">
-            {% comment %} Lines starting with "Add " in _data/skills.yml are placeholders and stay hidden;
-               a group with no real skills is hidden too. {% endcomment %}
-            {% for group in site.data.skills %}
-            {% assign real_skills = "" | split: "" %}
-            {% for item in group.items %}
-                {% assign first_four = item | slice: 0, 4 %}
-                {% unless first_four == "Add " %}{% assign real_skills = real_skills | push: item %}{% endunless %}
+        <ul class="equipment-list">
+            {% for item in equipment %}
+            <li class="reveal">{{ item }}</li>
             {% endfor %}
-            {% if real_skills.size > 0 %}
-            <div class="skill-group reveal">
-                <h3 class="skill-group-title">{{ group.group }}</h3>
-                <ul class="skill-list">
-                    {% for item in real_skills %}
-                    <li>{{ item }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
+        </ul>
     </div>
 </section>
+{% endif %}
 
 <!-- ===== Services (lighter, business-focused) ===== -->
 <section class="section theme-light" aria-labelledby="services-title">
     <div class="container">
         <div class="section-head">
-            <div>
-                <p class="eyebrow reveal">Services</p>
-                <h2 id="services-title" class="section-title reveal">What I can help with</h2>
-            </div>
-            <a class="text-link reveal" href="{{ '/web-design/' | relative_url }}">Website redesigns for small businesses <span aria-hidden="true">&rarr;</span></a>
+            <h2 id="services-title" class="eyebrow eyebrow-heading reveal">Services</h2>
         </div>
 
         <ol class="service-list">
@@ -131,6 +91,3 @@ permalink: /about/
         </ol>
     </div>
 </section>
-
-<!-- ===== Closing call to action ===== -->
-{% include closing-cta.html title="Want to work together? Let&rsquo;s bring your idea to" %}

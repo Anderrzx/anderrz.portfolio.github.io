@@ -889,30 +889,20 @@ a.project-link:hover .project-placeholder {
     font-size: 0.9375rem;
 }
 
-/* Skills grouped by discipline */
-.skills-grid {
+/* Equipment: a simple list of gear */
+.equipment-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: clamp(32px, 4vw, 56px);
-}
-
-.skill-group-title {
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--line);
-    font-size: 1.25rem;
-    letter-spacing: -0.02em;
-}
-
-.skill-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    gap: 16px clamp(32px, 4vw, 56px);
     margin: 0;
     padding: 0;
     list-style: none;
-    color: var(--text-muted);
-    font-size: 0.9375rem;
+    font-size: 1.125rem;
+}
+
+.equipment-list li {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
 }
 
 /* ===== Contact page ===== */
@@ -1335,7 +1325,7 @@ a.project-link:hover .project-placeholder {
     }
 
     .approach-list,
-    .skills-grid,
+    .equipment-list,
     .contact-layout {
         grid-template-columns: 1fr;
     }
@@ -1396,6 +1386,7 @@ a.project-link:hover .project-placeholder {
     .site-nav ul a {
         display: block;
         padding: 12px 0;
+        text-align: center;
         color: var(--text);
         font-size: 1.75rem;
         letter-spacing: -0.03em;

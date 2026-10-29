@@ -1,0 +1,8 @@
+# Equipment shown on the About page. The section stays hidden while this list is empty.
+# To add gear, remove the "[]" below and list one item per line, for example:
+#
+# - Sony A7 IV
+# - DJI Mini 4 Pro
+# - DaVinci Resolve
+
+[]
