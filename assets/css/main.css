@@ -1395,6 +1395,10 @@ a.project-link:hover .project-placeholder {
 .section-head + .projects-empty {
     margin-top: calc(-1 * clamp(40px, 6vw, 72px));
     border-top: 0;
+    border-bottom: 0;
+    /* Same space above and below, now that the Contact section's line is
+       the next line down */
+    padding: var(--section-space) 0 0;
 }
 
 .projects-empty-title {
@@ -1744,11 +1748,13 @@ a.project-link:hover .project-placeholder {
 }
 
 .closing-cta .eyebrow {
+    /* "Contact" sits halfway between the line above and the heading */
+    margin-bottom: calc(var(--section-space) * 0.55 + 7px);
     color: var(--accent);
 }
 
 .closing-cta .container {
-    padding-top: var(--section-space);
+    padding-top: calc(var(--section-space) * 0.55);
     border-top: 1px solid var(--line);
 }
 
