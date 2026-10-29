@@ -963,6 +963,8 @@ a.project-link:hover .project-placeholder {
 .page-contact main {
     position: relative;
     isolation: isolate;
+    /* Height of the photo area (taller crop on phones) */
+    --backdrop-h: calc(100vw * 1043 / 1508);
 }
 
 .contact-backdrop {
@@ -972,7 +974,7 @@ a.project-link:hover .project-placeholder {
     z-index: -1;
     width: 100%;
     /* The whole picture fits across the page, so both hands always show */
-    height: calc(100vw * 1043 / 1508);
+    height: var(--backdrop-h);
     overflow: hidden;
     isolation: isolate;
     pointer-events: none;
@@ -1288,6 +1290,7 @@ a.project-link:hover .project-placeholder {
    and "Sent!" slides in from the right. */
 .contact-form-wrap {
     position: relative;
+    transition: height 0.6s var(--ease);
 }
 
 .js .contact-form-wrap.reveal {
@@ -1303,18 +1306,26 @@ a.project-link:hover .project-placeholder {
     transform: scale(0.98);
 }
 
-.form-sent {
-    display: grid;
-    place-items: center;
-    min-height: 320px;
+/* Sits exactly where the two hands meet in the photo */
+.dap-seal {
+    position: absolute;
+    left: 50%;
+    top: calc(var(--backdrop-h) * 0.446);
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
 .sent-mark {
     position: relative;
     display: grid;
     place-items: center;
-    width: clamp(200px, 26vw, 280px);
+    width: clamp(170px, 24vw, 320px);
     aspect-ratio: 1;
+    border-radius: 50%;
+    /* A soft dark center keeps "Sent!" readable over the photo and text */
+    background: radial-gradient(circle, rgba(18, 17, 16, 0.6) 0%, rgba(18, 17, 16, 0.35) 50%, transparent 72%);
+    animation: sent-appear 0.5s ease-out forwards;
 }
 
 .sent-circle {
@@ -1346,6 +1357,10 @@ a.project-link:hover .project-placeholder {
     opacity: 0;
     transform: translateX(28px);
     animation: sent-drag 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards;
+}
+
+@keyframes sent-appear {
+    from { opacity: 0; transform: scale(0.85); }
 }
 
 @keyframes sent-draw {
@@ -1626,8 +1641,8 @@ a.project-link:hover .project-placeholder {
     }
 
     /* Phones: a taller crop of the middle, keeping both hands in view */
-    .contact-backdrop {
-        height: 125vw;
+    .page-contact main {
+        --backdrop-h: 125vw;
     }
 
     .header-social {
@@ -1762,6 +1777,7 @@ a.project-link:hover .project-placeholder {
     /* Message sent: no dap or drawing, just the finished circle and "Sent!" */
     .contact-backdrop.is-dapping .dap-figure,
     .contact-backdrop.is-dapping .dap-flash,
+    .sent-mark,
     .sent-circle circle,
     .sent-text {
         animation: none;

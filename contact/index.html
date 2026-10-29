@@ -17,6 +17,18 @@ body_class: page-contact
     </div>
 </div>
 
+<!-- Shown where the hands meet once the message is sent: the dap makes a circle,
+     which draws itself, and "Sent!" slides in. The deal is made. -->
+<div class="dap-seal" hidden>
+    <div class="sent-mark">
+        <svg class="sent-circle" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+            <circle cx="100" cy="100" r="96" pathLength="1"/>
+        </svg>
+        <p class="sent-text">Sent!</p>
+    </div>
+    <p class="visually-hidden" role="status" id="sent-status"></p>
+</div>
+
 <!-- ===== Page intro ===== -->
 <section class="page-intro">
     <div class="container">
@@ -102,17 +114,6 @@ body_class: page-contact
                     <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
                 </div>
             </form>
-
-            <!-- Shown after the message is sent: a circle draws itself and "Sent!" slides in -->
-            <div class="form-sent" hidden>
-                <div class="sent-mark">
-                    <svg class="sent-circle" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
-                        <circle cx="100" cy="100" r="96" pathLength="1"/>
-                    </svg>
-                    <p class="sent-text">Sent!</p>
-                </div>
-                <p class="visually-hidden" role="status" id="sent-status"></p>
-            </div>
         </div>
     </div>
 </section>

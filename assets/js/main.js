@@ -150,17 +150,14 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 // ===== Contact: the "dap" after a message is sent =====
 // 1. The page scrolls up so both characters are in view
 // 2. They dap; when their hands meet, the form fades away
-// 3. A circle draws itself where the form was and "Sent!" slides in
+// 3. Right where the hands meet, a circle draws itself and "Sent!" slides in
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function playSentAnimation(form, message) {
     const backdrop = document.querySelector('.contact-backdrop');
+    const seal = document.querySelector('.dap-seal');
     const wrap = form.parentElement;
-    const sent = wrap.querySelector('.form-sent');
     const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Keep this area on screen even if scrolling would normally fade it out
-    wrap.classList.remove('reveal');
 
     if (!calm) {
         if (window.scrollY > 40) {
@@ -170,31 +167,21 @@ async function playSentAnimation(form, message) {
             if (window.scrollY > 40) window.scrollTo({ top: 0, behavior: 'instant' });
         }
         backdrop.classList.add('is-dapping');
-        await wait(900); // the moment the hands meet
+        await wait(870); // the moment the hands meet
+    }
 
+    seal.hidden = false;
+    document.getElementById('sent-status').textContent = message;
+
+    // The form fades away, then its space closes up
+    wrap.classList.remove('reveal');
+    if (!calm) {
         wrap.style.height = `${wrap.offsetHeight}px`;
         form.classList.add('is-leaving');
         await wait(450);
     }
-
     form.hidden = true;
-    sent.hidden = false;
-    document.getElementById('sent-status').textContent = message;
-
-    if (!calm) {
-        // Shrink the space smoothly from the form's height to the circle's
-        wrap.style.height = `${sent.offsetHeight}px`;
-        await wait(600);
-        wrap.style.height = '';
-
-        if (sent.getBoundingClientRect().bottom > window.innerHeight) {
-            sent.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            await wait(700);
-            if (sent.getBoundingClientRect().bottom > window.innerHeight) {
-                sent.scrollIntoView({ behavior: 'instant', block: 'center' });
-            }
-        }
-    }
+    wrap.style.height = '0px';
 }
 
 function setupForm(form) {
