@@ -11,12 +11,12 @@ title: Web Design, Digital Marketing & Cinematography
     </div>
 
     <div class="container">
-        <p class="eyebrow reveal">Multidisciplinary Creative</p>
-        <h1 class="hero-title reveal">
-            <span class="line">Creating with purpose.</span>
-            <span class="line">Telling stories with feeling.</span>
+        <!-- Each word glitches on its own (styles: .glitch in main.css).
+             Screen readers read the heading's label instead of the glitch copies. -->
+        <h1 class="hero-title reveal" aria-label="Crafting the Lens. Telling Your Stories.">
+            <span class="line" aria-hidden="true"><span class="glitch" data-text="Crafting" style="--d: 0s">Crafting</span> <span class="glitch" data-text="the" style="--d: 1.3s">the</span> <span class="glitch" data-text="Lens" style="--d: 0.5s">Lens</span></span>
+            <span class="line" aria-hidden="true"><span class="glitch" data-text="Telling" style="--d: 2.1s">Telling</span> <span class="glitch" data-text="Your" style="--d: 0.9s">Your</span> <span class="glitch" data-text="Stories" style="--d: 1.7s">Stories</span></span>
         </h1>
-        <p class="hero-lead reveal">Design, marketing, and cinematography &mdash; bringing ideas to life through creativity and storytelling.</p>
     </div>
 </section>
 

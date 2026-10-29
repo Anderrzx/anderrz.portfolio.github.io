@@ -413,7 +413,7 @@ a {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(18, 17, 16, 0.82) 0%, rgba(18, 17, 16, 0.6) 55%, rgba(18, 17, 16, 0.35) 100%);
+    background: linear-gradient(90deg, rgba(18, 17, 16, 0.85) 0%, rgba(18, 17, 16, 0.72) 55%, rgba(18, 17, 16, 0.55) 100%);
 }
 
 .hero-video-bg {
@@ -422,12 +422,8 @@ a {
     object-fit: cover;
 }
 
-.hero .eyebrow {
-    color: var(--accent);
-}
-
 .hero-title {
-    margin-bottom: clamp(28px, 4vw, 44px);
+    margin: 0;
     font-size: clamp(2.75rem, 7.6vw, 7.25rem);
     font-weight: 500;
     line-height: 0.98;
@@ -438,12 +434,81 @@ a {
     display: block;
 }
 
-.hero-lead {
-    max-width: 30rem;
-    margin: 0;
-    color: var(--text-muted);
-    font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
-    line-height: 1.55;
+/* ===== Glitch effect on each hero word =====
+   Every few seconds a word breaks up: sliced copies jump sideways in amber
+   and a cool blue, and the word itself shakes. Each word has its own delay
+   (--d), so they glitch at different moments. */
+.glitch {
+    position: relative;
+    display: inline-block;
+    animation: glitch-shake 5s steps(1, end) infinite;
+    animation-delay: var(--d, 0s);
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    animation: glitch-slice-a 5s steps(1, end) infinite;
+    animation-delay: var(--d, 0s);
+}
+
+.glitch::before {
+    color: var(--accent);
+    mix-blend-mode: screen;
+}
+
+.glitch::after {
+    color: #8FC4DB;
+    mix-blend-mode: screen;
+    animation-name: glitch-slice-b;
+}
+
+/* The word itself: still most of the time, a short burst of jitter */
+@keyframes glitch-shake {
+    0%   { transform: none; opacity: 1; }
+    2%   { transform: translate(-3px, 1px) skewX(-8deg); }
+    3%   { transform: translate(4px, -1px); opacity: 0.8; }
+    4%   { transform: translate(-1px, 0) skewX(6deg); opacity: 1; }
+    5%   { transform: translate(2px, 1px); }
+    6%   { transform: none; }
+    52%  { transform: none; }
+    53%  { transform: translate(-2px, 0) skewX(-4deg); }
+    54%  { transform: none; }
+    100% { transform: none; }
+}
+
+/* Amber copy: horizontal slices that jump left and right */
+@keyframes glitch-slice-a {
+    0%   { opacity: 0; }
+    1%   { opacity: 1; clip-path: inset(10% 0 62% 0); transform: translate(-8px, 0); }
+    2%   { clip-path: inset(48% 0 30% 0); transform: translate(10px, 0); }
+    3%   { clip-path: inset(72% 0 8% 0); transform: translate(-5px, 0); }
+    4%   { clip-path: inset(25% 0 55% 0); transform: translate(6px, 0); }
+    5%   { clip-path: inset(60% 0 22% 0); transform: translate(-12px, 0); }
+    6%   { opacity: 0; }
+    52%  { opacity: 0; }
+    53%  { opacity: 1; clip-path: inset(40% 0 44% 0); transform: translate(7px, 0); }
+    54%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* Blue copy: different slices, moving the other way */
+@keyframes glitch-slice-b {
+    0%   { opacity: 0; }
+    1%   { opacity: 1; clip-path: inset(66% 0 14% 0); transform: translate(9px, 0); }
+    2%   { clip-path: inset(18% 0 66% 0); transform: translate(-7px, 0); }
+    3%   { clip-path: inset(38% 0 40% 0); transform: translate(12px, 0); }
+    4%   { clip-path: inset(80% 0 4% 0); transform: translate(-9px, 0); }
+    5%   { clip-path: inset(5% 0 78% 0); transform: translate(5px, 0); }
+    6%   { opacity: 0; }
+    52%  { opacity: 0; }
+    53%  { opacity: 1; clip-path: inset(12% 0 70% 0); transform: translate(-6px, 0); }
+    54%  { opacity: 0; }
+    100% { opacity: 0; }
 }
 
 /* ===== Inner page intro (Work, About, …) ===== */
@@ -1926,6 +1991,13 @@ a.project-link:hover .project-placeholder {
 
     /* The word banner stands still */
     .marquee-track {
+        animation: none;
+    }
+
+    /* Hero words stay still, without glitching */
+    .glitch,
+    .glitch::before,
+    .glitch::after {
         animation: none;
     }
 
