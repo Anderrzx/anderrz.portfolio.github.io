@@ -6,12 +6,23 @@ permalink: /contact/
 body_class: page-contact
 ---
 
-<!-- ===== Page intro (the background photo is set in main.css: .page-contact) ===== -->
+<!-- ===== Background photo, split into the two characters so they can dap
+     when a message is sent (styles: .contact-backdrop in main.css) ===== -->
+<div class="contact-backdrop" aria-hidden="true">
+    <div class="dap-stage">
+        <div class="dap-still"></div>
+        <div class="dap-figure dap-left"></div>
+        <div class="dap-figure dap-right"></div>
+        <div class="dap-flash"></div>
+    </div>
+</div>
+
+<!-- ===== Page intro ===== -->
 <section class="page-intro">
     <div class="container">
         <h1 class="page-title reveal">Lock-In</h1>
         <p class="page-lead reveal">Have an Idea? Project? Question?<br>
-            Get in Touch with Me ♪♫♪ ᕕ( ᐛ )ᕗ</p>
+            Get in Touch with Me ~ ᕕ( ᐛ )ᕗ</p>
     </div>
 </section>
 
@@ -91,6 +102,17 @@ body_class: page-contact
                     <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
                 </div>
             </form>
+
+            <!-- Shown after the message is sent: a circle draws itself and "Sent!" slides in -->
+            <div class="form-sent" hidden>
+                <div class="sent-mark">
+                    <svg class="sent-circle" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+                        <circle cx="100" cy="100" r="96" pathLength="1"/>
+                    </svg>
+                    <p class="sent-text">Sent!</p>
+                </div>
+                <p class="visually-hidden" role="status" id="sent-status"></p>
+            </div>
         </div>
     </div>
 </section>

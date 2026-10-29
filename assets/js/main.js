@@ -147,6 +147,56 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 // ===== Forms (Contact, Web Design review): check fields and send =====
 // Any <form class="site-form"> gets this. Each required field needs an error
 // message with the id "<field id>-error", and the form needs a .form-status.
+// ===== Contact: the "dap" after a message is sent =====
+// 1. The page scrolls up so both characters are in view
+// 2. They dap; when their hands meet, the form fades away
+// 3. A circle draws itself where the form was and "Sent!" slides in
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function playSentAnimation(form, message) {
+    const backdrop = document.querySelector('.contact-backdrop');
+    const wrap = form.parentElement;
+    const sent = wrap.querySelector('.form-sent');
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Keep this area on screen even if scrolling would normally fade it out
+    wrap.classList.remove('reveal');
+
+    if (!calm) {
+        if (window.scrollY > 40) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            await wait(700);
+            // Some browsers skip smooth scrolling; make sure we're at the top
+            if (window.scrollY > 40) window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+        backdrop.classList.add('is-dapping');
+        await wait(900); // the moment the hands meet
+
+        wrap.style.height = `${wrap.offsetHeight}px`;
+        form.classList.add('is-leaving');
+        await wait(450);
+    }
+
+    form.hidden = true;
+    sent.hidden = false;
+    document.getElementById('sent-status').textContent = message;
+
+    if (!calm) {
+        // Shrink the space smoothly from the form's height to the circle's
+        wrap.style.height = `${sent.offsetHeight}px`;
+        await wait(600);
+        wrap.style.height = '';
+
+        if (sent.getBoundingClientRect().bottom > window.innerHeight) {
+            sent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            await wait(700);
+            if (sent.getBoundingClientRect().bottom > window.innerHeight) {
+                sent.scrollIntoView({ behavior: 'instant', block: 'center' });
+            }
+        }
+    }
+}
+
 function setupForm(form) {
     const formStatus = form.querySelector('.form-status');
     const submitButton = form.querySelector('button[type="submit"]');
@@ -194,7 +244,10 @@ function setupForm(form) {
             return;
         }
 
-        if (form.dataset.connected !== 'true') {
+        // "demo" plays the sent animation without sending anything (used by the preview link)
+        const isDemo = form.dataset.connected === 'demo';
+
+        if (form.dataset.connected !== 'true' && !isDemo) {
             showStatus('This form isn’t connected yet, so nothing was sent.', 'error');
             return;
         }
@@ -203,16 +256,26 @@ function setupForm(form) {
         showStatus('Sending…', 'info');
 
         try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: new FormData(form),
-                headers: { Accept: 'application/json' },
-            });
+            if (!isDemo) {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { Accept: 'application/json' },
+                });
 
-            if (!response.ok) throw new Error(`Form service replied ${response.status}`);
+                if (!response.ok) throw new Error(`Form service replied ${response.status}`);
+            }
 
             form.reset();
-            showStatus(form.dataset.success || 'Thanks! Your message has been sent. I’ll get back to you soon.', 'success');
+            const successMessage = form.dataset.success || 'Thanks! Your message has been sent. I’ll get back to you soon.';
+
+            if (form.id === 'contact-form' && document.querySelector('.contact-backdrop')) {
+                showStatus('', 'info');
+                playSentAnimation(form, successMessage);
+                return;
+            }
+
+            showStatus(successMessage, 'success');
         } catch (error) {
             showStatus('Your message wasn’t sent. Please try again in a moment.', 'error');
         } finally {
