@@ -47,7 +47,14 @@ if (linkedSection) {
         }
     });
 } else {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    // Start at the top. scrollIntoView also moves any page this one is shown
+    // inside (like the preview link's frame), so it doesn't keep the old spot.
+    const toTop = () => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        document.documentElement.scrollIntoView({ block: 'start', behavior: 'instant' });
+    };
+    toTop();
+    window.addEventListener('load', toTop);
 }
 
 // ===== Mobile menu =====
