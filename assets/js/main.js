@@ -135,6 +135,27 @@ if (filterBar) {
     filterBar.hidden = false;
 }
 
+// ===== Work page video: sound button =====
+// Browsers only autoplay muted video, so visitors turn the sound on themselves.
+document.querySelectorAll('.work-video-frame').forEach((frame) => {
+    const video = frame.querySelector('video');
+    const soundButton = frame.querySelector('.video-sound');
+
+    soundButton.addEventListener('click', () => {
+        video.muted = !video.muted;
+        if (!video.muted) video.play();
+        soundButton.setAttribute('aria-pressed', String(!video.muted));
+        soundButton.textContent = video.muted ? 'Sound on' : 'Sound off';
+    });
+
+    // People who prefer less motion get the video paused, with controls to play it
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        video.pause();
+        video.controls = true;
+        soundButton.hidden = true;
+    }
+});
+
 // ===== Forms (Contact, Web Design review): check fields and send =====
 // Any <form class="site-form"> gets this. Each required field needs an error
 // message with the id "<field id>-error", and the form needs a .form-status.

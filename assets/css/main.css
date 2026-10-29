@@ -1276,6 +1276,48 @@ a.project-link:hover .project-placeholder {
     letter-spacing: -0.045em;
 }
 
+/* ===== Work page video ===== */
+.work-video {
+    padding-top: 0;
+}
+
+.work-video-frame {
+    position: relative;
+}
+
+.work-video-player {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: var(--bg-raised);
+}
+
+/* Small "Sound on / Sound off" button in the bottom-right corner */
+.video-sound {
+    position: absolute;
+    right: clamp(12px, 2vw, 24px);
+    bottom: clamp(12px, 2vw, 24px);
+    min-height: 36px;
+    padding: 8px 14px;
+    border: 1px solid rgba(241, 235, 221, 0.35);
+    border-radius: 999px;
+    background: rgba(18, 17, 16, 0.55);
+    color: #F1EBDD;
+    font: inherit;
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.video-sound:hover,
+.video-sound[aria-pressed="true"] {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
 /* ===== Footer ===== */
 .site-footer {
     padding: clamp(72px, 9vw, 120px) 0 clamp(48px, 6vw, 72px);
