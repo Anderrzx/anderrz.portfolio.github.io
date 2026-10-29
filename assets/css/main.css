@@ -508,10 +508,8 @@ a {
 }
 
 .work-intro {
-    /* Same space between the banner, the text, the Concept/Client labels,
-       and the projects below */
+    /* Same space between the banner, the text, and the Concept/Client labels */
     --work-intro-gap: clamp(56px, 7vw, 96px);
-    padding-bottom: var(--work-intro-gap);
 }
 
 .work-intro .type-legend {
@@ -544,7 +542,7 @@ a {
 }
 
 /* ===== Work page filters ===== */
-.section.work-section {
+.work-section {
     padding-top: 0;
 }
 
