@@ -507,6 +507,16 @@ a {
     text-align: center;
 }
 
+/* The "X" in "Independent Project X Client Work": small and stretched wide */
+.lead-x {
+    display: inline-block;
+    margin: 0 0.9em;
+    font-size: 0.6em;
+    font-weight: 300;
+    vertical-align: 0.25em;
+    transform: scaleX(2.4);
+}
+
 .work-intro {
     /* Same space between the banner, the text, and the Concept/Client labels */
     --work-intro-gap: clamp(56px, 7vw, 96px);
