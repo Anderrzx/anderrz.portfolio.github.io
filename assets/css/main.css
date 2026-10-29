@@ -505,10 +505,6 @@ a {
     animation: marquee-scroll 36s linear infinite;
 }
 
-.marquee:hover .marquee-track {
-    animation-play-state: paused;
-}
-
 .marquee-group {
     display: flex;
     flex-shrink: 0;
@@ -522,11 +518,6 @@ a {
     line-height: 1.05;
     letter-spacing: -0.045em;
     white-space: nowrap;
-}
-
-.marquee-word.serif {
-    font-weight: 400;
-    letter-spacing: -0.02em;
 }
 
 .marquee-dot {
@@ -545,6 +536,16 @@ a {
 
 .work-intro .eyebrow {
     margin-bottom: 0;
+}
+
+/* Text and Concept/Client legend under the banner sit in the middle */
+.work-intro .page-lead {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.work-intro .type-legend {
+    justify-content: center;
 }
 
 /* Concept / Client explanation */
@@ -1334,28 +1335,6 @@ a.project-link:hover .project-placeholder {
     margin-right: -0.5em;
 }
 
-.footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px 28px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.footer-links a {
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: color 0.4s var(--ease);
-}
-
-.footer-links a:hover {
-    color: var(--text);
-}
 
 /* ===== 404 ===== */
 .not-found {

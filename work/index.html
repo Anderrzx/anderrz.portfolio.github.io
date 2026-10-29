@@ -39,7 +39,7 @@ permalink: /work/
         <h2 id="projects-title" class="visually-hidden">All projects</h2>
 
         {% if projects.size == 0 %}
-            {% include projects-empty.html %}
+            {% include projects-empty.html social=false %}
         {% else %}
 
         <!-- Filter buttons: shown only when JavaScript is on (every project shows without it) -->
