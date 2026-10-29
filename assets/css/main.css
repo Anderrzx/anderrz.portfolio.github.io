@@ -457,7 +457,7 @@ a {
 /* ===== Moving word banner (Work page) ===== */
 .marquee {
     overflow: hidden;
-    margin: clamp(8px, 2vw, 24px) 0 var(--work-intro-gap, clamp(36px, 5vw, 64px));
+    margin: clamp(8px, 2vw, 24px) 0 calc(var(--work-intro-gap, clamp(36px, 5vw, 64px)) + var(--work-shift, 0px));
     padding: clamp(16px, 2.5vw, 28px) 0;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
@@ -510,6 +510,10 @@ a {
 .work-intro {
     /* Same space between the banner, the text, and the Concept/Client labels */
     --work-intro-gap: clamp(56px, 7vw, 96px);
+    /* The paragraph and labels sit a little lower, closer to the projects line;
+       the space under them shrinks by the same amount */
+    --work-shift: clamp(40px, 5vw, 64px);
+    padding-bottom: max(0px, calc(clamp(40px, 6vw, 72px) - var(--work-shift)));
 }
 
 .work-intro .type-legend {
