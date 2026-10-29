@@ -1,0 +1,19 @@
+{% comment %}
+  Full-width banner of words that scrolls across the screen and repeats.
+  {% include marquee.html words="Design|Marketing|Film" %}
+  The last word is set in the italic serif. The words are repeated in the
+  markup so the loop is seamless; screen readers hear them once (aria-label).
+{% endcomment %}
+{% assign words = include.words | split: "|" %}
+<div class="marquee" role="img" aria-label="{{ words | join: ', ' }}">
+    <div class="marquee-track" aria-hidden="true">
+        {% for copy in (1..4) %}
+        <div class="marquee-group">
+            {% for word in words %}
+            <span class="marquee-word{% if forloop.last %} serif{% endif %}">{{ word }}</span>
+            <span class="marquee-dot"></span>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>

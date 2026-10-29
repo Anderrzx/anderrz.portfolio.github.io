@@ -9,10 +9,15 @@ permalink: /work/
 {% assign categories = "Web Design|Digital Marketing|Cinematography" | split: "|" %}
 
 <!-- ===== Page intro ===== -->
-<section class="page-intro">
+<section class="page-intro work-intro">
     <div class="container">
-        <p class="eyebrow reveal">Work</p>
-        <h1 class="page-title reveal">Projects across Design, Marketing &amp;&nbsp;<em class="serif">Film.</em></h1>
+        <h1 class="eyebrow reveal">Work</h1>
+    </div>
+
+    <!-- Moving banner: Design · Marketing · Film -->
+    {% include marquee.html words="Design|Marketing|Film" %}
+
+    <div class="container">
         <p class="page-lead reveal">A mix of independent concept projects and real client work. Each one is labeled so you can tell them apart.</p>
 
         <dl class="type-legend reveal">
