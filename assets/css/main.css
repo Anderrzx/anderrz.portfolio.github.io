@@ -1869,11 +1869,10 @@ a.project-link:hover .project-placeholder {
     filter: blur(6px) brightness(1.036);
 }
 
-/* On the new page the footer starts soft with the rest of the content and
-   comes into focus with it, in its own place at the bottom. (When leaving a
-   page it fades out, so it never shows over the top of the next page.) */
+/* The footer belongs at the bottom of the page, so it stays out of the page
+   change: hidden while the new page comes into focus, then faded in */
 .focus-in .site-footer {
-    filter: blur(6px) brightness(1.036);
+    opacity: 0;
 }
 
 .focus-scale {
