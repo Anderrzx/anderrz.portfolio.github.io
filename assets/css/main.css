@@ -1833,9 +1833,31 @@ a.project-link:hover .project-placeholder {
 }
 
 /* ===== Page change: focus pull =====
-   Leaving a page, it drifts out of focus; the next page opens blurred and
-   "hunts" into focus (main.js). A focus scale slides along the bottom. */
-.focus-in .site-header,
+   Leaving a page, it drifts out of focus; the next page opens soft and the
+   focus ring settles it sharp (main.js). A focus scale slides along the bottom.
+
+   The browser holds the old page on screen until the new one is ready, then
+   fades between them, so nothing pops in while it loads. The header stays
+   perfectly still across pages. (Chrome, Edge and Safari; other browsers get
+   a short fade-in instead.) */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.38s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.site-header {
+    view-transition-name: site-header;
+}
+
+::view-transition-group(site-header) {
+    animation: none;
+}
+
 .focus-in main,
 .focus-in .site-footer {
     filter: blur(7px) brightness(1.04);
@@ -2094,6 +2116,11 @@ a.project-link:hover .project-placeholder {
 
 /* Respect visitors who turn off animations in their system settings */
 @media (prefers-reduced-motion: reduce) {
+    /* Plain page changes, without the fade */
+    @view-transition {
+        navigation: none;
+    }
+
     html {
         scroll-behavior: auto;
     }

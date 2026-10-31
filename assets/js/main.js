@@ -349,7 +349,11 @@ document.querySelectorAll('form.site-form').forEach(setupForm);
 const FOCUS_KEY = 'anderrz-focus';
 const PAGE_ORDER = ['/', '/work/', '/about/', '/contact/', '/web-design/'];
 const focusCalm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const focusTargets = [header, document.querySelector('main'), document.querySelector('.site-footer')].filter(Boolean);
+// The header stays sharp and still; only the page content changes focus
+const focusTargets = [document.querySelector('main'), document.querySelector('.site-footer')].filter(Boolean);
+// Browsers that hold the old page and fade to the new one (Chrome, Edge,
+// Safari) don't need the fallback fade-in below
+const smoothPageSwap = 'onpagereveal' in window;
 
 // Gentle on the eyes: a light blur and almost no brightness or size change
 const SOFT = 'blur(7px) brightness(1.04)';
@@ -483,27 +487,40 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
     function finish() {
         if (finished) return;
         finished = true;
-        focusTargets.forEach((el) => { el.style.filter = ''; });
+        focusTargets.forEach((el) => { el.style.filter = ''; el.style.opacity = ''; });
         const fadeOut = scale.animate([{ opacity: 0.9 }, { opacity: 0 }], { duration: 220, delay: 60, fill: 'forwards' });
         Promise.race([fadeOut.finished, wait(400)]).then(clearFocusPull, clearFocusPull);
     }
 
     show(START);
+    // Browsers without the page-to-page fade: start hidden and fade in
+    if (!smoothPageSwap) focusTargets.forEach((el) => { el.style.opacity = '0'; });
     // The inline blur now holds the page soft, so the starting class can go
     document.documentElement.classList.remove('focus-in');
 
-    const t0 = performance.now();
-    function frame(now) {
-        const ms = now - t0;
-        show(ringAt(ms));
-        if (ms < TURN_MS + BACK_MS) requestAnimationFrame(frame);
-        else finish();
+    function run() {
+        const t0 = performance.now();
+        function frame(now) {
+            const ms = now - t0;
+            show(ringAt(ms));
+            if (!smoothPageSwap) {
+                const fade = Math.min(1, ms / 260).toFixed(3);
+                focusTargets.forEach((el) => { el.style.opacity = fade; });
+            }
+            if (ms < TURN_MS + BACK_MS) requestAnimationFrame(frame);
+            else finish();
+        }
+        requestAnimationFrame(frame);
     }
-    requestAnimationFrame(frame);
+
+    // Start turning once the fonts are ready (at most a quarter second), so
+    // the text doesn't change shape partway through
+    const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+    Promise.race([fontsReady, wait(250)]).then(run, run);
 
     // Safety timer: the page always ends up sharp, even if the browser
     // pauses animation frames (e.g. a background tab)
-    wait(TURN_MS + BACK_MS + 300).then(finish);
+    wait(250 + TURN_MS + BACK_MS + 300).then(finish);
 } else {
     document.documentElement.classList.remove('focus-in');
 }
