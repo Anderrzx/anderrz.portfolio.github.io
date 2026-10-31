@@ -142,6 +142,21 @@ if (filterBar) {
     filterBar.hidden = false;
 }
 
+// ===== "Page settled" signal =====
+// Heavy things (like the About video) wait until the page has finished its
+// focus pull, so they don't make the page change stutter. The focus pull code
+// at the bottom of this file sends the signal.
+function whenPageSettled(callback) {
+    if (window.anderrzSettled) callback();
+    else document.addEventListener('anderrz:settled', callback, { once: true });
+}
+
+function markPageSettled() {
+    if (window.anderrzSettled) return;
+    window.anderrzSettled = true;
+    document.dispatchEvent(new Event('anderrz:settled'));
+}
+
 // ===== About page video: music on =====
 // Browsers don't allow sound before the visitor has interacted with the page,
 // so the video starts silent; the music comes on at the first tap, click or
@@ -187,7 +202,10 @@ if (aboutVideo && soundButton) {
     };
     interactions.forEach((type) => document.addEventListener(type, onFirstInteraction));
 
-    turnSoundOn();
+    // Start the video once the page change has finished
+    whenPageSettled(() => {
+        if (!userMuted && aboutVideo.paused) turnSoundOn();
+    });
 }
 
 // ===== Background videos (Home and Work) =====
@@ -488,6 +506,7 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
         if (finished) return;
         finished = true;
         focusTargets.forEach((el) => { el.style.filter = ''; el.style.opacity = ''; });
+        markPageSettled();
         const fadeOut = scale.animate([{ opacity: 0.9 }, { opacity: 0 }], { duration: 220, delay: 60, fill: 'forwards' });
         Promise.race([fadeOut.finished, wait(400)]).then(clearFocusPull, clearFocusPull);
     }
@@ -523,6 +542,7 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
     wait(250 + TURN_MS + BACK_MS + 300).then(finish);
 } else {
     document.documentElement.classList.remove('focus-in');
+    markPageSettled();
 }
 
 // Coming back with the browser's Back button can restore a page mid-blur
