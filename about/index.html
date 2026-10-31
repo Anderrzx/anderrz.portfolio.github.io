@@ -13,10 +13,9 @@ permalink: /about/
 <section class="section about-intro" aria-label="My story">
     <!-- Background video with music, darkened so the text stays readable.
          Browsers start it silent; the music comes on at the first tap or click
-         on the page, and the Sound button turns it on or off. It starts once
-         the page has settled into focus, so it doesn't slow the page change. -->
+         on the page, and the Sound button turns it on or off. -->
     <div class="about-video" aria-hidden="true">
-        <video class="about-video-bg" src="{{ '/assets/videos/about-reel.mp4' | relative_url }}" poster="{{ '/assets/videos/about-reel-poster.jpg' | relative_url }}" muted loop playsinline preload="metadata" tabindex="-1"></video>
+        <video class="about-video-bg" src="{{ '/assets/videos/about-reel.mp4' | relative_url }}" poster="{{ '/assets/videos/about-reel-poster.jpg' | relative_url }}" autoplay muted loop playsinline preload="auto" tabindex="-1"></video>
     </div>
     <button class="video-sound about-sound" type="button" aria-pressed="false">Sound on</button>
 

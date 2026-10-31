@@ -1860,7 +1860,7 @@ a.project-link:hover .project-placeholder {
 
 .focus-in main,
 .focus-in .site-footer {
-    filter: blur(7px) brightness(1.04);
+    filter: blur(6px) brightness(1.036);
 }
 
 .focus-scale {

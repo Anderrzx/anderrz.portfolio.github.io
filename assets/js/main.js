@@ -142,21 +142,6 @@ if (filterBar) {
     filterBar.hidden = false;
 }
 
-// ===== "Page settled" signal =====
-// Heavy things (like the About video) wait until the page has finished its
-// focus pull, so they don't make the page change stutter. The focus pull code
-// at the bottom of this file sends the signal.
-function whenPageSettled(callback) {
-    if (window.anderrzSettled) callback();
-    else document.addEventListener('anderrz:settled', callback, { once: true });
-}
-
-function markPageSettled() {
-    if (window.anderrzSettled) return;
-    window.anderrzSettled = true;
-    document.dispatchEvent(new Event('anderrz:settled'));
-}
-
 // ===== About page video: music on =====
 // Browsers don't allow sound before the visitor has interacted with the page,
 // so the video starts silent; the music comes on at the first tap, click or
@@ -202,10 +187,7 @@ if (aboutVideo && soundButton) {
     };
     interactions.forEach((type) => document.addEventListener(type, onFirstInteraction));
 
-    // Start the video once the page change has finished
-    whenPageSettled(() => {
-        if (!userMuted && aboutVideo.paused) turnSoundOn();
-    });
+    turnSoundOn();
 }
 
 // ===== Background videos (Home and Work) =====
@@ -357,13 +339,15 @@ function setupForm(form) {
 document.querySelectorAll('form.site-form').forEach(setupForm);
 
 // ===== Page change: focus pull =====
-// Clicking a link to another page: the page drifts gently out of focus, then
-// the next page opens a little soft and the focus turns past the sharp spot,
-// just slightly, before easing back to lock in, like adjusting a focus ring
-// by hand. A focus scale slides along the bottom: left to right going forward
-// in the menu (Home, Work, About, Contact), right to left going back.
-// Pages start loading as soon as a link is hovered or touched, so the switch
-// itself doesn't have to wait.
+// Changing pages looks like refocusing a camera lens. The page drifts out of
+// focus, and on the next page the focus ring is turned the way a hand does it:
+// a push past the focus point, a careful trickle back the other way, then a
+// small move forward that lands on focus. The blur follows the ring.
+// A focus scale along the bottom shows the ring: going forward in the menu
+// (Home, Work, About, Contact) it starts on the left, going back on the right.
+// Pages start loading as soon as a link is hovered or touched, and the browser
+// holds the old page until the new one is ready (see @view-transition in
+// main.css), so nothing pops in.
 const FOCUS_KEY = 'anderrz-focus';
 const PAGE_ORDER = ['/', '/work/', '/about/', '/contact/', '/web-design/'];
 const focusCalm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -373,9 +357,8 @@ const focusTargets = [document.querySelector('main'), document.querySelector('.s
 // Safari) don't need the fallback fade-in below
 const smoothPageSwap = 'onpagereveal' in window;
 
-// Gentle on the eyes: a light blur and almost no brightness or size change
-const SOFT = 'blur(7px) brightness(1.04)';
-const SHARP = 'blur(0px) brightness(1)';
+// The strongest blur, kept light so switching pages often is easy on the eyes
+const MAX_BLUR = 6;
 
 function pageIndex(path) {
     const clean = path.endsWith('/') ? path : `${path}/`;
@@ -407,27 +390,44 @@ function prefetch(event) {
     document.addEventListener(type, prefetch, { passive: true });
 });
 
-// The focus scale: 0.3 m on the left, infinity on the right
+// The focus scale along the bottom: 0.3 m on the left, infinity on the right
 function makeFocusScale(dir) {
-    const scale = document.createElement('div');
-    scale.className = 'focus-scale';
-    scale.setAttribute('aria-hidden', 'true');
-    scale.innerHTML = '<div class="focus-scale-ticks"></div>'
+    const finder = document.createElement('div');
+    finder.className = 'focus-scale';
+    finder.setAttribute('aria-hidden', 'true');
+    finder.innerHTML = '<div class="focus-scale-ticks"></div>'
         + '<div class="focus-scale-labels"><span>0.3</span><span>0.5</span><span>1</span><span>3</span><span>&infin; m</span></div>'
         + '<div class="focus-scale-pointer"></div>';
-    document.body.append(scale);
+    document.body.append(finder);
     // Positions are written for going forward and mirrored for going back
     const at = (pct) => `${dir === 1 ? pct : 100 - pct}%`;
-    return { scale, pointer: scale.querySelector('.focus-scale-pointer'), at };
+    return {
+        finder,
+        pointer: finder.querySelector('.focus-scale-pointer'),
+        at,
+    };
+}
+
+function setBlur(blur) {
+    const value = `blur(${blur.toFixed(2)}px) brightness(${(1 + blur * 0.006).toFixed(3)})`;
+    focusTargets.forEach((el) => { el.style.filter = value; });
 }
 
 function clearFocusPull() {
-    focusTargets.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+    focusTargets.forEach((el) => {
+        el.getAnimations().forEach((a) => a.cancel());
+        el.style.filter = '';
+        el.style.transform = '';
+        el.style.opacity = '';
+    });
     document.querySelectorAll('.focus-scale').forEach((el) => el.remove());
     document.documentElement.classList.remove('focus-in');
 }
 
-// Leaving: a quick, light defocus, then go
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+// Leaving: the focus scale appears and the page drifts out of focus, then go
 let focusLeaving = false;
 
 document.addEventListener('click', (event) => {
@@ -443,29 +443,36 @@ document.addEventListener('click', (event) => {
         sessionStorage.setItem(FOCUS_KEY, String(dir));
         focusLeaving = true;
 
-        const ease = 'cubic-bezier(0.4, 0, 0.6, 1)';
-        const { scale, pointer, at } = makeFocusScale(dir);
-        scale.animate([{ opacity: 0 }, { opacity: 0.9 }], { duration: 160, fill: 'forwards' });
-        pointer.animate([{ left: at(8) }, { left: at(26) }], { duration: 260, easing: ease, fill: 'forwards' });
-        const out = focusTargets.map((el) => el.animate(
-            [{ filter: SHARP }, { filter: SOFT }],
-            { duration: 260, easing: ease, fill: 'forwards' },
-        ).finished);
+        const { finder, pointer, at } = makeFocusScale(dir);
+        const OUT_MS = 280;
+        const t0 = performance.now();
+        let gone = false;
+        const go = () => {
+            if (gone) return;
+            gone = true;
+            window.location.href = url.href;
+        };
 
-        // Go when the defocus ends, or after a short safety timer if the
-        // browser pauses animations (e.g. a background tab)
-        const go = () => { window.location.href = url.href; };
-        Promise.race([Promise.all(out), wait(320)]).then(go, go);
+        function frame(now) {
+            const t = Math.min(1, (now - t0) / OUT_MS);
+            const e = easeInOut(t);
+            finder.style.opacity = String(e);
+            // The ring turns away from focus, toward the starting side
+            pointer.style.left = at(50 - 38 * e);
+            setBlur(MAX_BLUR * e);
+            if (t < 1) requestAnimationFrame(frame);
+            else go();
+        }
+        requestAnimationFrame(frame);
+        // Safety timer, in case the browser pauses animation frames
+        wait(OUT_MS + 80).then(go);
     } catch (error) {
         // Storage blocked or animations unsupported: just go
         window.location.href = url.href;
     }
 });
 
-// Arriving: rotate the focus ring like a hand would. The blur follows the
-// ring: the page gets sharper as the ring turns toward the right spot, is
-// perfectly sharp the moment it passes it, goes slightly soft as the hand
-// turns a little too far, then sharpens again as it eases back and stops.
+// Arriving: refocus by hand
 let arrivingDir = null;
 try {
     arrivingDir = sessionStorage.getItem(FOCUS_KEY);
@@ -474,45 +481,58 @@ try {
 
 if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
     const dir = arrivingDir === '-1' ? -1 : 1;
-    const { scale, pointer, at } = makeFocusScale(dir);
-    scale.style.opacity = '0.9';
+    const { finder, pointer, at } = makeFocusScale(dir);
+    finder.style.opacity = '1';
 
-    // Ring position over time (50 = in focus): one turn past focus, then back
-    const START = 26;
-    const OVERSHOOT = 59;
-    const TURN_MS = 620;  // turning toward focus and a little past it
-    const BACK_MS = 560;  // the small correction back, slower and careful
-    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-    const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    // The focus ring's path (50 = in focus), as a hand would turn it:
+    // a push past focus, a slow trickle back the other way, then a small
+    // move forward that lands on focus
+    const START = 12;
+    const MOVES = [
+        { to: 63, ms: 520, ease: easeOut },   // push past the focus point
+        { to: 44, ms: 480, ease: easeInOut }, // trickle back the other way
+        { to: 50, ms: 420, ease: easeInOut }, // forward again, landing on focus
+    ];
+    const TOTAL = MOVES.reduce((sum, move) => sum + move.ms, 0);
 
     function ringAt(ms) {
-        if (ms < TURN_MS) return START + (OVERSHOOT - START) * easeOut(ms / TURN_MS);
-        const t = Math.min(1, (ms - TURN_MS) / BACK_MS);
-        return OVERSHOOT + (50 - OVERSHOOT) * easeInOut(t);
+        let from = START;
+        for (const move of MOVES) {
+            if (ms < move.ms) return from + (move.to - from) * move.ease(ms / move.ms);
+            ms -= move.ms;
+            from = move.to;
+        }
+        return 50;
     }
 
-    // Blur grows with distance from the focus point (7px at the start)
-    const blurFor = (pos) => Math.abs(pos - 50) * (7 / (50 - START));
+    // Blur follows how far the ring is from focus
+    const blurAt = (pos) => Math.min(MAX_BLUR, Math.abs(pos - 50) * (MAX_BLUR / (50 - START)));
 
-    function show(pos) {
-        const blur = blurFor(pos).toFixed(2);
-        const bright = (1 + blurFor(pos) * 0.006).toFixed(3);
-        focusTargets.forEach((el) => { el.style.filter = `blur(${blur}px) brightness(${bright})`; });
+    function show(ms) {
+        const pos = ringAt(ms);
         pointer.style.left = at(pos);
+        setBlur(blurAt(pos));
+        // The page settles in, like a camera screen finding its subject
+        const settle = 1 + 0.012 * (1 - easeOut(Math.min(1, ms / TOTAL)));
+        focusTargets.forEach((el) => { el.style.transform = `scale(${settle.toFixed(4)})`; });
+        if (!smoothPageSwap) {
+            const fade = Math.min(1, ms / 260).toFixed(3);
+            focusTargets.forEach((el) => { el.style.opacity = fade; });
+        }
     }
 
     let finished = false;
     function finish() {
         if (finished) return;
         finished = true;
-        focusTargets.forEach((el) => { el.style.filter = ''; el.style.opacity = ''; });
-        markPageSettled();
-        const fadeOut = scale.animate([{ opacity: 0.9 }, { opacity: 0 }], { duration: 220, delay: 60, fill: 'forwards' });
-        Promise.race([fadeOut.finished, wait(400)]).then(clearFocusPull, clearFocusPull);
+        focusTargets.forEach((el) => { el.style.filter = ''; el.style.transform = ''; el.style.opacity = ''; });
+        pointer.style.left = at(50);
+        // Focus locked: the scale fades away
+        const fadeOut = finder.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, delay: 260, fill: 'forwards' });
+        Promise.race([fadeOut.finished, wait(700)]).then(clearFocusPull, clearFocusPull);
     }
 
-    show(START);
-    // Browsers without the page-to-page fade: start hidden and fade in
+    show(0);
     if (!smoothPageSwap) focusTargets.forEach((el) => { el.style.opacity = '0'; });
     // The inline blur now holds the page soft, so the starting class can go
     document.documentElement.classList.remove('focus-in');
@@ -521,28 +541,23 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
         const t0 = performance.now();
         function frame(now) {
             const ms = now - t0;
-            show(ringAt(ms));
-            if (!smoothPageSwap) {
-                const fade = Math.min(1, ms / 260).toFixed(3);
-                focusTargets.forEach((el) => { el.style.opacity = fade; });
-            }
-            if (ms < TURN_MS + BACK_MS) requestAnimationFrame(frame);
+            show(ms);
+            if (ms < TOTAL) requestAnimationFrame(frame);
             else finish();
         }
         requestAnimationFrame(frame);
     }
 
-    // Start turning once the fonts are ready (at most a quarter second), so
+    // Start turning once the fonts are ready (at most a fifth of a second), so
     // the text doesn't change shape partway through
     const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
-    Promise.race([fontsReady, wait(250)]).then(run, run);
+    Promise.race([fontsReady, wait(200)]).then(run, run);
 
     // Safety timer: the page always ends up sharp, even if the browser
     // pauses animation frames (e.g. a background tab)
-    wait(250 + TURN_MS + BACK_MS + 300).then(finish);
+    wait(200 + TOTAL + 300).then(finish);
 } else {
     document.documentElement.classList.remove('focus-in');
-    markPageSettled();
 }
 
 // Coming back with the browser's Back button can restore a page mid-blur
