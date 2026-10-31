@@ -339,22 +339,51 @@ function setupForm(form) {
 document.querySelectorAll('form.site-form').forEach(setupForm);
 
 // ===== Page change: focus pull =====
-// Clicking a link to another page: the page drifts out of focus, then the
-// next page opens blurred and "hunts" for focus, swinging past the middle and
-// back a few times before it locks in. A focus scale slides along the bottom:
-// left to right when going forward in the menu (Home, Work, About, Contact),
-// right to left when going back.
+// Clicking a link to another page: the page drifts gently out of focus, then
+// the next page opens a little soft and the focus turns past the sharp spot,
+// just slightly, before easing back to lock in, like adjusting a focus ring
+// by hand. A focus scale slides along the bottom: left to right going forward
+// in the menu (Home, Work, About, Contact), right to left going back.
+// Pages start loading as soon as a link is hovered or touched, so the switch
+// itself doesn't have to wait.
 const FOCUS_KEY = 'anderrz-focus';
 const PAGE_ORDER = ['/', '/work/', '/about/', '/contact/', '/web-design/'];
 const focusCalm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const focusTargets = [header, document.querySelector('main'), document.querySelector('.site-footer')].filter(Boolean);
-const focusEase = 'cubic-bezier(0.45, 0, 0.55, 1)';
+
+// Gentle on the eyes: a light blur and almost no brightness or size change
+const SOFT = 'blur(7px) brightness(1.04)';
+const SHARP = 'blur(0px) brightness(1)';
 
 function pageIndex(path) {
     const clean = path.endsWith('/') ? path : `${path}/`;
     const index = PAGE_ORDER.indexOf(clean);
     return index === -1 ? PAGE_ORDER.length : index;
 }
+
+// A link to another page on this site (not a new tab, download or same page)
+function otherPageLink(target) {
+    const link = target.closest && target.closest('a[href]');
+    if (!link || link.target || link.hasAttribute('download')) return null;
+    const url = new URL(link.href, window.location.href);
+    if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return null;
+    return url;
+}
+
+// Start loading the next page early, the moment a link is hovered or touched
+const prefetched = new Set();
+function prefetch(event) {
+    const url = otherPageLink(event.target);
+    if (!url || prefetched.has(url.pathname)) return;
+    prefetched.add(url.pathname);
+    const hint = document.createElement('link');
+    hint.rel = 'prefetch';
+    hint.href = url.pathname;
+    document.head.append(hint);
+}
+['pointerover', 'touchstart', 'focusin'].forEach((type) => {
+    document.addEventListener(type, prefetch, { passive: true });
+});
 
 // The focus scale: 0.3 m on the left, infinity on the right
 function makeFocusScale(dir) {
@@ -376,18 +405,15 @@ function clearFocusPull() {
     document.documentElement.classList.remove('focus-in');
 }
 
-// Leaving: defocus, then go to the next page
+// Leaving: a quick, light defocus, then go
 let focusLeaving = false;
 
 document.addEventListener('click', (event) => {
     if (focusCalm || focusLeaving || event.defaultPrevented) return;
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 
-    const link = event.target.closest('a[href]');
-    if (!link || link.target || link.hasAttribute('download')) return;
-
-    const url = new URL(link.href, window.location.href);
-    if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
+    const url = otherPageLink(event.target);
+    if (!url) return;
 
     try {
         event.preventDefault();
@@ -395,25 +421,26 @@ document.addEventListener('click', (event) => {
         sessionStorage.setItem(FOCUS_KEY, String(dir));
         focusLeaving = true;
 
+        const ease = 'cubic-bezier(0.4, 0, 0.6, 1)';
         const { scale, pointer, at } = makeFocusScale(dir);
-        scale.animate([{ opacity: 0 }, { opacity: 0.9 }], { duration: 200, fill: 'forwards' });
-        pointer.animate([{ left: at(6) }, { left: at(32) }], { duration: 450, easing: focusEase, fill: 'forwards' });
-        const out = focusTargets.map((el) => el.animate([
-            { filter: 'blur(0px) brightness(1)', transform: 'scale(1)' },
-            { filter: 'blur(16px) brightness(1.15)', transform: 'scale(1.03)' },
-        ], { duration: 450, easing: focusEase, fill: 'forwards' }).finished);
+        scale.animate([{ opacity: 0 }, { opacity: 0.9 }], { duration: 160, fill: 'forwards' });
+        pointer.animate([{ left: at(8) }, { left: at(26) }], { duration: 260, easing: ease, fill: 'forwards' });
+        const out = focusTargets.map((el) => el.animate(
+            [{ filter: SHARP }, { filter: SOFT }],
+            { duration: 260, easing: ease, fill: 'forwards' },
+        ).finished);
 
         // Go when the defocus ends, or after a short safety timer if the
         // browser pauses animations (e.g. a background tab)
         const go = () => { window.location.href = url.href; };
-        Promise.race([Promise.all(out), wait(600)]).then(go, go);
+        Promise.race([Promise.all(out), wait(320)]).then(go, go);
     } catch (error) {
         // Storage blocked or animations unsupported: just go
         window.location.href = url.href;
     }
 });
 
-// Arriving: hunt for focus around the middle, then lock in
+// Arriving: turn the focus past the sharp spot, then ease back and lock in
 let arrivingDir = null;
 try {
     arrivingDir = sessionStorage.getItem(FOCUS_KEY);
@@ -424,30 +451,28 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
     const dir = arrivingDir === '-1' ? -1 : 1;
     const { scale, pointer, at } = makeFocusScale(dir);
     scale.style.opacity = '0.9';
-    const hunt = { duration: 650, fill: 'forwards' };
+    const settle = { duration: 1100, fill: 'forwards' };
+    // Turning toward focus slows down as it reaches the spot...
+    const turn = 'cubic-bezier(0.25, 0.1, 0.25, 1)';
+    // ...goes just past it, then eases slowly back
+    const back = 'cubic-bezier(0.45, 0, 0.3, 1)';
 
     const arrive = focusTargets.map((el) => el.animate([
-        { offset: 0,    filter: 'blur(16px) brightness(1.15)',  transform: 'scale(0.985)', easing: focusEase },
-        { offset: 0.3,  filter: 'blur(5px) brightness(1.06)',   transform: 'scale(0.995)', easing: focusEase },
-        { offset: 0.5,  filter: 'blur(9px) brightness(1.08)',   transform: 'scale(0.992)', easing: focusEase },
-        { offset: 0.68, filter: 'blur(2.5px) brightness(1.03)', transform: 'scale(0.998)', easing: focusEase },
-        { offset: 0.84, filter: 'blur(4.5px) brightness(1.04)', transform: 'scale(0.996)', easing: focusEase },
-        { offset: 1,    filter: 'blur(0px) brightness(1)',      transform: 'scale(1)' },
-    ], hunt).finished);
+        { offset: 0,    filter: SOFT, easing: turn },
+        { offset: 0.55, filter: 'blur(1.6px) brightness(1.01)', easing: back },
+        { offset: 1,    filter: SHARP },
+    ], settle).finished);
     pointer.animate([
-        { offset: 0,    left: at(32), easing: focusEase },
-        { offset: 0.3,  left: at(62), easing: focusEase },
-        { offset: 0.5,  left: at(42), easing: focusEase },
-        { offset: 0.68, left: at(56), easing: focusEase },
-        { offset: 0.84, left: at(47), easing: focusEase },
+        { offset: 0,    left: at(26), easing: turn },
+        { offset: 0.55, left: at(58), easing: back },
         { offset: 1,    left: at(50) },
-    ], hunt);
+    ], settle);
     // The animation now holds the blur, so the starting class can go
     document.documentElement.classList.remove('focus-in');
 
     // Fade the scale out when focus locks in; the safety timer makes sure the
     // page always ends up sharp even if the browser pauses animations
-    Promise.race([Promise.all(arrive), wait(900)]).then(() => {
+    Promise.race([Promise.all(arrive), wait(1300)]).then(() => {
         const fadeOut = scale.animate([{ opacity: 0.9 }, { opacity: 0 }], { duration: 220, delay: 60, fill: 'forwards' });
         Promise.race([fadeOut.finished, wait(400)]).then(clearFocusPull, clearFocusPull);
     });
