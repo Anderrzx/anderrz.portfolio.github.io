@@ -449,6 +449,10 @@ document.addEventListener('click', (event) => {
         sessionStorage.setItem(FOCUS_KEY, String(dir));
         focusLeaving = true;
 
+        // The footer disappears the instant a page change starts, so it never
+        // shows during the transition
+        if (siteFooter) siteFooter.style.opacity = '0';
+
         const { finder, pointer, at } = makeFocusScale(dir);
         const OUT_MS = 280;
         const t0 = performance.now();
@@ -466,7 +470,6 @@ document.addEventListener('click', (event) => {
             // The ring turns away from focus, toward the starting side
             pointer.style.left = at(50 - 38 * e);
             setBlur(MAX_BLUR * e);
-            if (siteFooter) siteFooter.style.opacity = String(1 - e);
             if (t < 1) requestAnimationFrame(frame);
             else go();
         }
@@ -568,8 +571,8 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
     document.documentElement.classList.remove('focus-in');
 }
 
-// Coming back with the browser's Back button can restore a page
-// mid-blur (with the footer faded out), so ease it back instead of snapping
+// Coming back with the browser's Back button can restore a page mid-blur,
+// so ease it back into focus; the footer is simply put back as it was
 window.addEventListener('pageshow', (event) => {
     if (!event.persisted) return;
     focusLeaving = false;
@@ -579,8 +582,5 @@ window.addEventListener('pageshow', (event) => {
         if (el.style.filter) el.animate([{ filter: el.style.filter }, { filter: 'blur(0px) brightness(1)' }], ease);
         el.style.filter = '';
     });
-    if (siteFooter && siteFooter.style.opacity) {
-        siteFooter.animate([{ opacity: siteFooter.style.opacity }, { opacity: 1 }], ease);
-        siteFooter.style.opacity = '';
-    }
+    if (siteFooter) siteFooter.style.opacity = '';
 });
