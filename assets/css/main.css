@@ -1865,6 +1865,16 @@ a.project-link:hover .project-placeholder {
     animation: none;
 }
 
+/* The footer is left out of page changes completely: while the browser
+   switches pages it isn't drawn at all, on the old page or the new one */
+.site-footer {
+    view-transition-name: site-footer;
+}
+
+::view-transition-group(site-footer) {
+    display: none;
+}
+
 .focus-in main {
     filter: blur(6px) brightness(1.036);
 }

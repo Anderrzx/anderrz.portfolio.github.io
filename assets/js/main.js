@@ -571,11 +571,20 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
     document.documentElement.classList.remove('focus-in');
 }
 
+// Every way of leaving a page (a link, the Back or Forward button, a back
+// swipe) hides the footer before the browser takes its picture of the old
+// page for the fade, so the footer never shows during a page change
+window.addEventListener('pageswap', () => {
+    if (siteFooter) siteFooter.style.opacity = '0';
+});
+
 // Coming back with the browser's Back button can restore a page mid-blur,
 // so ease it back into focus; the footer is simply put back as it was
 window.addEventListener('pageshow', (event) => {
     if (!event.persisted) return;
     focusLeaving = false;
+    // Like every other page change, start at the top
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     document.querySelectorAll('.focus-scale').forEach((el) => el.remove());
     const ease = { duration: 350, easing: 'ease-out' };
     focusTargets.forEach((el) => {
