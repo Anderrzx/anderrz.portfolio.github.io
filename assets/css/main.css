@@ -1910,15 +1910,12 @@ a.project-link:hover .project-placeholder {
     background: var(--accent);
 }
 
-/* Every page's content is at least one full screen tall, so the footer
-   always starts below the bottom of the screen (like on the Work page) and
-   is only seen when scrolling down, never during a page change */
-main {
-    min-height: 100vh;
-    min-height: 100svh;
+/* ===== Footer ===== */
+/* The Contact page has no footer */
+.page-contact .site-footer {
+    display: none;
 }
 
-/* ===== Footer ===== */
 .site-footer {
     padding: clamp(72px, 9vw, 120px) 0 clamp(48px, 6vw, 72px);
     border-top: 1px solid var(--line);
