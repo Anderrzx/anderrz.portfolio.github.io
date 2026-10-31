@@ -1865,16 +1865,6 @@ a.project-link:hover .project-placeholder {
     animation: none;
 }
 
-/* The footer is left out of page changes completely: while the browser
-   switches pages it isn't drawn at all, on the old page or the new one */
-.site-footer {
-    view-transition-name: site-footer;
-}
-
-::view-transition-group(site-footer) {
-    display: none;
-}
-
 .focus-in main {
     filter: blur(6px) brightness(1.036);
 }
@@ -1918,6 +1908,14 @@ a.project-link:hover .project-placeholder {
     width: 2px;
     height: 14px;
     background: var(--accent);
+}
+
+/* Every page's content is at least one full screen tall, so the footer
+   always starts below the bottom of the screen (like on the Work page) and
+   is only seen when scrolling down, never during a page change */
+main {
+    min-height: 100vh;
+    min-height: 100svh;
 }
 
 /* ===== Footer ===== */
