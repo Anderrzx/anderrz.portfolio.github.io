@@ -440,7 +440,10 @@ document.addEventListener('click', (event) => {
     }
 });
 
-// Arriving: turn the focus past the sharp spot, then ease back and lock in
+// Arriving: rotate the focus ring like a hand would. The blur follows the
+// ring: the page gets sharper as the ring turns toward the right spot, is
+// perfectly sharp the moment it passes it, goes slightly soft as the hand
+// turns a little too far, then sharpens again as it eases back and stops.
 let arrivingDir = null;
 try {
     arrivingDir = sessionStorage.getItem(FOCUS_KEY);
@@ -451,31 +454,56 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
     const dir = arrivingDir === '-1' ? -1 : 1;
     const { scale, pointer, at } = makeFocusScale(dir);
     scale.style.opacity = '0.9';
-    const settle = { duration: 1100, fill: 'forwards' };
-    // Turning toward focus slows down as it reaches the spot...
-    const turn = 'cubic-bezier(0.25, 0.1, 0.25, 1)';
-    // ...goes just past it, then eases slowly back
-    const back = 'cubic-bezier(0.45, 0, 0.3, 1)';
 
-    const arrive = focusTargets.map((el) => el.animate([
-        { offset: 0,    filter: SOFT, easing: turn },
-        { offset: 0.55, filter: 'blur(1.6px) brightness(1.01)', easing: back },
-        { offset: 1,    filter: SHARP },
-    ], settle).finished);
-    pointer.animate([
-        { offset: 0,    left: at(26), easing: turn },
-        { offset: 0.55, left: at(58), easing: back },
-        { offset: 1,    left: at(50) },
-    ], settle);
-    // The animation now holds the blur, so the starting class can go
-    document.documentElement.classList.remove('focus-in');
+    // Ring position over time (50 = in focus): one turn past focus, then back
+    const START = 26;
+    const OVERSHOOT = 59;
+    const TURN_MS = 620;  // turning toward focus and a little past it
+    const BACK_MS = 560;  // the small correction back, slower and careful
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+    const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-    // Fade the scale out when focus locks in; the safety timer makes sure the
-    // page always ends up sharp even if the browser pauses animations
-    Promise.race([Promise.all(arrive), wait(1300)]).then(() => {
+    function ringAt(ms) {
+        if (ms < TURN_MS) return START + (OVERSHOOT - START) * easeOut(ms / TURN_MS);
+        const t = Math.min(1, (ms - TURN_MS) / BACK_MS);
+        return OVERSHOOT + (50 - OVERSHOOT) * easeInOut(t);
+    }
+
+    // Blur grows with distance from the focus point (7px at the start)
+    const blurFor = (pos) => Math.abs(pos - 50) * (7 / (50 - START));
+
+    function show(pos) {
+        const blur = blurFor(pos).toFixed(2);
+        const bright = (1 + blurFor(pos) * 0.006).toFixed(3);
+        focusTargets.forEach((el) => { el.style.filter = `blur(${blur}px) brightness(${bright})`; });
+        pointer.style.left = at(pos);
+    }
+
+    let finished = false;
+    function finish() {
+        if (finished) return;
+        finished = true;
+        focusTargets.forEach((el) => { el.style.filter = ''; });
         const fadeOut = scale.animate([{ opacity: 0.9 }, { opacity: 0 }], { duration: 220, delay: 60, fill: 'forwards' });
         Promise.race([fadeOut.finished, wait(400)]).then(clearFocusPull, clearFocusPull);
-    });
+    }
+
+    show(START);
+    // The inline blur now holds the page soft, so the starting class can go
+    document.documentElement.classList.remove('focus-in');
+
+    const t0 = performance.now();
+    function frame(now) {
+        const ms = now - t0;
+        show(ringAt(ms));
+        if (ms < TURN_MS + BACK_MS) requestAnimationFrame(frame);
+        else finish();
+    }
+    requestAnimationFrame(frame);
+
+    // Safety timer: the page always ends up sharp, even if the browser
+    // pauses animation frames (e.g. a background tab)
+    wait(TURN_MS + BACK_MS + 300).then(finish);
 } else {
     document.documentElement.classList.remove('focus-in');
 }
