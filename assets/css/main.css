@@ -1892,6 +1892,12 @@ a.project-link:hover .project-placeholder {
     background: repeating-linear-gradient(90deg, rgba(241, 235, 221, 0.7) 0 1px, transparent 1px 8.3%);
 }
 
+/* On the light Website Redesign page, dark tick lines so the scale shows
+   (its numbers and pointer already turn dark there) */
+.theme-light .focus-scale-ticks {
+    background: repeating-linear-gradient(90deg, rgba(18, 17, 16, 0.7) 0 1px, transparent 1px 8.3%);
+}
+
 .focus-scale-labels {
     position: absolute;
     left: 0;
