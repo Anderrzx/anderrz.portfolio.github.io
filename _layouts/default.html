@@ -19,7 +19,11 @@
     <link rel="preload" href="{{ '/assets/fonts/satoshi.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
     <!-- ?v= changes on every publish, so browsers pick up new styles and scripts right away -->
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+    <!-- The "A" icon: Google search results and browser tabs pick the size they need -->
+    <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="48x48">
+    <link rel="icon" href="{{ '/assets/images/favicon-192.png' | relative_url }}" type="image/png" sizes="192x192">
     <link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ '/assets/images/apple-touch-icon.png' | relative_url }}">
 
     <!-- Title, description and social share tags (jekyll-seo-tag) -->
     {% seo %}
