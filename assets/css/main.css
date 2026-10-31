@@ -68,6 +68,13 @@ html {
     scroll-behavior: smooth;
     scroll-padding-top: 72px; /* section links land below the sticky header */
     -webkit-text-size-adjust: 100%;
+    /* Nothing on the site scrolls sideways, so never show a sideways scroll bar
+       (e.g. while a page eases in during the focus pull) */
+    overflow-x: clip;
+}
+
+body {
+    overflow-x: clip;
 }
 
 body {
@@ -1858,9 +1865,14 @@ a.project-link:hover .project-placeholder {
     animation: none;
 }
 
-.focus-in main,
-.focus-in .site-footer {
+.focus-in main {
     filter: blur(6px) brightness(1.036);
+}
+
+/* The footer belongs at the bottom of the page, so it stays out of the page
+   change: hidden while the new page comes into focus, then faded in */
+.focus-in .site-footer {
+    opacity: 0;
 }
 
 .focus-scale {

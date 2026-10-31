@@ -351,8 +351,10 @@ document.querySelectorAll('form.site-form').forEach(setupForm);
 const FOCUS_KEY = 'anderrz-focus';
 const PAGE_ORDER = ['/', '/work/', '/about/', '/contact/', '/web-design/'];
 const focusCalm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-// The header stays sharp and still; only the page content changes focus
-const focusTargets = [document.querySelector('main'), document.querySelector('.site-footer')].filter(Boolean);
+// Only the page content changes focus. The header stays sharp and still, and
+// the footer (it belongs at the bottom) hides during the change.
+const focusTargets = [document.querySelector('main')].filter(Boolean);
+const siteFooter = document.querySelector('.site-footer');
 // Browsers that hold the old page and fade to the new one (Chrome, Edge,
 // Safari) don't need the fallback fade-in below
 const smoothPageSwap = 'onpagereveal' in window;
@@ -420,6 +422,10 @@ function clearFocusPull() {
         el.style.transform = '';
         el.style.opacity = '';
     });
+    if (siteFooter) {
+        siteFooter.getAnimations().forEach((a) => a.cancel());
+        siteFooter.style.opacity = '';
+    }
     document.querySelectorAll('.focus-scale').forEach((el) => el.remove());
     document.documentElement.classList.remove('focus-in');
 }
@@ -460,6 +466,7 @@ document.addEventListener('click', (event) => {
             // The ring turns away from focus, toward the starting side
             pointer.style.left = at(50 - 38 * e);
             setBlur(MAX_BLUR * e);
+            if (siteFooter) siteFooter.style.opacity = String(1 - e);
             if (t < 1) requestAnimationFrame(frame);
             else go();
         }
@@ -527,13 +534,19 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
         finished = true;
         focusTargets.forEach((el) => { el.style.filter = ''; el.style.transform = ''; el.style.opacity = ''; });
         pointer.style.left = at(50);
-        // Focus locked: the scale fades away
+        // Focus locked: the scale fades away and the footer fades back in
         const fadeOut = finder.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, delay: 260, fill: 'forwards' });
+        if (siteFooter) {
+            siteFooter.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease-out' });
+            siteFooter.style.opacity = '';
+        }
         Promise.race([fadeOut.finished, wait(700)]).then(clearFocusPull, clearFocusPull);
     }
 
     show(0);
     if (!smoothPageSwap) focusTargets.forEach((el) => { el.style.opacity = '0'; });
+    // The footer stays hidden until the new page is in focus
+    if (siteFooter) siteFooter.style.opacity = '0';
     // The inline blur now holds the page soft, so the starting class can go
     document.documentElement.classList.remove('focus-in');
 
