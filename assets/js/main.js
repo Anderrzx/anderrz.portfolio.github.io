@@ -410,9 +410,9 @@ function makeFocusScale(dir) {
     };
 }
 
-function setBlur(blur) {
+function setBlur(blur, targets = focusTargets) {
     const value = `blur(${blur.toFixed(2)}px) brightness(${(1 + blur * 0.006).toFixed(3)})`;
-    focusTargets.forEach((el) => { el.style.filter = value; });
+    targets.forEach((el) => { el.style.filter = value; });
 }
 
 function clearFocusPull() {
@@ -425,6 +425,7 @@ function clearFocusPull() {
     if (siteFooter) {
         siteFooter.getAnimations().forEach((a) => a.cancel());
         siteFooter.style.opacity = '';
+        siteFooter.style.filter = '';
     }
     document.querySelectorAll('.focus-scale').forEach((el) => el.remove());
     document.documentElement.classList.remove('focus-in');
@@ -515,10 +516,14 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
     // Blur follows how far the ring is from focus
     const blurAt = (pos) => Math.min(MAX_BLUR, Math.abs(pos - 50) * (MAX_BLUR / (50 - START)));
 
+    // On the new page the footer comes into focus together with the content,
+    // in its own place at the bottom
+    const arriveTargets = [...focusTargets, siteFooter].filter(Boolean);
+
     function show(ms) {
         const pos = ringAt(ms);
         pointer.style.left = at(pos);
-        setBlur(blurAt(pos));
+        setBlur(blurAt(pos), arriveTargets);
         // The page settles in, like a camera screen finding its subject
         const settle = 1 + 0.012 * (1 - easeOut(Math.min(1, ms / TOTAL)));
         focusTargets.forEach((el) => { el.style.transform = `scale(${settle.toFixed(4)})`; });
@@ -532,21 +537,15 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
     function finish() {
         if (finished) return;
         finished = true;
-        focusTargets.forEach((el) => { el.style.filter = ''; el.style.transform = ''; el.style.opacity = ''; });
+        arriveTargets.forEach((el) => { el.style.filter = ''; el.style.transform = ''; el.style.opacity = ''; });
         pointer.style.left = at(50);
-        // Focus locked: the scale fades away and the footer fades back in
+        // Focus locked: the scale fades away
         const fadeOut = finder.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, delay: 260, fill: 'forwards' });
-        if (siteFooter) {
-            siteFooter.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease-out' });
-            siteFooter.style.opacity = '';
-        }
         Promise.race([fadeOut.finished, wait(700)]).then(clearFocusPull, clearFocusPull);
     }
 
     show(0);
     if (!smoothPageSwap) focusTargets.forEach((el) => { el.style.opacity = '0'; });
-    // The footer stays hidden until the new page is in focus
-    if (siteFooter) siteFooter.style.opacity = '0';
     // The inline blur now holds the page soft, so the starting class can go
     document.documentElement.classList.remove('focus-in');
 
