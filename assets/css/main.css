@@ -1869,12 +1869,6 @@ a.project-link:hover .project-placeholder {
     filter: blur(6px) brightness(1.036);
 }
 
-/* The footer belongs at the bottom of the page, so it stays out of the page
-   change: hidden while the new page comes into focus, then faded in */
-.focus-in .site-footer {
-    opacity: 0;
-}
-
 .focus-scale {
     position: fixed;
     left: 50%;

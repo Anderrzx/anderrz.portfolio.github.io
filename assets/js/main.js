@@ -534,19 +534,14 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
         finished = true;
         focusTargets.forEach((el) => { el.style.filter = ''; el.style.transform = ''; el.style.opacity = ''; });
         pointer.style.left = at(50);
-        // Focus locked: the scale fades away and the footer fades back in
+        // Focus locked: the scale fades away. (The footer is never touched on
+        // the new page: it's simply there, sharp and still, like the header.)
         const fadeOut = finder.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, delay: 260, fill: 'forwards' });
-        if (siteFooter) {
-            siteFooter.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease-out' });
-            siteFooter.style.opacity = '';
-        }
         Promise.race([fadeOut.finished, wait(700)]).then(clearFocusPull, clearFocusPull);
     }
 
     show(0);
     if (!smoothPageSwap) focusTargets.forEach((el) => { el.style.opacity = '0'; });
-    // The footer stays hidden until the new page is in focus
-    if (siteFooter) siteFooter.style.opacity = '0';
     // The inline blur now holds the page soft, so the starting class can go
     document.documentElement.classList.remove('focus-in');
 
@@ -573,10 +568,19 @@ if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
     document.documentElement.classList.remove('focus-in');
 }
 
-// Coming back with the browser's Back button can restore a page mid-blur
+// Coming back with the browser's Back button can restore a page
+// mid-blur (with the footer faded out), so ease it back instead of snapping
 window.addEventListener('pageshow', (event) => {
-    if (event.persisted) {
-        focusLeaving = false;
-        clearFocusPull();
+    if (!event.persisted) return;
+    focusLeaving = false;
+    document.querySelectorAll('.focus-scale').forEach((el) => el.remove());
+    const ease = { duration: 350, easing: 'ease-out' };
+    focusTargets.forEach((el) => {
+        if (el.style.filter) el.animate([{ filter: el.style.filter }, { filter: 'blur(0px) brightness(1)' }], ease);
+        el.style.filter = '';
+    });
+    if (siteFooter && siteFooter.style.opacity) {
+        siteFooter.animate([{ opacity: siteFooter.style.opacity }, { opacity: 1 }], ease);
+        siteFooter.style.opacity = '';
     }
 });
