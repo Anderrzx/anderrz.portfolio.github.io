@@ -337,3 +337,128 @@ function setupForm(form) {
 }
 
 document.querySelectorAll('form.site-form').forEach(setupForm);
+
+// ===== Page change: focus pull =====
+// Clicking a link to another page: the page drifts out of focus, then the
+// next page opens blurred and "hunts" for focus, swinging past the middle and
+// back a few times before it locks in. A focus scale slides along the bottom:
+// left to right when going forward in the menu (Home, Work, About, Contact),
+// right to left when going back.
+const FOCUS_KEY = 'anderrz-focus';
+const PAGE_ORDER = ['/', '/work/', '/about/', '/contact/', '/web-design/'];
+const focusCalm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const focusTargets = [header, document.querySelector('main'), document.querySelector('.site-footer')].filter(Boolean);
+const focusEase = 'cubic-bezier(0.45, 0, 0.55, 1)';
+
+function pageIndex(path) {
+    const clean = path.endsWith('/') ? path : `${path}/`;
+    const index = PAGE_ORDER.indexOf(clean);
+    return index === -1 ? PAGE_ORDER.length : index;
+}
+
+// The focus scale: 0.3 m on the left, infinity on the right
+function makeFocusScale(dir) {
+    const scale = document.createElement('div');
+    scale.className = 'focus-scale';
+    scale.setAttribute('aria-hidden', 'true');
+    scale.innerHTML = '<div class="focus-scale-ticks"></div>'
+        + '<div class="focus-scale-labels"><span>0.3</span><span>0.5</span><span>1</span><span>3</span><span>&infin; m</span></div>'
+        + '<div class="focus-scale-pointer"></div>';
+    document.body.append(scale);
+    // Positions are written for going forward and mirrored for going back
+    const at = (pct) => `${dir === 1 ? pct : 100 - pct}%`;
+    return { scale, pointer: scale.querySelector('.focus-scale-pointer'), at };
+}
+
+function clearFocusPull() {
+    focusTargets.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+    document.querySelectorAll('.focus-scale').forEach((el) => el.remove());
+    document.documentElement.classList.remove('focus-in');
+}
+
+// Leaving: defocus, then go to the next page
+let focusLeaving = false;
+
+document.addEventListener('click', (event) => {
+    if (focusCalm || focusLeaving || event.defaultPrevented) return;
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    const link = event.target.closest('a[href]');
+    if (!link || link.target || link.hasAttribute('download')) return;
+
+    const url = new URL(link.href, window.location.href);
+    if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
+
+    try {
+        event.preventDefault();
+        const dir = pageIndex(url.pathname) >= pageIndex(window.location.pathname) ? 1 : -1;
+        sessionStorage.setItem(FOCUS_KEY, String(dir));
+        focusLeaving = true;
+
+        const { scale, pointer, at } = makeFocusScale(dir);
+        scale.animate([{ opacity: 0 }, { opacity: 0.9 }], { duration: 200, fill: 'forwards' });
+        pointer.animate([{ left: at(6) }, { left: at(32) }], { duration: 450, easing: focusEase, fill: 'forwards' });
+        const out = focusTargets.map((el) => el.animate([
+            { filter: 'blur(0px) brightness(1)', transform: 'scale(1)' },
+            { filter: 'blur(16px) brightness(1.15)', transform: 'scale(1.03)' },
+        ], { duration: 450, easing: focusEase, fill: 'forwards' }).finished);
+
+        // Go when the defocus ends, or after a short safety timer if the
+        // browser pauses animations (e.g. a background tab)
+        const go = () => { window.location.href = url.href; };
+        Promise.race([Promise.all(out), wait(600)]).then(go, go);
+    } catch (error) {
+        // Storage blocked or animations unsupported: just go
+        window.location.href = url.href;
+    }
+});
+
+// Arriving: hunt for focus around the middle, then lock in
+let arrivingDir = null;
+try {
+    arrivingDir = sessionStorage.getItem(FOCUS_KEY);
+    sessionStorage.removeItem(FOCUS_KEY);
+} catch (error) { /* storage blocked */ }
+
+if (arrivingDir && document.documentElement.classList.contains('focus-in')) {
+    const dir = arrivingDir === '-1' ? -1 : 1;
+    const { scale, pointer, at } = makeFocusScale(dir);
+    scale.style.opacity = '0.9';
+    const hunt = { duration: 650, fill: 'forwards' };
+
+    const arrive = focusTargets.map((el) => el.animate([
+        { offset: 0,    filter: 'blur(16px) brightness(1.15)',  transform: 'scale(0.985)', easing: focusEase },
+        { offset: 0.3,  filter: 'blur(5px) brightness(1.06)',   transform: 'scale(0.995)', easing: focusEase },
+        { offset: 0.5,  filter: 'blur(9px) brightness(1.08)',   transform: 'scale(0.992)', easing: focusEase },
+        { offset: 0.68, filter: 'blur(2.5px) brightness(1.03)', transform: 'scale(0.998)', easing: focusEase },
+        { offset: 0.84, filter: 'blur(4.5px) brightness(1.04)', transform: 'scale(0.996)', easing: focusEase },
+        { offset: 1,    filter: 'blur(0px) brightness(1)',      transform: 'scale(1)' },
+    ], hunt).finished);
+    pointer.animate([
+        { offset: 0,    left: at(32), easing: focusEase },
+        { offset: 0.3,  left: at(62), easing: focusEase },
+        { offset: 0.5,  left: at(42), easing: focusEase },
+        { offset: 0.68, left: at(56), easing: focusEase },
+        { offset: 0.84, left: at(47), easing: focusEase },
+        { offset: 1,    left: at(50) },
+    ], hunt);
+    // The animation now holds the blur, so the starting class can go
+    document.documentElement.classList.remove('focus-in');
+
+    // Fade the scale out when focus locks in; the safety timer makes sure the
+    // page always ends up sharp even if the browser pauses animations
+    Promise.race([Promise.all(arrive), wait(900)]).then(() => {
+        const fadeOut = scale.animate([{ opacity: 0.9 }, { opacity: 0 }], { duration: 220, delay: 60, fill: 'forwards' });
+        Promise.race([fadeOut.finished, wait(400)]).then(clearFocusPull, clearFocusPull);
+    });
+} else {
+    document.documentElement.classList.remove('focus-in');
+}
+
+// Coming back with the browser's Back button can restore a page mid-blur
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        focusLeaving = false;
+        clearFocusPull();
+    }
+});

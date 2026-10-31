@@ -1832,6 +1832,56 @@ a.project-link:hover .project-placeholder {
     mask-composite: intersect;
 }
 
+/* ===== Page change: focus pull =====
+   Leaving a page, it drifts out of focus; the next page opens blurred and
+   "hunts" into focus (main.js). A focus scale slides along the bottom. */
+.focus-in .site-header,
+.focus-in main,
+.focus-in .site-footer {
+    filter: blur(16px) brightness(1.15);
+}
+
+.focus-scale {
+    position: fixed;
+    left: 50%;
+    bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+    z-index: 200;
+    width: min(420px, calc(100% - 64px));
+    height: 24px;
+    transform: translateX(-50%);
+    color: var(--text);
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.focus-scale-ticks {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 8px;
+    background: repeating-linear-gradient(90deg, rgba(241, 235, 221, 0.7) 0 1px, transparent 1px 8.3%);
+}
+
+.focus-scale-labels {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 11px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.focus-scale-pointer {
+    position: absolute;
+    top: -6px;
+    left: 0;
+    width: 2px;
+    height: 14px;
+    background: var(--accent);
+}
+
 /* ===== Footer ===== */
 .site-footer {
     padding: clamp(72px, 9vw, 120px) 0 clamp(48px, 6vw, 72px);

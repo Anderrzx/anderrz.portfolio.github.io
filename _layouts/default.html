@@ -7,6 +7,14 @@
 
     <!-- Lets the CSS know JavaScript is on, so scroll animations only hide content when they can reveal it -->
     <script>document.documentElement.classList.add('js');</script>
+    <!-- Arriving from another page: start out of focus so the focus pull can bring it in (see main.js) -->
+    <script>
+        try {
+            if (sessionStorage.getItem('anderrz-focus') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.documentElement.classList.add('focus-in');
+            }
+        } catch (error) { /* storage blocked: no transition */ }
+    </script>
 
     <link rel="preload" href="{{ '/assets/fonts/satoshi.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
