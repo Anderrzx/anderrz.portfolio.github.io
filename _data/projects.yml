@@ -10,15 +10,13 @@
 #   tone: warm                      # warm (golden-hour) or dark placeholder colour when there's no image
 #   url: https://example.com        # link to the live site or video; leave empty if none
 #   new_tab: true                   # open the link in a new tab (for separate sites)
+#   tile: name                      # show a display tile (_includes/project-tile-name.html) instead of a linked card
 #   featured: true                  # true = also show it on the homepage (up to 3)
 
 - title: Iron Tap
   category: Web Design
   type: Concept
   summary: "A redesign concept for Iron Tap Craft Brew & BBQ in Waconia, MN: a modern rustic site with an interactive burger build, a filterable menu and a clearer way to reserve."
-  image: /assets/images/projects/iron-tap.jpg
-  tone: dark
-  # The full concept site lives in work/iron-tap/ (copied from its build)
-  url: /work/iron-tap/
-  new_tab: true
+  # Shown as the Iron Tap concept tile (_includes/project-tile-iron-tap.html), not a link
+  tile: iron-tap
   featured: false
