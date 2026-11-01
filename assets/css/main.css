@@ -929,6 +929,66 @@ a.project-link:hover .project-placeholder {
     color: rgb(212 160 98 / 0.9);
 }
 
+/* Hover (or keyboard focus): the tile blurs and a View box appears in the
+   middle, which opens the concept site */
+.it-tile__mark,
+.it-tile__name,
+.it-tile__tag {
+    transition: filter 0.4s var(--ease), opacity 0.4s var(--ease);
+}
+
+.it-tile:hover .it-tile__mark,
+.it-tile:hover .it-tile__name,
+.it-tile:hover .it-tile__tag,
+.it-tile:focus-within .it-tile__mark,
+.it-tile:focus-within .it-tile__name,
+.it-tile:focus-within .it-tile__tag {
+    filter: blur(6px);
+}
+
+.it-tile__view {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding: 0.7rem 1.6rem;
+    border: 1px solid rgb(242 232 213 / 0.55);
+    border-radius: 10px;
+    background: rgb(28 33 31 / 0.55);
+    color: var(--it-cream);
+    font: 700 0.95rem/1 "Barlow Condensed", "Arial Narrow", sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+    transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), border-color 0.3s, color 0.3s;
+}
+
+.it-tile:hover .it-tile__view,
+.it-tile:focus-within .it-tile__view {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+
+.it-tile__view:hover,
+.it-tile__view:focus-visible {
+    border-color: var(--it-amber);
+    color: var(--it-amber);
+    outline: none;
+}
+
+/* Phones and tablets can't hover, so the View box is always there to tap */
+@media (hover: none) {
+    .it-tile__view,
+    .it-tile:hover .it-tile__view,
+    .it-tile:focus-within .it-tile__view {
+        top: auto;
+        bottom: 16px;
+        opacity: 1;
+        transform: translateX(-50%);
+    }
+}
+
 /* Placeholder "stills" until real images are added */
 .project-placeholder {
     background:

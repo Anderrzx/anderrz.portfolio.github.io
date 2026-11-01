@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Concept tab icon: the original tap-handle mark on the concept's forest green -->
+  <rect width="64" height="64" rx="14" fill="#1c211f"/>
+  <g transform="translate(8 8)" fill="none" stroke="#d4a062" stroke-width="2">
+    <circle cx="24" cy="24" r="21.5"/>
+    <path d="M20.5 9.5h7l-1 12h-5z" fill="#d4a062" stroke="none"/>
+    <path d="M17.5 22.5h13v4h-13zM22 26.5v5h-4M26 31.5h4M24.5 33v4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

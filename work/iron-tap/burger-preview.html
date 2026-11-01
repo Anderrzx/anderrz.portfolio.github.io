@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Zen Smash Assembly Preview · Iron Tap Redesign Concept</title>
+  <meta name="description" content="Static assembly preview of the Zen Smash layer art for an Iron Tap redesign concept by Anderrz. Not affiliated with Iron Tap.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1c211f">
+  <link rel="icon" href="./assets/tap-mark-icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" crossorigin href="./assets/burger-preview-CY3VfFxb.css">
+  <link rel="stylesheet" crossorigin href="./assets/styles-CM5l-zh-.css">
+</head>
+<body class="bp-page">
+  <main class="bp">
+    <header class="bp__intro">
+      <p class="eyebrow">Assembly preview</p>
+      <h1 class="bp__title">Zen Smash</h1>
+      <p class="bp__desc">2 Wagyu Beef Blend, American Cheese, Fried Onions, Fancy Sauce &amp; Pickles</p>
+    </header>
+
+    <!--
+      Assembled, the burger is one photo (.bp__hero). Exploded, the photo fades
+      out and the separate ingredient images take over, floating apart from
+      where each ingredient sits in the photo to its spot in the exploded
+      reference. Every image keeps its original proportions (height follows its
+      own aspect ratio). Positions are in canvas units = pixels of the
+      1254 × 1254 exploded reference (the fried onions, added later, sit between
+      the cheese patty and the sauce; the layers above moved up to make room): --x = left edge, --w = width, --b = bottom
+      edge when assembled (lined up with the photo), --ex = how far the layer
+      moves up (negative) when exploded. The hero photo is scaled so its buns
+      match the ingredient buns (0.674 × its source size).
+      Each layer carries its exploded-view label (name + short description);
+      --i orders the labels' reveal from the top down. The descriptions are
+      concept copy describing what the images show: confirm with the owners.
+      Listed bottom to top; later layers paint over earlier ones.
+    -->
+    <figure class="bp__stage">
+      <div class="bp__view" role="group" aria-label="View">
+        <button type="button" aria-pressed="true" data-view="assembled">Assembled</button>
+        <button type="button" aria-pressed="false" data-view="exploded">Exploded</button>
+      </div>
+      <div class="bp__frame">
+        <div class="bp__burger" role="img" aria-label="Burger, from the top: brioche top bun, sauce, crispy fried onions, two beef patties with melted cheese, red onion rings, pickles, lettuce and a brioche bottom bun spread with sauce">
+          <img class="bp__hero" src="burger/ingredients/burger-assembled.webp" alt="" style="--x:234;--w:708;--b:1360" data-layer="assembled">
+          <div class="bp__layer" style="--x:325;--w:579;--b:1246;--ex:0;--i:8" data-layer="bottom-bun">
+            <img src="burger/ingredients/01-bottom-bun.webp" alt="">
+            <p class="bp__label"><span class="bp__line"></span><span class="bp__text"><strong>Brioche Bottom Bun</strong><span>Toasted &amp; spread with Fancy Sauce</span></span></p>
+          </div>
+          <div class="bp__layer" style="--x:302;--w:622;--b:1175;--ex:-149;--i:7" data-layer="lettuce">
+            <img src="burger/ingredients/02-lettuce.webp" alt="">
+            <p class="bp__label"><span class="bp__line"></span><span class="bp__text"><strong>Lettuce</strong><span>Crisp, fresh green leaf</span></span></p>
+          </div>
+          <div class="bp__layer" style="--x:338;--w:548;--b:1135;--ex:-268;--i:6" data-layer="pickles">
+            <img src="burger/ingredients/03-pickles.webp" alt="">
+            <p class="bp__label"><span class="bp__line"></span><span class="bp__text"><strong>Pickles</strong><span>Crinkle-cut &amp; tangy</span></span></p>
+          </div>
+          <div class="bp__layer" style="--x:334;--w:555;--b:1101;--ex:-356;--i:5" data-layer="onions">
+            <img src="burger/ingredients/04-onions.webp" alt="">
+            <p class="bp__label"><span class="bp__line"></span><span class="bp__text"><strong>Red Onion</strong><span>Thin-sliced rings for crunch</span></span></p>
+          </div>
+          <div class="bp__layer" style="--x:321;--w:587;--b:1074;--ex:-439;--i:4" data-layer="patty-2">
+            <img src="burger/ingredients/05-patty-2.webp" alt="">
+            <p class="bp__label"><span class="bp__line"></span><span class="bp__text"><strong>Wagyu Beef Blend</strong><span>Seared, with melted American cheese</span></span></p>
+          </div>
+          <div class="bp__layer" style="--x:336;--w:564;--b:1000;--ex:-502;--i:3" data-layer="patty-1">
+            <img src="burger/ingredients/06-patty-1.webp" alt="">
+            <p class="bp__label"><span class="bp__line"></span><span class="bp__text"><strong>Wagyu Beef Blend</strong><span>Seared, with melted American cheese</span></span></p>
+          </div>
+          <div class="bp__layer" style="--x:345;--w:540;--b:965;--ex:-600;--i:2" data-layer="fried-onions">
+            <img src="burger/ingredients/07-fried-onions.webp" alt="">
+            <p class="bp__label"><span class="bp__line"></span><span class="bp__text"><strong>Fried Onion Rings</strong><span>Beer-battered, fresh &amp; deep-fried</span></span></p>
+          </div>
+          <div class="bp__layer" style="--x:362;--w:500;--b:930;--ex:-775;--i:1" data-layer="sauce">
+            <img src="burger/ingredients/08-sauce.webp" alt="">
+            <p class="bp__label"><span class="bp__line"></span><span class="bp__text"><strong>Fancy Sauce</strong><span>Creamy, flecked with herbs</span></span></p>
+          </div>
+          <div class="bp__layer bp__layer--top" style="--x:330;--w:573;--b:872;--ex:-847;--i:0" data-layer="top-bun">
+            <img src="burger/ingredients/09-top-bun.webp" alt="">
+            <p class="bp__label"><span class="bp__line"></span><span class="bp__text"><strong>Brioche Top Bun</strong><span>Golden, glossy &amp; lightly toasted</span></span></p>
+          </div>
+        </div>
+      </div>
+      <figcaption class="bp__caption">Concept render assembled from AI-generated ingredient images. Not a photograph of an Iron Tap dish.</figcaption>
+    </figure>
+
+    <p class="bp__disclosure">Independent redesign concept by Anderrz. Not affiliated with Iron Tap.</p>
+  </main>
+  <script>
+    // Review aid: switch between the assembled burger and the exploded view.
+    const stage = document.querySelector(".bp__stage");
+    const buttons = stage.querySelectorAll("[data-view]");
+    buttons.forEach((btn) => btn.addEventListener("click", () => {
+      stage.classList.toggle("is-exploded", btn.dataset.view === "exploded");
+      buttons.forEach((b) => b.setAttribute("aria-pressed", b === btn));
+    }));
+  </script>
+</body>
+</html>

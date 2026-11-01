@@ -1,8 +1,9 @@
 {% comment %}
   Iron Tap concept tile (from Website Projects/IronTap/Final/Portfolio Tile).
-  A display tile, not a link: the original tap-handle concept mark (not Iron
-  Tap's logo) in their amber, softened, on their forest green, with the name
-  underneath. Styles: .it-tile in main.css.
+  The original tap-handle concept mark (not Iron Tap's logo) in their amber,
+  softened, on their forest green, with the name underneath. On hover the
+  tile blurs and a View button in the middle opens the concept site (new tab).
+  Styles: .it-tile in main.css.
 {% endcomment %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap">
 <figure class="it-tile" aria-label="IronTap: independent redesign concept by Anderrz, not affiliated with Iron Tap">
@@ -13,4 +14,5 @@
         <path d="M17.5 22.5h13v4h-13zM22 26.5v5h-4M26 31.5h4M24.5 33v4" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <figcaption class="it-tile__name">IronTap</figcaption>
+    <a class="it-tile__view" href="{{ '/work/iron-tap/' | relative_url }}" target="_blank" rel="noopener" aria-label="View the IronTap concept (opens in a new tab)">View</a>
 </figure>
