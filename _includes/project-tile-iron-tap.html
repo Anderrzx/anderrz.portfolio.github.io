@@ -1,18 +1,11 @@
 {% comment %}
-  Iron Tap concept tile (from Website Projects/IronTap/Final/Portfolio Tile).
-  The original tap-handle concept mark (not Iron Tap's logo) in their amber,
-  softened, on their forest green, with the name underneath. On hover the
-  tile blurs and a View button in the middle opens the concept site (new tab).
-  Styles: .it-tile in main.css.
+  Iron Tap concept tile: your IronTap image (the original tap-handle concept
+  mark, not Iron Tap's logo) with the same Concept badge as every project
+  card. On hover the tile blurs and a View button in the middle opens the
+  concept site (new tab). Styles: .it-tile in main.css.
 {% endcomment %}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap">
 <figure class="it-tile" aria-label="IronTap: independent redesign concept by Anderrz, not affiliated with Iron Tap">
-    <span class="it-tile__tag">Concept</span>
-    <svg class="it-tile__mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
-        <circle cx="24" cy="24" r="21.5"/><circle cx="24" cy="24" r="17.5" stroke-width="1" opacity=".55"/>
-        <path d="M20.5 9.5h7l-1 12h-5z" fill="currentColor" stroke="none"/>
-        <path d="M17.5 22.5h13v4h-13zM22 26.5v5h-4M26 31.5h4M24.5 33v4" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <figcaption class="it-tile__name">IronTap</figcaption>
+    <img class="it-tile__image" src="{{ '/assets/images/projects/iron-tap-tile.png' | relative_url }}" alt="IronTap concept tile: an amber tap-handle mark above the name IronTap on dark green" width="560" height="560" loading="lazy">
+    <span class="badge">{{ include.type | default: 'Concept' }}</span>
     <a class="it-tile__view" href="{{ '/work/iron-tap/' | relative_url }}" target="_blank" rel="noopener" aria-label="View the IronTap concept (opens in a new tab)">View</a>
 </figure>

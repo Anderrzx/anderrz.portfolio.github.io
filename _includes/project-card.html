@@ -8,7 +8,7 @@
 {% comment %} A display tile instead of a linked card (e.g. tile: iron-tap) {% endcomment %}
 <article class="project-card project-card--tile reveal" data-category="{{ p.category | slugify }}" data-type="{{ p.type | slugify }}">
     {% capture tile_file %}project-tile-{{ p.tile }}.html{% endcapture %}
-    {% include {{ tile_file }} %}
+    {% include {{ tile_file }} type=p.type %}
 </article>
 {% else %}
 {% if p.url %}{% assign tag = 'a' %}{% else %}{% assign tag = 'div' %}{% endif %}

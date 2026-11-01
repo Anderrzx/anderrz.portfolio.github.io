@@ -874,75 +874,38 @@ a.project-link:hover .project-placeholder {
     transform: scale(1.025);
 }
 
-/* ===== Iron Tap concept tile (a display tile, not a link) =====
-   From the Portfolio Tile in the Iron Tap project. Colors are Iron Tap's
-   theme: forest, amber and cream. The mark is softened so it isn't fully
-   colored. */
+/* ===== Project tiles (e.g. Iron Tap) =====
+   Your square tile image with the same Concept / Client badge as every
+   project card. Hovering (or keyboard focus) blurs it and shows a View box
+   in the middle that opens the project. */
 .it-tile {
-    --it-forest: #1c211f;
     --it-amber: #d4a062;
     --it-cream: #f2e8d5;
     position: relative;
-    container-type: inline-size; /* the name scales with the tile */
     width: min(100%, 380px);
     aspect-ratio: 1;
     margin: 0;
-    display: grid;
-    place-content: center;
-    justify-items: center;
-    gap: 0.85rem;
+    overflow: hidden;
     border-radius: 18px;
-    background:
-        radial-gradient(70% 60% at 50% 42%, rgb(212 160 98 / 0.16), transparent 70%),
-        var(--it-forest);
-    box-shadow: inset 0 0 0 1px rgb(242 232 213 / 0.08);
-    cursor: default;
-    user-select: none;
+    background: #1c211f;
 }
 
-.it-tile__mark {
-    width: 42%;
-    height: auto;
-    color: var(--it-amber);
-    opacity: 0.72;
+.it-tile__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.it-tile__name {
-    margin: 0;
-    font: 700 clamp(1.5rem, 9cqw, 2.1rem)/1 "Barlow Condensed", "Arial Narrow", sans-serif;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--it-cream);
-    opacity: 0.82;
+.it-tile__image,
+.it-tile .badge {
+    transition: filter 0.4s var(--ease);
 }
 
-.it-tile__tag {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    padding: 0.2rem 0.6rem;
-    border: 1px solid rgb(212 160 98 / 0.45);
-    border-radius: 999px;
-    font: 600 0.6875rem/1.2 "Barlow Condensed", "Arial Narrow", sans-serif;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgb(212 160 98 / 0.9);
-}
-
-/* Hover (or keyboard focus): the tile blurs and a View box appears in the
-   middle, which opens the concept site */
-.it-tile__mark,
-.it-tile__name,
-.it-tile__tag {
-    transition: filter 0.4s var(--ease), opacity 0.4s var(--ease);
-}
-
-.it-tile:hover .it-tile__mark,
-.it-tile:hover .it-tile__name,
-.it-tile:hover .it-tile__tag,
-.it-tile:focus-within .it-tile__mark,
-.it-tile:focus-within .it-tile__name,
-.it-tile:focus-within .it-tile__tag {
+.it-tile:hover .it-tile__image,
+.it-tile:hover .badge,
+.it-tile:focus-within .it-tile__image,
+.it-tile:focus-within .badge {
     filter: blur(6px);
 }
 
@@ -950,12 +913,13 @@ a.project-link:hover .project-placeholder {
     position: absolute;
     left: 50%;
     top: 50%;
-    padding: 0.7rem 1.6rem;
+    padding: 0.75rem 1.6rem;
     border: 1px solid rgb(242 232 213 / 0.55);
     border-radius: 10px;
-    background: rgb(28 33 31 / 0.55);
+    background: rgb(18 17 16 / 0.5);
     color: var(--it-cream);
-    font: 700 0.95rem/1 "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     text-decoration: none;
@@ -1920,7 +1884,17 @@ a.project-link:hover .project-placeholder {
     --verse-gap: clamp(56px, 7vw, 96px);
 }
 
-/* John 3:16, centered between the projects line and the video */
+/* A line separating the projects from John 3:16 and the video, the same
+   width as the page's other dividing lines */
+.work-video::before {
+    content: "";
+    display: block;
+    width: calc(min(100%, var(--max-width)) - 2 * var(--gutter));
+    margin: 0 auto var(--verse-gap);
+    border-top: 1px solid var(--line);
+}
+
+/* John 3:16, centered between that line and the video */
 .work-verse {
     margin: 0 0 var(--verse-gap);
     color: var(--text-muted);
