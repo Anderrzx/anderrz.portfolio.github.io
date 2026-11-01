@@ -1,7 +1,6 @@
 # ===== Your projects =====
-# The list is empty for now, so the site shows "projects coming soon" messages.
-# To add a project, remove the "[]" below and add a block like this example
-# (delete the "# " at the start of each line):
+# Each block below is one project card on the Work page. To add a project,
+# copy a block and change the details:
 #
 # - title: Project name
 #   category: Web Design            # Web Design, Digital Marketing, or Cinematography
@@ -10,6 +9,16 @@
 #   image: /assets/images/projects/my-project.jpg   # leave empty for a placeholder
 #   tone: warm                      # warm (golden-hour) or dark placeholder colour when there's no image
 #   url: https://example.com        # link to the live site or video; leave empty if none
+#   new_tab: true                   # open the link in a new tab (for separate sites)
 #   featured: true                  # true = also show it on the homepage (up to 3)
 
-[]
+- title: Iron Tap
+  category: Web Design
+  type: Concept
+  summary: "A redesign concept for Iron Tap Craft Brew & BBQ in Waconia, MN: a modern rustic site with an interactive burger build, a filterable menu and a clearer way to reserve."
+  image: /assets/images/projects/iron-tap.jpg
+  tone: dark
+  # The full concept site lives in work/iron-tap/ (copied from its build)
+  url: /work/iron-tap/
+  new_tab: true
+  featured: false
