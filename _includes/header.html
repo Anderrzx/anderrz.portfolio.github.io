@@ -4,7 +4,7 @@
         <ul class="header-social">
             {% for profile in site.data.social %}
             <li>
-                <a href="{{ profile.url }}" rel="noopener" aria-label="{{ profile.name }}" title="{{ profile.name }}">
+                <a href="{{ profile.url }}" target="_blank" rel="noopener" aria-label="{{ profile.name }}" title="{{ profile.name }}">
                     {% include social-icon.html icon=profile.icon %}
                 </a>
             </li>
