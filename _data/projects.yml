@@ -20,3 +20,11 @@
   # Shown as the Iron Tap concept tile (_includes/project-tile-iron-tap.html), not a link
   tile: iron-tap
   featured: false
+
+- title: Final Fantasy VII Remake
+  category: Digital Marketing
+  type: Concept
+  summary: "An independent campaign concept introducing FINAL FANTASY VII REMAKE INTERGRADE to new players. Not affiliated with Square Enix."
+  # Shown as the FFVII Remake concept tile (_includes/project-tile-ffvii-remake.html), not a link
+  tile: ffvii-remake
+  featured: false

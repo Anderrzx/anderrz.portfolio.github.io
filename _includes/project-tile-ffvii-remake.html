@@ -1,0 +1,10 @@
+{% comment %}
+  FFVII Remake campaign concept tile: your title image with the same Concept
+  badge as every project card. On hover the tile blurs and a View button in
+  the middle opens the campaign page (new tab). Styles: .it-tile in main.css.
+{% endcomment %}
+<figure class="it-tile" aria-label="Final Fantasy VII Remake: independent campaign concept by Anderrz, not affiliated with Square Enix">
+    <img class="it-tile__image" src="{{ '/assets/images/projects/ffvii-remake-tile.webp' | relative_url }}" alt="Final Fantasy VII Remake title logo in silver over a teal meteor on black" width="1254" height="1254" loading="lazy">
+    <span class="badge">{{ include.type | default: 'Concept' }}</span>
+    <a class="it-tile__view" href="{{ '/work/ffvii-remake/' | relative_url }}" target="_blank" rel="noopener" aria-label="View the Final Fantasy VII Remake campaign concept (opens in a new tab)">View</a>
+</figure>

@@ -23,6 +23,11 @@ plugins:
   - jekyll-seo-tag   # page titles, descriptions and social share tags
   - jekyll-sitemap   # sitemap.xml for search engines
 
+# Folders Jekyll would skip (leading underscore) but must publish: the
+# FFVII Remake concept build keeps its scripts in work/ffvii-remake/_next/
+include:
+  - _next
+
 # Files that should not be published
 exclude:
   - Gemfile
