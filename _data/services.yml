@@ -1,4 +1,4 @@
-# The three services, shown on the homepage and the Services page
+# The services, shown on the About page
 - number: "01"
   title: Website Design & Development
   summary: Clean, responsive websites designed and built to help small businesses and personal brands look their best online.
@@ -12,4 +12,9 @@
 - number: "03"
   title: Cinematography & Video Production
   summary: Visual storytelling through video, from planning and filming to the final edit.
+  url: /services/
+
+- number: "04"
+  title: A.I. Solutions & Automation
+  summary: Practical A.I. set up for your business, from chatbots and content workflows to automating the repetitive tasks that eat up your time.
   url: /services/
